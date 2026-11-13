@@ -216,7 +216,10 @@ button{cursor:pointer}
 
     <div class="modal-body">
       <div class="driver-card">
-        <h3>Driver Information</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
+          <h3 style="margin:0">Driver Information</h3>
+          <button class="btn btn-primary btn-small" id="editDriverBtn">✎ Edit Driver</button>
+        </div>
         <div class="driver-grid">
           <div class="driver-item">Driver Name<strong id="truckDriverName">Not configured</strong></div>
           <div class="driver-item">Driver Contact Number<strong id="truckDriverPhone">Not configured</strong></div>
@@ -621,6 +624,94 @@ button{cursor:pointer}
     open('productsOverlay');
   });
 
+  // DRIVER EDITING
+  async function editDriver(n){
+    const truck=trucks.find(t=>Number(t.truck_number)===n);
+
+    if(!truck){
+      showToast('Truck record not found.');
+      return;
+    }
+
+    const currentDriver=truck.drivers||{};
+
+    const name=prompt(
+      'Enter driver name:',
+      currentDriver.name||''
+    );
+
+    if(name===null)return;
+
+    const cleanName=name.trim();
+
+    if(!cleanName){
+      showToast('Driver name cannot be empty.');
+      return;
+    }
+
+    const phone=prompt(
+      'Enter driver contact number:',
+      currentDriver.phone||''
+    );
+
+    if(phone===null)return;
+
+    const cleanPhone=phone.trim();
+
+    try{
+      if(currentDriver.id){
+        // Update the existing driver record.
+        const {error}=await db
+          .from('drivers')
+          .update({
+            name:cleanName,
+            phone:cleanPhone||null,
+            updated_at:new Date().toISOString()
+          })
+          .eq('id',currentDriver.id);
+
+        if(error)throw error;
+
+      }else{
+        // Create a driver record for this truck.
+        const {data,error}=await db
+          .from('drivers')
+          .insert({
+            name:cleanName,
+            phone:cleanPhone||null,
+            is_active:true,
+            updated_at:new Date().toISOString()
+          })
+          .select('id')
+          .single();
+
+        if(error)throw error;
+
+        // Link the newly created driver to the truck.
+        const {error:truckError}=await db
+          .from('trucks')
+          .update({
+            driver_id:data.id,
+            updated_at:new Date().toISOString()
+          })
+          .eq('id',truck.id);
+
+        if(truckError)throw truckError;
+      }
+
+      await loadBase();
+
+      showToast('Driver information updated successfully.');
+
+      // Refresh the truck window using the latest database record.
+      await showTruck(n);
+
+    }catch(error){
+      console.error(error);
+      showToast('Driver update failed: '+error.message);
+    }
+  }
+
   // TRUCK WINDOW
   async function showTruck(n){
     selectedTruck=trucks.find(t=>Number(t.truck_number)===n);
@@ -629,6 +720,8 @@ button{cursor:pointer}
       showToast('Truck record not found in Supabase.');
       return;
     }
+
+    $('editDriverBtn').onclick=()=>editDriver(n);
 
     const assigned=stores.filter(s=>s.truck_id===selectedTruck.id);
     const zones=[...new Set(
