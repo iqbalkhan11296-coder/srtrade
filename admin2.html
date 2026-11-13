@@ -112,6 +112,26 @@ button{cursor:pointer}
 .notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Store item report and bill history */
+.report-section{margin-top:22px}
+.report-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.report-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}
+.report-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:11px 10px;white-space:nowrap}
+.report-table td{padding:11px 10px;border-top:1px solid var(--line);vertical-align:top}
+.report-table td.num,.report-table th.num{text-align:right;white-space:nowrap}
+.report-table tfoot td{font-weight:800;background:#f8fafc}
+.bill-card{border:1px solid var(--line);border-radius:11px;margin-bottom:11px;overflow:hidden}
+.bill-card-head{background:#f5f7fa;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bill-card-head strong{font-size:12px}
+.bill-card-head small{font-size:10px;color:var(--muted)}
+.bill-card-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.payment-tag{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px}
+.payment-tag.paid{background:#e7f4eb;color:#237447}
+.payment-tag.credit{background:#fff1df;color:#a76519}
+.bill-card-body{padding:12px 14px}
+.bill-card-total{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #dce3ec;padding-top:10px;margin-top:8px;font-size:12px;font-weight:800}
+.report-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed #d6dee8;border-radius:10px}
 @media(max-width:850px){
  .truck-grid{grid-template-columns:repeat(4,1fr)}
  .quick-grid{grid-template-columns:repeat(4,1fr)}
@@ -146,6 +166,7 @@ button{cursor:pointer}
  .mini-stat strong{font-size:16px}
  .mini-stat label{font-size:10px}
  .driver-grid,.detail-grid{grid-template-columns:1fr 1fr}
+ .report-table{min-width:480px}
 }
 </style>
 </head>
@@ -213,7 +234,6 @@ button{cursor:pointer}
       </div>
       <button class="close-btn" data-close aria-label="Close">×</button>
     </div>
-
     <div class="modal-body">
       <div class="driver-card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
@@ -245,7 +265,7 @@ button{cursor:pointer}
 
       <div class="section-head"><h3>Assigned Stores & Store-wise Sales</h3><span id="truckStoreLabel">0 stores</span></div>
       <div class="store-list" id="truckStoreList"></div>
-      <p class="notice">Only COMPLETED bills are included. PAID and CREDIT are reported separately. Select a store to see its individual financial report.</p>
+      <p class="notice">Only COMPLETED bills are included. PAID and CREDIT are reported separately. Select a store to see its individual financial and item-wise report.</p>
     </div>
   </section>
 </div>
@@ -304,11 +324,11 @@ button{cursor:pointer}
 
 <!-- Store detail window -->
 <div class="overlay" id="storeDetailOverlay">
-  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="storeDetailTitle">
+  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="storeDetailTitle">
     <div class="modal-head">
       <div class="modal-title">
         <span class="big-icon">🏪</span>
-        <div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store registration and financial information</p></div>
+        <div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store information, financials, item sales and bill history</p></div>
       </div>
       <button class="close-btn" data-close aria-label="Close">×</button>
     </div>
@@ -389,11 +409,7 @@ button{cursor:pointer}
   });
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
 
   function showToast(message){
@@ -411,9 +427,7 @@ button{cursor:pointer}
 
   function close(id){
     $(id).classList.remove('show');
-    if(!document.querySelector('.overlay.show')){
-      document.body.style.overflow='';
-    }
+    if(!document.querySelector('.overlay.show'))document.body.style.overflow='';
   }
 
   document.querySelectorAll('[data-close]').forEach(btn=>{
@@ -444,57 +458,34 @@ button{cursor:pointer}
     if(!v)return '';
     const [y,m,d]=v.split('-').map(Number);
     return new Date(y,m-1,d).toLocaleDateString('en-IN',{
-      day:'2-digit',
-      month:'short',
-      year:'numeric'
+      day:'2-digit',month:'short',year:'numeric'
     });
   }
 
   function dateRange(){
-    return {
-      start:$('startDate').value,
-      end:$('endDate').value
-    };
+    return {start:$('startDate').value,end:$('endDate').value};
   }
 
-  // MAIN DASHBOARD DATE FILTER
   function updateDateCaption(){
     const {start,end}=dateRange();
-
     if(!start||!end){
       $('rangeCaption').textContent='Select a reporting date range';
       return;
     }
-
     if(start===end){
-      $('rangeCaption').textContent=
-        start===localDateString(new Date())
-        ?"Showing today's sales"
-        :`Showing sales for ${formatDate(start)}`;
+      $('rangeCaption').textContent=start===localDateString(new Date())
+        ?"Showing today's sales":`Showing sales for ${formatDate(start)}`;
     }else{
-      $('rangeCaption').textContent=
-        `Showing report from ${formatDate(start)} to ${formatDate(end)}`;
+      $('rangeCaption').textContent=`Showing report from ${formatDate(start)} to ${formatDate(end)}`;
     }
-
     refreshFinancials();
   }
 
   async function loadBase(){
     const [tr,st,pr]=await Promise.all([
-      db.from('trucks')
-        .select('id,truck_number,driver_id,drivers(id,name,phone)')
-        .order('truck_number'),
-
-      db.from('stores')
-        .select('id,name,owner_name,phone,address,notes,truck_id,zone_number,is_active')
-        .eq('is_active',true)
-        .order('name'),
-
-      db.from('products')
-        .select('id,name,unit_price,sort_order,is_active')
-        .eq('is_active',true)
-        .order('sort_order')
-        .order('name')
+      db.from('trucks').select('id,truck_number,driver_id,drivers(id,name,phone)').order('truck_number'),
+      db.from('stores').select('id,name,owner_name,phone,address,notes,truck_id,zone_number,is_active').eq('is_active',true).order('name'),
+      db.from('products').select('id,name,unit_price,sort_order,is_active').eq('is_active',true).order('sort_order').order('name')
     ]);
 
     if(tr.error)throw tr.error;
@@ -506,9 +497,7 @@ button{cursor:pointer}
     products=pr.data||[];
 
     driversByTruck={};
-    trucks.forEach(t=>{
-      driversByTruck[t.truck_number]=t.drivers||null;
-    });
+    trucks.forEach(t=>{driversByTruck[t.truck_number]=t.drivers||null;});
 
     renderTruckTiles();
     fillTruckOptions();
@@ -519,14 +508,10 @@ button{cursor:pointer}
   function renderTruckTiles(){
     const grid=$('truckGrid');
     grid.innerHTML='';
-
     for(let n=1;n<=11;n++){
       const tile=document.createElement('button');
       tile.className='truck-tile';
-      tile.innerHTML=`
-        <span class="truck-symbol">🚚</span>
-        <strong>TRUCK ${String(n).padStart(2,'0')}</strong>
-      `;
+      tile.innerHTML=`<span class="truck-symbol">🚚</span><strong>TRUCK ${String(n).padStart(2,'0')}</strong>`;
       tile.addEventListener('click',()=>showTruck(n));
       grid.append(tile);
     }
@@ -535,72 +520,43 @@ button{cursor:pointer}
   function fillTruckOptions(){
     const a=$('storeTruck');
     a.innerHTML='<option value="">Select truck</option>';
-
-    trucks.forEach(t=>{
-      a.add(new Option(
-        `Truck ${String(t.truck_number).padStart(2,'0')}`,
-        t.id
-      ));
-    });
+    trucks.forEach(t=>a.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
 
     const z=$('storeZone');
     z.innerHTML='<option value="">Select zone</option>';
-
-    for(let n=1;n<=11;n++){
-      z.add(new Option(
-        `Zone ${String(n).padStart(2,'0')}`,
-        String(n)
-      ));
-    }
+    for(let n=1;n<=11;n++)z.add(new Option(`Zone ${String(n).padStart(2,'0')}`,String(n)));
   }
 
-  // MAIN DASHBOARD FINANCIAL TOTALS
   async function refreshFinancials(){
     const {start,end}=dateRange();
     if(!start||!end)return;
 
-    const {data,error}=await db
-      .from('delivery_bills')
+    const {data,error}=await db.from('delivery_bills')
       .select('total_amount,payment_type')
       .eq('status','COMPLETED')
       .gte('bill_date',start)
       .lte('bill_date',end);
 
-    if(error){
-      showToast('Could not load sales totals: '+error.message);
-      return;
-    }
+    if(error){showToast('Could not load sales totals: '+error.message);return;}
 
     const rows=data||[];
-
-    const sales=rows.reduce(
-      (sum,b)=>sum+Number(b.total_amount||0),0
-    );
-
-    const paid=rows.filter(b=>b.payment_type==='PAID')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    const credit=rows.filter(b=>b.payment_type==='CREDIT')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const sales=rows.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const paid=rows.filter(b=>b.payment_type==='PAID').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const credit=rows.filter(b=>b.payment_type==='CREDIT').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
 
     $('totalSales').textContent=money(sales);
     $('totalPaid').textContent=money(paid);
     $('totalCredit').textContent=money(credit);
   }
 
-  // MAIN DASHBOARD DATE CONTROLS
   const today=localDateString(new Date());
-
   $('startDate').value=today;
   $('endDate').value=today;
   $('startDate').max=today;
   $('endDate').max=today;
 
   $('startDate').addEventListener('change',()=>{
-    if($('startDate').value>$('endDate').value){
-      $('endDate').value=$('startDate').value;
-    }
-
+    if($('startDate').value>$('endDate').value)$('endDate').value=$('startDate').value;
     $('endDate').min=$('startDate').value;
     updateDateCaption();
   });
@@ -610,7 +566,6 @@ button{cursor:pointer}
       $('endDate').value=$('startDate').value;
       showToast('Ending date cannot be earlier than starting date.');
     }
-
     updateDateCaption();
   });
 
@@ -627,85 +582,39 @@ button{cursor:pointer}
   // DRIVER EDITING
   async function editDriver(n){
     const truck=trucks.find(t=>Number(t.truck_number)===n);
-
-    if(!truck){
-      showToast('Truck record not found.');
-      return;
-    }
+    if(!truck){showToast('Truck record not found.');return;}
 
     const currentDriver=truck.drivers||{};
-
-    const name=prompt(
-      'Enter driver name:',
-      currentDriver.name||''
-    );
-
+    const name=prompt('Enter driver name:',currentDriver.name||'');
     if(name===null)return;
-
     const cleanName=name.trim();
+    if(!cleanName){showToast('Driver name cannot be empty.');return;}
 
-    if(!cleanName){
-      showToast('Driver name cannot be empty.');
-      return;
-    }
-
-    const phone=prompt(
-      'Enter driver contact number:',
-      currentDriver.phone||''
-    );
-
+    const phone=prompt('Enter driver contact number:',currentDriver.phone||'');
     if(phone===null)return;
-
     const cleanPhone=phone.trim();
 
     try{
       if(currentDriver.id){
-        // Update the existing driver record.
-        const {error}=await db
-          .from('drivers')
-          .update({
-            name:cleanName,
-            phone:cleanPhone||null,
-            updated_at:new Date().toISOString()
-          })
-          .eq('id',currentDriver.id);
-
+        const {error}=await db.from('drivers').update({
+          name:cleanName,phone:cleanPhone||null,updated_at:new Date().toISOString()
+        }).eq('id',currentDriver.id);
         if(error)throw error;
-
       }else{
-        // Create a driver record for this truck.
-        const {data,error}=await db
-          .from('drivers')
-          .insert({
-            name:cleanName,
-            phone:cleanPhone||null,
-            is_active:true,
-            updated_at:new Date().toISOString()
-          })
-          .select('id')
-          .single();
-
+        const {data,error}=await db.from('drivers').insert({
+          name:cleanName,phone:cleanPhone||null,is_active:true,updated_at:new Date().toISOString()
+        }).select('id').single();
         if(error)throw error;
 
-        // Link the newly created driver to the truck.
-        const {error:truckError}=await db
-          .from('trucks')
-          .update({
-            driver_id:data.id,
-            updated_at:new Date().toISOString()
-          })
-          .eq('id',truck.id);
-
+        const {error:truckError}=await db.from('trucks').update({
+          driver_id:data.id,updated_at:new Date().toISOString()
+        }).eq('id',truck.id);
         if(truckError)throw truckError;
       }
 
       await loadBase();
-
       showToast('Driver information updated successfully.');
-
-      // Refresh the truck window using the latest database record.
       await showTruck(n);
-
     }catch(error){
       console.error(error);
       showToast('Driver update failed: '+error.message);
@@ -715,37 +624,22 @@ button{cursor:pointer}
   // TRUCK WINDOW
   async function showTruck(n){
     selectedTruck=trucks.find(t=>Number(t.truck_number)===n);
-
-    if(!selectedTruck){
-      showToast('Truck record not found in Supabase.');
-      return;
-    }
+    if(!selectedTruck){showToast('Truck record not found in Supabase.');return;}
 
     $('editDriverBtn').onclick=()=>editDriver(n);
 
     const assigned=stores.filter(s=>s.truck_id===selectedTruck.id);
-    const zones=[...new Set(
-      assigned.map(s=>Number(s.zone_number)).filter(Boolean)
-    )];
-
+    const zones=[...new Set(assigned.map(s=>Number(s.zone_number)).filter(Boolean))];
     const driver=selectedTruck.drivers||{};
 
     $('truckTitle').textContent=`TRUCK ${String(n).padStart(2,'0')}`;
     $('truckDriverName').textContent=driver.name||'Not configured';
     $('truckDriverPhone').textContent=driver.phone||'Not configured';
-
-    $('truckZone').textContent=zones.length
-      ?zones.map(z=>`Zone ${String(z).padStart(2,'0')}`).join(', ')
-      :'Not assigned';
-
-    $('truckStoreCount').textContent=
-      `${assigned.length} ${assigned.length===1?'store':'stores'}`;
-
+    $('truckZone').textContent=zones.length?zones.map(z=>`Zone ${String(z).padStart(2,'0')}`).join(', '):'Not assigned';
+    $('truckStoreCount').textContent=`${assigned.length} ${assigned.length===1?'store':'stores'}`;
     $('truckStoreLabel').textContent=$('truckStoreCount').textContent;
 
-    // Each truck opens with today's date, independent of main dashboard.
     const truckToday=localDateString(new Date());
-
     $('truckStartDate').value=truckToday;
     $('truckEndDate').value=truckToday;
     $('truckStartDate').max=truckToday;
@@ -753,10 +647,7 @@ button{cursor:pointer}
     $('truckEndDate').min=truckToday;
 
     $('truckStartDate').onchange=()=>{
-      if($('truckStartDate').value>$('truckEndDate').value){
-        $('truckEndDate').value=$('truckStartDate').value;
-      }
-
+      if($('truckStartDate').value>$('truckEndDate').value)$('truckEndDate').value=$('truckStartDate').value;
       $('truckEndDate').min=$('truckStartDate').value;
       refreshTruckFinancials(n);
     };
@@ -766,7 +657,6 @@ button{cursor:pointer}
         $('truckEndDate').value=$('truckStartDate').value;
         showToast('Ending date cannot be earlier than starting date.');
       }
-
       refreshTruckFinancials(n);
     };
 
@@ -781,151 +671,96 @@ button{cursor:pointer}
 
     const start=$('truckStartDate').value;
     const end=$('truckEndDate').value;
-
     if(!start||!end)return;
 
-    $('truckRangeCaption').textContent=
-      start===end
+    $('truckRangeCaption').textContent=start===end
       ?`Showing truck sales for ${formatDate(start)}`
       :`Showing truck sales from ${formatDate(start)} to ${formatDate(end)}`;
 
-    const {data,error}=await db
-      .from('delivery_bills')
+    const {data,error}=await db.from('delivery_bills')
       .select('store_id,total_amount,payment_type')
       .eq('truck_id',t.id)
       .eq('status','COMPLETED')
       .gte('bill_date',start)
       .lte('bill_date',end);
 
-    if(error){
-      showToast('Could not load truck sales: '+error.message);
-      return;
-    }
+    if(error){showToast('Could not load truck sales: '+error.message);return;}
 
     const rows=data||[];
-
-    const sales=rows.reduce(
-      (sum,b)=>sum+Number(b.total_amount||0),0
-    );
-
-    const paid=rows.filter(b=>b.payment_type==='PAID')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    const credit=rows.filter(b=>b.payment_type==='CREDIT')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const sales=rows.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const paid=rows.filter(b=>b.payment_type==='PAID').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const credit=rows.filter(b=>b.payment_type==='CREDIT').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
 
     $('truckSales').textContent=money(sales);
     $('truckPaid').textContent=money(paid);
     $('truckCredit').textContent=money(credit);
 
-    // Calculate individual store totals using the same truck date range.
     const storeTotals={};
-
     rows.forEach(b=>{
       if(!b.store_id)return;
-
-      if(!storeTotals[b.store_id]){
-        storeTotals[b.store_id]={
-          sales:0,
-          paid:0,
-          credit:0
-        };
-      }
-
+      if(!storeTotals[b.store_id])storeTotals[b.store_id]={sales:0,paid:0,credit:0};
       const amount=Number(b.total_amount||0);
-
       storeTotals[b.store_id].sales+=amount;
-
-      if(b.payment_type==='PAID'){
-        storeTotals[b.store_id].paid+=amount;
-      }else if(b.payment_type==='CREDIT'){
-        storeTotals[b.store_id].credit+=amount;
-      }
+      if(b.payment_type==='PAID')storeTotals[b.store_id].paid+=amount;
+      else if(b.payment_type==='CREDIT')storeTotals[b.store_id].credit+=amount;
     });
 
     const assigned=stores.filter(s=>s.truck_id===t.id);
     const list=$('truckStoreList');
-
     list.innerHTML='';
 
     if(!assigned.length){
-      list.innerHTML=`
-        <div class="empty">
-          No stores have been assigned to this truck yet.<br>
-          Add a store in Store Management.
-        </div>
-      `;
+      list.innerHTML='<div class="empty">No stores have been assigned to this truck yet.<br>Add a store in Store Management.</div>';
       return;
     }
 
     assigned.forEach(s=>{
-      const total=storeTotals[s.id]||{
-        sales:0,
-        paid:0,
-        credit:0
-      };
-
+      const total=storeTotals[s.id]||{sales:0,paid:0,credit:0};
       const row=document.createElement('button');
       row.className='store-row';
       row.style.textAlign='left';
       row.style.background='#fff';
       row.style.width='100%';
-
       row.innerHTML=`
         <span class="store-avatar">🏪</span>
         <span class="store-main">
           <strong>${esc(s.name)}</strong>
           <small>Zone ${String(s.zone_number||0).padStart(2,'0')} · ${esc(s.phone||'No contact added')}</small>
-          <small style="color:#285d91;margin-top:6px">
-            Sales: ${money(total.sales)}
-          </small>
-          <small style="color:#237447">
-            PAID: ${money(total.paid)} · CREDIT: ${money(total.credit)}
-          </small>
+          <small style="color:#285d91;margin-top:6px">Sales: ${money(total.sales)}</small>
+          <small style="color:#237447">PAID: ${money(total.paid)} · CREDIT: ${money(total.credit)}</small>
         </span>
         <span style="color:#8290a2">›</span>
       `;
-
       row.onclick=()=>showStoreDetail(s.id);
       list.append(row);
     });
   }
 
-  // STORE MANAGEMENT
+  // PART 2 CONTINUES HERE — paste the next code block directly after this line.
+
+// STORE MANAGEMENT
   $('addStoreBtn').addEventListener('click',()=>openStoreForm());
   $('storeSearch').addEventListener('input',renderStores);
 
   function renderStores(){
     const q=$('storeSearch').value.trim().toLowerCase();
-
     const filtered=stores.filter(s=>
-      [s.name,s.owner_name,s.phone,s.address]
-        .some(v=>String(v||'').toLowerCase().includes(q))
+      [s.name,s.owner_name,s.phone,s.address].some(v=>String(v||'').toLowerCase().includes(q))
     );
 
-    $('storeCount').textContent=
-      `${stores.length} ${stores.length===1?'store':'stores'}`;
-
+    $('storeCount').textContent=`${stores.length} ${stores.length===1?'store':'stores'}`;
     const list=$('storeList');
     list.innerHTML='';
 
     if(!filtered.length){
-      list.innerHTML=`
-        <div class="empty">
-          ${stores.length
-            ?'No stores match your search.'
-            :'No stores added yet. Select “Add New Store” to get started.'}
-        </div>
-      `;
+      list.innerHTML=`<div class="empty">${stores.length?'No stores match your search.':'No stores added yet. Select “Add New Store” to get started.'}</div>`;
       return;
     }
 
     filtered.forEach(s=>{
       const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';
-
       const row=document.createElement('div');
       row.className='store-row';
-
       row.innerHTML=`
         <span class="store-avatar">🏪</span>
         <span class="store-main">
@@ -938,13 +773,10 @@ button{cursor:pointer}
           <button class="icon-btn delete" title="Deactivate store">×</button>
         </span>
       `;
-
       const b=row.querySelectorAll('button');
-
       b[0].onclick=()=>showStoreDetail(s.id);
       b[1].onclick=()=>openStoreForm(s.id);
       b[2].onclick=()=>deactivateStore(s.id);
-
       list.append(row);
     });
   }
@@ -957,7 +789,6 @@ button{cursor:pointer}
     if(id){
       const s=stores.find(x=>x.id===id);
       if(!s)return;
-
       $('storeId').value=s.id;
       $('storeName').value=s.name||'';
       $('ownerName').value=s.owner_name||'';
@@ -974,7 +805,6 @@ button{cursor:pointer}
 
   $('storeForm').addEventListener('submit',async e=>{
     e.preventDefault();
-
     const id=$('storeId').value;
 
     const payload={
@@ -995,44 +825,29 @@ button{cursor:pointer}
       ?await db.from('stores').update(payload).eq('id',id)
       :await db.from('stores').insert(payload);
 
-    if(res.error){
-      showToast('Store save failed: '+res.error.message);
-      return;
-    }
+    if(res.error){showToast('Store save failed: '+res.error.message);return;}
 
     close('storeFormOverlay');
     await loadBase();
     renderStores();
-
     showToast(id?'Store updated successfully.':'Store added successfully.');
   });
 
   async function deactivateStore(id){
     const s=stores.find(x=>x.id===id);
+    if(!s||!confirm(`Deactivate "${s.name}"? Existing bills will remain linked.`))return;
 
-    if(!s||!confirm(`Deactivate "${s.name}"? Existing bills will remain linked.`)){
-      return;
-    }
+    const {error}=await db.from('stores').update({
+      is_active:false,updated_at:new Date().toISOString()
+    }).eq('id',id);
 
-    const {error}=await db
-      .from('stores')
-      .update({
-        is_active:false,
-        updated_at:new Date().toISOString()
-      })
-      .eq('id',id);
-
-    if(error){
-      showToast(error.message);
-      return;
-    }
-
+    if(error){showToast(error.message);return;}
     await loadBase();
     renderStores();
     showToast('Store deactivated.');
   }
 
-  // STORE DETAILS + INDEPENDENT STORE DATE FILTER
+  // STORE DETAILS + ITEM-WISE SALES + BILL HISTORY
   async function showStoreDetail(id){
     const s=stores.find(x=>x.id===id);
     if(!s)return;
@@ -1045,50 +860,23 @@ button{cursor:pointer}
     $('storeDetailBody').innerHTML=`
       <div class="store-detail">
         <div class="detail-grid">
-          <div class="detail-item">
-            <small>Store Name</small>
-            <strong>${esc(s.name)}</strong>
-          </div>
-          <div class="detail-item">
-            <small>Store Owner</small>
-            <strong>${esc(s.owner_name||'Not provided')}</strong>
-          </div>
-          <div class="detail-item">
-            <small>Contact Number</small>
-            <strong>${esc(s.phone||'Not provided')}</strong>
-          </div>
-          <div class="detail-item">
-            <small>Assigned Truck</small>
-            <strong>Truck ${String(tn).padStart(2,'0')}</strong>
-          </div>
-          <div class="detail-item">
-            <small>Assigned Zone</small>
-            <strong>Zone ${String(s.zone_number||0).padStart(2,'0')}</strong>
-          </div>
-          <div class="detail-item">
-            <small>Address</small>
-            <strong>${esc(s.address||'Not provided')}</strong>
-          </div>
-          <div class="detail-item" style="grid-column:1/-1">
-            <small>Additional Notes</small>
-            <strong>${esc(s.notes||'None')}</strong>
-          </div>
+          <div class="detail-item"><small>Store Name</small><strong>${esc(s.name)}</strong></div>
+          <div class="detail-item"><small>Store Owner</small><strong>${esc(s.owner_name||'Not provided')}</strong></div>
+          <div class="detail-item"><small>Contact Number</small><strong>${esc(s.phone||'Not provided')}</strong></div>
+          <div class="detail-item"><small>Assigned Truck</small><strong>Truck ${String(tn).padStart(2,'0')}</strong></div>
+          <div class="detail-item"><small>Assigned Zone</small><strong>Zone ${String(s.zone_number||0).padStart(2,'0')}</strong></div>
+          <div class="detail-item"><small>Address</small><strong>${esc(s.address||'Not provided')}</strong></div>
+          <div class="detail-item" style="grid-column:1/-1"><small>Additional Notes</small><strong>${esc(s.notes||'None')}</strong></div>
         </div>
       </div>
 
-      <h3 class="subheading" style="margin-top:20px">
-        Store Financial Summary
-      </h3>
+      <h3 class="subheading" style="margin-top:20px">Store Financial Summary</h3>
 
       <div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">
         <span>📅</span>
-        <label class="date-field">
-          From <input type="date" id="storeStartDate" value="${storeToday}" max="${storeToday}">
-        </label>
+        <label class="date-field">From <input type="date" id="storeStartDate" value="${storeToday}" max="${storeToday}"></label>
         <span class="date-separator">—</span>
-        <label class="date-field">
-          To <input type="date" id="storeEndDate" value="${storeToday}" max="${storeToday}">
-        </label>
+        <label class="date-field">To <input type="date" id="storeEndDate" value="${storeToday}" max="${storeToday}"></label>
       </div>
 
       <div class="range-caption" id="storeRangeCaption" style="text-align:left;margin-bottom:12px">
@@ -1096,23 +884,31 @@ button{cursor:pointer}
       </div>
 
       <div class="mini-stats">
-        <div class="mini-stat">
-          <label>Total Sales</label>
-          <strong id="storeSales">₹0.00</strong>
-        </div>
-        <div class="mini-stat">
-          <label>PAID Collection</label>
-          <strong id="storePaid">₹0.00</strong>
-        </div>
-        <div class="mini-stat">
-          <label>Total Credit</label>
-          <strong id="storeCredit">₹0.00</strong>
-        </div>
+        <div class="mini-stat"><label>Total Sales</label><strong id="storeSales">₹0.00</strong></div>
+        <div class="mini-stat"><label>PAID Collection</label><strong id="storePaid">₹0.00</strong></div>
+        <div class="mini-stat"><label>Total Credit</label><strong id="storeCredit">₹0.00</strong></div>
       </div>
 
-      <p class="notice">
-        Only COMPLETED bills are included. PAID and CREDIT are calculated separately.
-      </p>
+      <p class="notice">Only COMPLETED bills are included. PAID and CREDIT are calculated separately.</p>
+
+      <div class="report-section">
+        <div class="section-head">
+          <h3>📦 Item-wise Sales Report</h3>
+          <span id="itemReportCount">0 products</span>
+        </div>
+        <p class="notice" style="margin-top:-7px;margin-bottom:10px">
+          Total quantity and amount sold for each product during the selected date range.
+        </p>
+        <div id="storeItemReport"></div>
+      </div>
+
+      <div class="report-section">
+        <div class="section-head">
+          <h3>🧾 Date-wise Bill History</h3>
+          <span id="billHistoryCount">0 bills</span>
+        </div>
+        <div id="storeBillHistory"></div>
+      </div>
 
       <div class="form-actions">
         <button class="btn btn-light" id="detailClose">Close</button>
@@ -1124,7 +920,6 @@ button{cursor:pointer}
       if($('storeStartDate').value>$('storeEndDate').value){
         $('storeEndDate').value=$('storeStartDate').value;
       }
-
       $('storeEndDate').min=$('storeStartDate').value;
       refreshStoreFinancials(id);
     };
@@ -1134,12 +929,10 @@ button{cursor:pointer}
         $('storeEndDate').value=$('storeStartDate').value;
         showToast('Ending date cannot be earlier than starting date.');
       }
-
       refreshStoreFinancials(id);
     };
 
     $('detailClose').onclick=()=>close('storeDetailOverlay');
-
     $('detailEdit').onclick=()=>{
       close('storeDetailOverlay');
       openStoreForm(id);
@@ -1149,48 +942,204 @@ button{cursor:pointer}
     await refreshStoreFinancials(id);
   }
 
+  // FETCH STORE BILLS AND THEIR LINE ITEMS
   async function refreshStoreFinancials(id){
     const s=stores.find(x=>x.id===id);
     if(!s)return;
 
     const start=$('storeStartDate').value;
     const end=$('storeEndDate').value;
-
     if(!start||!end)return;
 
-    $('storeRangeCaption').textContent=
-      start===end
+    $('storeRangeCaption').textContent=start===end
       ?`Showing store sales for ${formatDate(start)}`
       :`Showing store sales from ${formatDate(start)} to ${formatDate(end)}`;
 
-    const {data,error}=await db
-      .from('delivery_bills')
-      .select('total_amount,payment_type')
+    $('storeItemReport').innerHTML='<div class="report-empty">Loading item report...</div>';
+    $('storeBillHistory').innerHTML='<div class="report-empty">Loading bill history...</div>';
+
+    // Fetch completed bills for this store and date range.
+    const {data:billData,error:billError}=await db.from('delivery_bills')
+      .select('id,bill_number,bill_date,payment_type,status,total_amount')
       .eq('store_id',id)
       .eq('status','COMPLETED')
       .gte('bill_date',start)
-      .lte('bill_date',end);
+      .lte('bill_date',end)
+      .order('bill_date',{ascending:false})
+      .order('created_at',{ascending:false});
 
-    if(error){
-      showToast('Could not load store sales: '+error.message);
+    if(billError){
+      showToast('Could not load store bills: '+billError.message);
+      $('storeItemReport').innerHTML='<div class="report-empty">Could not load item report.</div>';
+      $('storeBillHistory').innerHTML='<div class="report-empty">Could not load bill history.</div>';
       return;
     }
 
-    const rows=data||[];
-
-    const sales=rows.reduce(
-      (sum,b)=>sum+Number(b.total_amount||0),0
-    );
-
-    const paid=rows.filter(b=>b.payment_type==='PAID')
+    const bills=billData||[];
+    const sales=bills.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+    const paid=bills.filter(b=>b.payment_type==='PAID')
       .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    const credit=rows.filter(b=>b.payment_type==='CREDIT')
+    const credit=bills.filter(b=>b.payment_type==='CREDIT')
       .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
 
     $('storeSales').textContent=money(sales);
     $('storePaid').textContent=money(paid);
     $('storeCredit').textContent=money(credit);
+
+    if(!bills.length){
+      $('itemReportCount').textContent='0 products';
+      $('billHistoryCount').textContent='0 bills';
+      $('storeItemReport').innerHTML='<div class="report-empty">No completed sales for this store during the selected dates.</div>';
+      $('storeBillHistory').innerHTML='<div class="report-empty">No completed bills found for this date range.</div>';
+      return;
+    }
+
+    const billIds=bills.map(b=>b.id);
+
+    // Use item snapshots so old bills retain their original product names and prices.
+    const {data:itemData,error:itemError}=await db.from('delivery_bill_items')
+      .select('id,bill_id,product_name_snapshot,quantity,unit_price,line_total')
+      .in('bill_id',billIds)
+      .order('created_at',{ascending:true});
+
+    if(itemError){
+      showToast('Could not load bill items: '+itemError.message);
+      $('storeItemReport').innerHTML='<div class="report-empty">Could not load item report.</div>';
+      $('storeBillHistory').innerHTML='<div class="report-empty">Bill totals are available, but item details could not be loaded.</div>';
+      return;
+    }
+
+    const items=itemData||[];
+    const itemsByBill={};
+    const productTotals={};
+
+    items.forEach(item=>{
+      if(!itemsByBill[item.bill_id])itemsByBill[item.bill_id]=[];
+      itemsByBill[item.bill_id].push(item);
+
+      const name=item.product_name_snapshot||'Unnamed product';
+      const key=name.trim().toLowerCase();
+
+      if(!productTotals[key]){
+        productTotals[key]={
+          name,
+          quantity:0,
+          amount:0
+        };
+      }
+
+      productTotals[key].quantity+=Number(item.quantity||0);
+      productTotals[key].amount+=Number(item.line_total||0);
+    });
+
+    renderStoreItemReport(productTotals);
+    renderStoreBillHistory(bills,itemsByBill);
+  }
+
+  // ITEM-WISE TOTALS FOR SELECTED PERIOD
+  function renderStoreItemReport(productTotals){
+    const list=Object.values(productTotals)
+      .sort((a,b)=>a.name.localeCompare(b.name));
+
+    $('itemReportCount').textContent=`${list.length} ${list.length===1?'product':'products'}`;
+
+    if(!list.length){
+      $('storeItemReport').innerHTML='<div class="report-empty">No product items were recorded in completed bills for this period.</div>';
+      return;
+    }
+
+    const totalQty=list.reduce((sum,p)=>sum+p.quantity,0);
+    const totalAmount=list.reduce((sum,p)=>sum+p.amount,0);
+
+    $('storeItemReport').innerHTML=`
+      <div class="report-table-wrap">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="num">Quantity Sold</th>
+              <th class="num">Sales Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map(p=>`
+              <tr>
+                <td><strong>${esc(p.name)}</strong></td>
+                <td class="num">${p.quantity.toLocaleString('en-IN')}</td>
+                <td class="num">${money(p.amount)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total</td>
+              <td class="num">${totalQty.toLocaleString('en-IN')}</td>
+              <td class="num">${money(totalAmount)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    `;
+  }
+
+  // INDIVIDUAL BILLS WITH ITEM DETAILS
+  function renderStoreBillHistory(bills,itemsByBill){
+    $('billHistoryCount').textContent=`${bills.length} ${bills.length===1?'bill':'bills'}`;
+
+    if(!bills.length){
+      $('storeBillHistory').innerHTML='<div class="report-empty">No bills found.</div>';
+      return;
+    }
+
+    $('storeBillHistory').innerHTML=bills.map(b=>{
+      const billItems=itemsByBill[b.id]||[];
+      const paymentClass=b.payment_type==='PAID'?'paid':'credit';
+      const paymentLabel=b.payment_type==='PAID'?'PAID':'CREDIT';
+
+      return `
+        <div class="bill-card">
+          <div class="bill-card-head">
+            <div>
+              <strong>Bill ${esc(b.bill_number||'—')}</strong><br>
+              <small>${formatDate(b.bill_date)}</small>
+            </div>
+            <div class="bill-card-meta">
+              <span class="payment-tag ${paymentClass}">${paymentLabel}</span>
+            </div>
+          </div>
+          <div class="bill-card-body">
+            ${billItems.length?`
+              <div class="report-table-wrap">
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th class="num">Qty</th>
+                      <th class="num">Rate</th>
+                      <th class="num">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${billItems.map(item=>`
+                      <tr>
+                        <td>${esc(item.product_name_snapshot||'Unnamed product')}</td>
+                        <td class="num">${Number(item.quantity||0).toLocaleString('en-IN')}</td>
+                        <td class="num">${money(item.unit_price)}</td>
+                        <td class="num">${money(item.line_total)}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            `:'<div class="report-empty">No item details recorded for this bill.</div>'}
+            <div class="bill-card-total">
+              <span>Bill Total</span>
+              <strong>${money(b.total_amount)}</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   // PRODUCT MANAGEMENT
@@ -1199,32 +1148,20 @@ button{cursor:pointer}
 
   function renderProducts(){
     const q=$('productSearch').value.trim().toLowerCase();
+    const filtered=products.filter(p=>p.name.toLowerCase().includes(q));
 
-    const filtered=products.filter(p=>
-      p.name.toLowerCase().includes(q)
-    );
-
-    $('productCount').textContent=
-      `${products.length} ${products.length===1?'product':'products'}`;
-
+    $('productCount').textContent=`${products.length} ${products.length===1?'product':'products'}`;
     const list=$('productList');
     list.innerHTML='';
 
     if(!filtered.length){
-      list.innerHTML=`
-        <div class="empty">
-          ${products.length
-            ?'No products match your search.'
-            :'No diary products added yet. Select “Add New Product” to get started.'}
-        </div>
-      `;
+      list.innerHTML=`<div class="empty">${products.length?'No products match your search.':'No diary products added yet. Select “Add New Product” to get started.'}</div>`;
       return;
     }
 
     filtered.forEach((p,i)=>{
       const row=document.createElement('div');
       row.className='product-row';
-
       row.innerHTML=`
         <span class="product-avatar">📖</span>
         <span class="product-main">
@@ -1236,11 +1173,9 @@ button{cursor:pointer}
           <button class="icon-btn delete" title="Deactivate product">×</button>
         </span>
       `;
-
       const b=row.querySelectorAll('button');
       b[0].onclick=()=>openProductForm(p.id);
       b[1].onclick=()=>deactivateProduct(p.id);
-
       list.append(row);
     });
   }
@@ -1254,7 +1189,6 @@ button{cursor:pointer}
     if(id){
       const p=products.find(x=>x.id===id);
       if(!p)return;
-
       $('productId').value=p.id;
       $('productName').value=p.name;
       $('productPrice').value=Number(p.unit_price||0);
@@ -1273,9 +1207,7 @@ button{cursor:pointer}
 
     if(!name||!Number.isFinite(price)||price<0)return;
 
-    if(products.some(p=>
-      p.name.toLowerCase()===name.toLowerCase()&&p.id!==id
-    )){
+    if(products.some(p=>p.name.toLowerCase()===name.toLowerCase()&&p.id!==id)){
       showToast('A product with this name already exists.');
       return;
     }
@@ -1283,9 +1215,7 @@ button{cursor:pointer}
     const payload={
       name,
       unit_price:price,
-      sort_order:id
-        ?(products.find(p=>p.id===id)?.sort_order||0)
-        :products.length+1,
+      sort_order:id?(products.find(p=>p.id===id)?.sort_order||0):products.length+1,
       is_active:true,
       updated_at:new Date().toISOString()
     };
@@ -1294,38 +1224,23 @@ button{cursor:pointer}
       ?await db.from('products').update(payload).eq('id',id)
       :await db.from('products').insert(payload);
 
-    if(res.error){
-      showToast('Product save failed: '+res.error.message);
-      return;
-    }
+    if(res.error){showToast('Product save failed: '+res.error.message);return;}
 
     close('productFormOverlay');
     await loadBase();
     renderProducts();
-
     showToast(id?'Product updated successfully.':'Product added successfully.');
   });
 
   async function deactivateProduct(id){
     const p=products.find(x=>x.id===id);
+    if(!p||!confirm(`Deactivate product "${p.name}"? Existing bills will retain their saved item details.`))return;
 
-    if(!p||!confirm(`Deactivate product "${p.name}"? Existing bills will retain their saved item details.`)){
-      return;
-    }
+    const {error}=await db.from('products').update({
+      is_active:false,updated_at:new Date().toISOString()
+    }).eq('id',id);
 
-    const {error}=await db
-      .from('products')
-      .update({
-        is_active:false,
-        updated_at:new Date().toISOString()
-      })
-      .eq('id',id);
-
-    if(error){
-      showToast(error.message);
-      return;
-    }
-
+    if(error){showToast(error.message);return;}
     await loadBase();
     renderProducts();
     showToast('Product deactivated.');
@@ -1340,7 +1255,6 @@ button{cursor:pointer}
 
       await loadBase();
       await refreshFinancials();
-
       showToast('Connected to SR TRADE LINK database.');
     }catch(err){
       console.error(err);
