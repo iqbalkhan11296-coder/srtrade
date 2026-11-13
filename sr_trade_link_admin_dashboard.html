@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SR TRADE LINK | Admin Dashboard</title>
+<style>
+:root{
+  --navy:#111c2e;--navy2:#1a2940;--navy3:#263a56;--gold:#d6ad61;
+  --bg:#f3f5f8;--surface:#fff;--text:#172235;--muted:#718096;
+  --line:#e4e9f0;--blue:#285d91;--green:#237447;--orange:#a76519;
+  --red:#c34242;--shadow:0 12px 34px rgba(18,32,52,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{height:76px;background:linear-gradient(110deg,var(--navy),#1b2b43);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 4px 18px #0c172533}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-mark{width:43px;height:43px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-size:24px}
+.brand h1{font-size:21px;letter-spacing:1.6px;margin:0;font-weight:800}
+.brand small{display:block;color:#bac5d4;font-size:10px;letter-spacing:2px;margin-top:4px}
+.top-actions{display:flex;align-items:center;gap:12px;color:#dbe3ed;font-size:13px}
+.admin-pill{border:1px solid #ffffff2b;border-radius:20px;padding:7px 12px}
+.container{max-width:1500px;margin:0 auto;padding:26px 30px 42px}
+.page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.page-heading h2{font-size:20px;margin:0}
+.page-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.date-filter{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--muted);font-size:13px}
+.date-filter input{border:0;outline:0;color:var(--text);background:transparent;min-width:135px}
+.date-filter .date-field{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;font-weight:700}
+.date-filter .date-separator{color:#a3adba;font-size:12px}
+.range-caption{font-size:11px;color:var(--muted);margin-top:7px;text-align:right}
+.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:22px}
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;display:flex;align-items:center;gap:14px;min-height:102px;box-shadow:0 3px 12px #1a2c4510}
+.summary-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-size:21px}
+.summary-card:nth-child(1) .summary-icon{background:#e8f0fa;color:var(--blue)}
+.summary-card:nth-child(2) .summary-icon{background:#e7f4eb;color:var(--green)}
+.summary-card:nth-child(3) .summary-icon{background:#fff1df;color:var(--orange)}
+.summary-card label{display:block;font-size:12px;font-weight:700;color:#68778b;margin-bottom:6px}
+.summary-card strong{font-size:24px;letter-spacing:-.5px}
+.section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:19px;box-shadow:0 3px 12px #1a2c4508}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.section-head h3{font-size:15px;margin:0}
+.section-head span{font-size:12px;color:var(--muted)}
+.quick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.quick-btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:83px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text);font-size:12px;font-weight:700;transition:.18s}
+.quick-btn .ico{font-size:22px;color:#52647a}
+.quick-btn:hover:not(:disabled){border-color:#c5a05a;transform:translateY(-2px);box-shadow:0 7px 16px #17223512}
+.quick-btn:disabled{opacity:.45;cursor:not-allowed;background:#f8f9fb}
+.truck-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.truck-tile{background:var(--navy2);border:1px solid #263b57;border-radius:10px;color:#fff;min-height:72px;padding:10px 8px;display:flex;align-items:center;justify-content:center;gap:9px;transition:.18s}
+.truck-tile:hover{background:#263c59;border-color:var(--gold);transform:translateY(-2px)}
+.truck-symbol{font-size:24px;color:var(--gold)}
+.truck-tile strong{font-size:12px;letter-spacing:.4px}
+.footer-note{text-align:center;color:#99a4b3;font-size:11px;padding:10px}
+/* modal / window */
+.overlay{position:fixed;inset:0;background:rgba(8,17,30,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;width:min(900px,100%);max-height:92vh;overflow:auto;box-shadow:var(--shadow);animation:pop .18s ease-out}
+.modal.wide{width:min(1050px,100%)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+.modal-head{background:linear-gradient(110deg,var(--navy),#20334e);color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:2}
+.modal-title{display:flex;align-items:center;gap:12px}
+.modal-title .big-icon{font-size:26px;color:var(--gold)}
+.modal-title h2{font-size:17px;margin:0;letter-spacing:.4px}
+.modal-title p{margin:4px 0 0;color:#c2ccda;font-size:11px}
+.close-btn{border:1px solid #ffffff35;background:#ffffff12;color:#fff;border-radius:8px;width:35px;height:35px;font-size:20px}
+.modal-body{padding:22px}
+.driver-card{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:17px}
+.driver-card h3,.subheading{font-size:13px;margin:0 0 12px}
+.driver-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.driver-item{font-size:12px;color:var(--muted)}
+.driver-item strong{display:block;color:var(--text);font-size:14px;margin-top:5px}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:19px}
+.mini-stat{border-radius:10px;padding:13px}
+.mini-stat:nth-child(1){background:#eaf1fa;color:var(--blue)}
+.mini-stat:nth-child(2){background:#eaf5ed;color:var(--green)}
+.mini-stat:nth-child(3){background:#fff3e4;color:var(--orange)}
+.mini-stat label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+.mini-stat strong{font-size:19px;color:#18283e}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+.toolbar input{max-width:330px}
+.field, .toolbar input, .form-control{width:100%;border:1px solid #dce3ec;border-radius:8px;padding:10px 11px;background:#fff;color:var(--text);outline:none}
+.field:focus,.form-control:focus,.toolbar input:focus{border-color:#8ba8c8;box-shadow:0 0 0 3px #285d9115}
+.toolbar .field{max-width:340px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn-primary{background:var(--navy2);color:#fff}
+.btn-primary:hover{background:#2a4262}
+.btn-light{background:#edf1f6;color:#34445a}
+.btn-danger{background:#fff0f0;color:var(--red)}
+.btn-small{padding:7px 9px;font-size:11px}
+.store-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.store-row,.product-row{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:11px;min-width:0}
+.store-avatar,.product-avatar{width:37px;height:37px;flex:0 0 37px;border-radius:10px;background:#eef2f7;display:grid;place-items:center;font-size:19px}
+.store-main,.product-main{min-width:0;flex:1}
+.store-main strong,.product-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.store-main small,.product-main small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.row-actions{display:flex;gap:5px}
+.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:30px;color:#52647a}
+.icon-btn:hover{background:#f2f5f9}
+.icon-btn.delete{color:var(--red)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}
+.form-group.full{grid-column:1/-1}
+.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.empty{border:1px dashed #d6dee8;border-radius:10px;padding:27px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
+.store-detail{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}
+.detail-item strong{font-size:13px;overflow-wrap:anywhere}
+.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:850px){.truck-grid{grid-template-columns:repeat(4,1fr)}.quick-grid{grid-template-columns:repeat(4,1fr)}.container{padding:20px}.store-list{grid-template-columns:1fr}}
+@media(max-width:560px){
+ .topbar{height:67px;padding:0 15px}.brand h1{font-size:17px}.brand-mark{width:38px;height:38px}.top-actions .admin-pill{display:none}
+ .container{padding:17px 13px 30px}.page-heading{align-items:flex-start;gap:10px;flex-direction:column}
+ .date-filter{width:100%;justify-content:space-between}.date-filter input{max-width:125px;min-width:0}.date-filter{gap:7px;flex-wrap:wrap}.date-filter .date-field{gap:4px}
+ .summary-grid{gap:7px}.summary-card{padding:11px 9px;display:block;min-height:111px}.summary-icon{width:31px;height:31px;font-size:16px;margin-bottom:7px}.summary-card label{font-size:10px;min-height:25px}.summary-card strong{font-size:18px}
+ .section{padding:14px}.quick-grid{grid-template-columns:repeat(3,1fr);gap:8px}.quick-btn{min-height:75px}
+ .truck-grid{grid-template-columns:repeat(3,1fr);gap:7px}.truck-tile{min-height:63px;gap:5px;flex-direction:column}
+ .modal-body{padding:15px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.mini-stats{gap:6px}.mini-stat{padding:10px 8px}.mini-stat strong{font-size:16px}.mini-stat label{font-size:10px}
+ .driver-grid,.detail-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">🚚</div>
+    <div><h1>SR TRADE LINK</h1><small>ADMIN CONTROL CENTER</small></div>
+  </div>
+  <div class="top-actions"><span>Company Dashboard</span><span class="admin-pill">ADMIN</span></div>
+</header>
+
+<main class="container">
+  <div class="page-heading">
+    <div><h2>Dashboard Overview</h2><p>Manage your diary distribution operations from one place.</p></div>
+    <div><div class="date-filter"><span>📅</span><label class="date-field">From <input type="date" id="startDate" aria-label="Starting date"></label><span class="date-separator">—</span><label class="date-field">To <input type="date" id="endDate" aria-label="Ending date"></label></div><div class="range-caption" id="rangeCaption">Showing today's sales</div></div>
+  </div>
+
+  <section class="summary-grid" aria-label="Financial overview">
+    <div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong>₹0.00</strong></div></div>
+    <div class="summary-card"><div class="summary-icon">💰</div><div><label>Total Cash Collected</label><strong>₹0.00</strong></div></div>
+    <div class="summary-card"><div class="summary-icon">🧾</div><div><label>Total Credit Sales</label><strong>₹0.00</strong></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h3>Quick Access</h3><span>Management tools</span></div>
+    <div class="quick-grid">
+      <button class="quick-btn" id="openStores"><span class="ico">🏪</span>Stores</button>
+      <button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
+      <button class="quick-btn" disabled title="To be configured later"><span class="ico">🧾</span>Sales</button>
+      <button class="quick-btn" disabled title="To be configured later"><span class="ico">💳</span>Collections</button>
+      <button class="quick-btn" disabled title="To be configured later"><span class="ico">📊</span>Reports</button>
+      <button class="quick-btn" disabled title="To be configured later"><span class="ico">👥</span>Customers</button>
+      <button class="quick-btn" disabled title="To be configured later"><span class="ico">⚙️</span>Settings</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h3>Truck Management</h3><span>11 delivery trucks</span></div>
+    <div class="truck-grid" id="truckGrid"></div>
+  </section>
+  <div class="footer-note">SR TRADE LINK · Main Admin Dashboard</div>
+</main>
+
+<!-- Truck window -->
+<div class="overlay" id="truckOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="truckTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">🚚</span><div><h2 id="truckTitle">TRUCK 01</h2><p>Truck information and assigned stores</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="driver-card">
+        <h3>Driver Information</h3>
+        <div class="driver-grid">
+          <div class="driver-item">Driver Name<strong id="truckDriverName">Not configured</strong></div>
+          <div class="driver-item">Driver Contact Number<strong id="truckDriverPhone">Not configured</strong></div>
+          <div class="driver-item">Assigned Zone<strong id="truckZone">Not assigned</strong></div>
+          <div class="driver-item">Assigned Stores<strong id="truckStoreCount">0 stores</strong></div>
+        </div>
+      </div>
+      <h3 class="subheading">Financial Summary</h3>
+      <div class="mini-stats">
+        <div class="mini-stat"><label>Total Sales</label><strong>₹0.00</strong></div>
+        <div class="mini-stat"><label>Total Collection</label><strong>₹0.00</strong></div>
+        <div class="mini-stat"><label>Total Credit</label><strong>₹0.00</strong></div>
+      </div>
+      <div class="section-head"><h3>Assigned Stores</h3><span id="truckStoreLabel">0 stores</span></div>
+      <div class="store-list" id="truckStoreList"></div>
+      <p class="notice">Sales, collection and credit figures will remain at ₹0 until the sales and collection functions are developed.</p>
+    </div>
+  </section>
+</div>
+
+<!-- Store management window -->
+<div class="overlay" id="storesOverlay">
+  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="storesTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storesTitle">STORE MANAGEMENT</h2><p>Add, edit, search and assign stores to trucks and zones</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="toolbar">
+        <input class="field" id="storeSearch" placeholder="Search stores by name, owner or contact..." aria-label="Search stores">
+        <button class="btn btn-primary" id="addStoreBtn">＋ Add New Store</button>
+      </div>
+      <div class="section-head"><h3>Store Directory</h3><span id="storeCount">0 stores</span></div>
+      <div class="store-list" id="storeList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- Add/edit store form -->
+<div class="overlay" id="storeFormOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="storeFormTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeFormTitle">ADD NEW STORE</h2><p>Enter store information and distribution assignment</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="storeForm">
+        <input type="hidden" id="storeId">
+        <div class="form-grid">
+          <div class="form-group"><label for="storeName">Store Name *</label><input class="form-control" id="storeName" required maxlength="100" placeholder="Enter store name"></div>
+          <div class="form-group"><label for="ownerName">Store Owner Name</label><input class="form-control" id="ownerName" maxlength="100" placeholder="Enter owner name"></div>
+          <div class="form-group"><label for="storePhone">Contact Number</label><input class="form-control" id="storePhone" type="tel" maxlength="20" placeholder="Enter mobile number"></div>
+          <div class="form-group"><label for="storeTruck">Assign Truck *</label><select class="form-control" id="storeTruck" required><option value="">Select truck</option></select></div>
+          <div class="form-group"><label for="storeZone">Assign Zone *</label><select class="form-control" id="storeZone" required><option value="">Select zone</option></select></div>
+          <div class="form-group full"><label for="storeAddress">Store Address</label><textarea class="form-control" id="storeAddress" rows="2" maxlength="500" placeholder="Enter complete store address"></textarea></div>
+          <div class="form-group full"><label for="storeNotes">Additional Notes</label><textarea class="form-control" id="storeNotes" rows="2" maxlength="500" placeholder="Optional notes"></textarea></div>
+        </div>
+        <div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Store</button></div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- Store detail window -->
+<div class="overlay" id="storeDetailOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="storeDetailTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store registration information</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" id="storeDetailBody"></div>
+  </section>
+</div>
+
+<!-- Product management window -->
+<div class="overlay" id="productsOverlay">
+  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="productsTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">📚</span><div><h2 id="productsTitle">PRODUCT MANAGEMENT</h2><p>Manage SR TRADE LINK diary products</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="toolbar">
+        <input class="field" id="productSearch" placeholder="Search products..." aria-label="Search products">
+        <button class="btn btn-primary" id="addProductBtn">＋ Add New Product</button>
+      </div>
+      <div class="section-head"><h3>Product Directory</h3><span id="productCount">0 products</span></div>
+      <div class="store-list" id="productList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- Product form -->
+<div class="overlay" id="productFormOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="productFormTitle">
+    <div class="modal-head">
+      <div class="modal-title"><span class="big-icon">📚</span><div><h2 id="productFormTitle">ADD NEW PRODUCT</h2><p>Enter diary product information</p></div></div>
+      <button class="close-btn" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div class="form-group"><label for="productName">Product Name *</label><input class="form-control" id="productName" required maxlength="100" placeholder="Enter diary product name"></div>
+        <div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Product</button></div>
+      </form>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  'use strict';
+  const STORE_KEY = 'srTradeLink_stores_v1';
+  const PRODUCT_KEY = 'srTradeLink_products_v1';
+  const DRIVER_KEY = 'srTradeLink_drivers_v1';
+  const $ = id => document.getElementById(id);
+  let stores = load(STORE_KEY, []);
+  let products = load(PRODUCT_KEY, []);
+  let drivers = load(DRIVER_KEY, {});
+  let toastTimer;
+
+  function load(key, fallback) {
+    try { const value = JSON.parse(localStorage.getItem(key)); return value ?? fallback; }
+    catch { return fallback; }
+  }
+  function save(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch { showToast('Could not save. Browser storage may be full or unavailable.'); }
+  }
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function showToast(message) {
+    const el = $('toast'); el.textContent = message; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+  }
+  function open(id) { $(id).classList.add('show'); document.body.style.overflow = 'hidden'; }
+  function close(id) {
+    $(id).classList.remove('show');
+    if (!document.querySelector('.overlay.show')) document.body.style.overflow = '';
+  }
+  document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => {
+    const overlay = btn.closest('.overlay'); if (overlay) close(overlay.id);
+  }));
+  document.querySelectorAll('.overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(overlay.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const opened = [...document.querySelectorAll('.overlay.show')].reverse()[0];
+      if (opened) close(opened.id);
+    }
+  });
+
+  function localDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  function formatDate(value) {
+    if (!value) return '';
+    const [year, month, day] = value.split('-').map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  }
+  function updateDateRange() {
+    const start = $('startDate').value;
+    const end = $('endDate').value;
+    const caption = $('rangeCaption');
+    if (!start || !end) { caption.textContent = 'Select a reporting date range'; return; }
+    if (start === end) {
+      const isToday = start === localDateString(new Date());
+      caption.textContent = isToday ? "Showing today's sales" : `Showing sales for ${formatDate(start)}`;
+    } else {
+      caption.textContent = `Showing report from ${formatDate(start)} to ${formatDate(end)}`;
+    }
+    // The selected range is ready to be connected to sales/report queries in a later phase.
+    document.dispatchEvent(new CustomEvent('srtradelink:daterangechange', {detail:{startDate:start, endDate:end}}));
+  }
+
+  // Main dashboard and truck navigation
+  for (let n=1; n<=11; n++) {
+    const tile = document.createElement('button');
+    tile.className = 'truck-tile';
+    tile.innerHTML = `<span class="truck-symbol">🚚</span><strong>TRUCK ${String(n).padStart(2,'0')}</strong>`;
+    tile.addEventListener('click', () => showTruck(n));
+    $('truckGrid').appendChild(tile);
+    const truckOption = new Option(`Truck ${String(n).padStart(2,'0')}`, String(n));
+    $('storeTruck').add(truckOption);
+    $('storeZone').add(new Option(`Zone ${String(n).padStart(2,'0')}`, String(n)));
+  }
+  // Default reporting range is today only; users can widen it to any date range.
+  const today = localDateString(new Date());
+  $('startDate').value = today;
+  $('endDate').value = today;
+  $('startDate').max = today;
+  $('endDate').max = today;
+  updateDateRange();
+  $('startDate').addEventListener('change', () => {
+    if ($('startDate').value > $('endDate').value) $('endDate').value = $('startDate').value;
+    $('endDate').min = $('startDate').value;
+    updateDateRange();
+  });
+  $('endDate').addEventListener('change', () => {
+    if ($('endDate').value < $('startDate').value) {
+      $('endDate').value = $('startDate').value;
+      showToast('Ending date cannot be earlier than starting date.');
+    }
+    updateDateRange();
+  });
+  $('openStores').addEventListener('click', () => { renderStores(); open('storesOverlay'); });
+  $('openProducts').addEventListener('click', () => { renderProducts(); open('productsOverlay'); });
+
+  function showTruck(n) {
+    const assigned = stores.filter(s => Number(s.truck) === n);
+    const zones = [...new Set(assigned.map(s => Number(s.zone)).filter(Boolean))];
+    const driver = drivers[n] || {};
+    $('truckTitle').textContent = `TRUCK ${String(n).padStart(2,'0')}`;
+    $('truckDriverName').textContent = driver.name || 'Not configured';
+    $('truckDriverPhone').textContent = driver.phone || 'Not configured';
+    $('truckZone').textContent = zones.length ? zones.map(z => `Zone ${String(z).padStart(2,'0')}`).join(', ') : 'Not assigned';
+    $('truckStoreCount').textContent = `${assigned.length} ${assigned.length===1?'store':'stores'}`;
+    $('truckStoreLabel').textContent = `${assigned.length} ${assigned.length===1?'store':'stores'}`;
+    const list = $('truckStoreList'); list.innerHTML = '';
+    if (!assigned.length) list.innerHTML = '<div class="empty">No stores have been assigned to this truck yet.<br>Add or edit a store in Store Management to assign it here.</div>';
+    assigned.forEach(store => {
+      const row = document.createElement('button');
+      row.className = 'store-row'; row.style.textAlign = 'left'; row.style.background = '#fff'; row.style.cursor = 'pointer';
+      row.innerHTML = `<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(store.name)}</strong><small>Zone ${String(store.zone).padStart(2,'0')} · ${esc(store.phone || 'No contact added')}</small></span><span style="color:#8290a2">›</span>`;
+      row.addEventListener('click', () => showStoreDetail(store.id));
+      list.appendChild(row);
+    });
+    open('truckOverlay');
+  }
+
+  // Store management
+  $('addStoreBtn').addEventListener('click', () => openStoreForm());
+  $('storeSearch').addEventListener('input', renderStores);
+  function renderStores() {
+    const q = $('storeSearch').value.trim().toLowerCase();
+    const filtered = stores.filter(s => [s.name,s.owner,s.phone,s.address].some(v => String(v||'').toLowerCase().includes(q)));
+    $('storeCount').textContent = `${stores.length} ${stores.length===1?'store':'stores'}`;
+    const list = $('storeList'); list.innerHTML = '';
+    if (!filtered.length) {
+      list.innerHTML = `<div class="empty">${stores.length ? 'No stores match your search.' : 'No stores added yet. Select “Add New Store” to get started.'}</div>`;
+      return;
+    }
+    filtered.forEach(store => {
+      const row = document.createElement('div'); row.className = 'store-row';
+      row.innerHTML = `<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(store.name)}</strong><small>Truck ${String(store.truck).padStart(2,'0')} · Zone ${String(store.zone).padStart(2,'0')} · ${esc(store.phone || 'No contact')}</small></span><span class="row-actions"><button class="icon-btn" title="View details" aria-label="View details">↗</button><button class="icon-btn" title="Edit store" aria-label="Edit store">✎</button><button class="icon-btn delete" title="Delete store" aria-label="Delete store">×</button></span>`;
+      const buttons = row.querySelectorAll('button');
+      buttons[0].addEventListener('click', () => showStoreDetail(store.id));
+      buttons[1].addEventListener('click', () => openStoreForm(store.id));
+      buttons[2].addEventListener('click', () => deleteStore(store.id));
+      list.appendChild(row);
+    });
+  }
+  function openStoreForm(id) {
+    $('storeForm').reset(); $('storeId').value = '';
+    $('storeFormTitle').textContent = id ? 'EDIT STORE' : 'ADD NEW STORE';
+    if (id) {
+      const s = stores.find(x => x.id === id); if (!s) return;
+      $('storeId').value = s.id; $('storeName').value = s.name || '';
+      $('ownerName').value = s.owner || ''; $('storePhone').value = s.phone || '';
+      $('storeAddress').value = s.address || ''; $('storeNotes').value = s.notes || '';
+      $('storeTruck').value = String(s.truck || ''); $('storeZone').value = String(s.zone || '');
+    }
+    open('storeFormOverlay'); setTimeout(() => $('storeName').focus(), 50);
+  }
+  $('storeForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const id = $('storeId').value;
+    const record = {
+      id: id || (crypto.randomUUID ? crypto.randomUUID() : `store_${Date.now()}_${Math.random().toString(16).slice(2)}`),
+      name: $('storeName').value.trim(), owner: $('ownerName').value.trim(),
+      phone: $('storePhone').value.trim(), address: $('storeAddress').value.trim(),
+      truck: Number($('storeTruck').value), zone: Number($('storeZone').value),
+      notes: $('storeNotes').value.trim()
+    };
+    if (!record.name || !record.truck || !record.zone) return;
+    if (id) stores = stores.map(s => s.id === id ? record : s);
+    else stores.push(record);
+    save(STORE_KEY, stores); close('storeFormOverlay'); renderStores();
+    showToast(id ? 'Store updated successfully.' : 'Store added successfully.');
+  });
+  function deleteStore(id) {
+    const store = stores.find(s => s.id === id); if (!store) return;
+    if (!confirm(`Delete "${store.name}"? This will also remove it from its assigned truck's store list.`)) return;
+    stores = stores.filter(s => s.id !== id); save(STORE_KEY, stores); renderStores();
+    showToast('Store deleted.');
+  }
+  function showStoreDetail(id) {
+    const s = stores.find(x => x.id === id); if (!s) return;
+    $('storeDetailTitle').textContent = s.name.toUpperCase();
+    $('storeDetailBody').innerHTML = `
+      <div class="store-detail"><div class="detail-grid">
+        <div class="detail-item"><small>Store Name</small><strong>${esc(s.name)}</strong></div>
+        <div class="detail-item"><small>Store Owner</small><strong>${esc(s.owner || 'Not provided')}</strong></div>
+        <div class="detail-item"><small>Contact Number</small><strong>${esc(s.phone || 'Not provided')}</strong></div>
+        <div class="detail-item"><small>Assigned Truck</small><strong>Truck ${String(s.truck).padStart(2,'0')}</strong></div>
+        <div class="detail-item"><small>Assigned Zone</small><strong>Zone ${String(s.zone).padStart(2,'0')}</strong></div>
+        <div class="detail-item"><small>Address</small><strong>${esc(s.address || 'Not provided')}</strong></div>
+        <div class="detail-item" style="grid-column:1/-1"><small>Additional Notes</small><strong>${esc(s.notes || 'None')}</strong></div>
+      </div></div>
+      <div class="form-actions"><button class="btn btn-light" id="detailClose">Close</button><button class="btn btn-primary" id="detailEdit">Edit Store</button></div>`;
+    open('storeDetailOverlay');
+    $('detailClose').addEventListener('click', () => close('storeDetailOverlay'));
+    $('detailEdit').addEventListener('click', () => { close('storeDetailOverlay'); openStoreForm(id); });
+  }
+
+  // Product management (local browser storage until Supabase is configured)
+  $('addProductBtn').addEventListener('click', () => openProductForm());
+  $('productSearch').addEventListener('input', renderProducts);
+  function renderProducts() {
+    const q = $('productSearch').value.trim().toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+    $('productCount').textContent = `${products.length} ${products.length===1?'product':'products'}`;
+    const list = $('productList'); list.innerHTML = '';
+    if (!filtered.length) {
+      list.innerHTML = `<div class="empty">${products.length ? 'No products match your search.' : 'No diary products added yet. Select “Add New Product” to get started.'}</div>`;
+      return;
+    }
+    filtered.forEach((product,index) => {
+      const row = document.createElement('div'); row.className = 'product-row';
+      row.innerHTML = `<span class="product-avatar">📖</span><span class="product-main"><strong>${esc(product.name)}</strong><small>Product ${String(index+1).padStart(2,'0')}</small></span><span class="row-actions"><button class="icon-btn" title="Edit product" aria-label="Edit product">✎</button><button class="icon-btn delete" title="Delete product" aria-label="Delete product">×</button></span>`;
+      const buttons = row.querySelectorAll('button');
+      buttons[0].addEventListener('click', () => openProductForm(product.id));
+      buttons[1].addEventListener('click', () => deleteProduct(product.id));
+      list.appendChild(row);
+    });
+  }
+  function openProductForm(id) {
+    $('productForm').reset(); $('productId').value = '';
+    $('productFormTitle').textContent = id ? 'EDIT PRODUCT' : 'ADD NEW PRODUCT';
+    if (id) {
+      const p = products.find(x => x.id === id); if (!p) return;
+      $('productId').value = p.id; $('productName').value = p.name;
+    }
+    open('productFormOverlay'); setTimeout(() => $('productName').focus(), 50);
+  }
+  $('productForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const id = $('productId').value, name = $('productName').value.trim();
+    if (!name) return;
+    if (products.some(p => p.name.toLowerCase() === name.toLowerCase() && p.id !== id)) {
+      showToast('A product with this name already exists.'); return;
+    }
+    if (id) products = products.map(p => p.id === id ? {...p,name} : p);
+    else products.push({id: crypto.randomUUID ? crypto.randomUUID() : `product_${Date.now()}`,name});
+    save(PRODUCT_KEY, products); close('productFormOverlay'); renderProducts();
+    showToast(id ? 'Product updated successfully.' : 'Product added successfully.');
+  });
+  function deleteProduct(id) {
+    const p = products.find(x => x.id === id); if (!p) return;
+    if (!confirm(`Delete product "${p.name}"?`)) return;
+    products = products.filter(x => x.id !== id); save(PRODUCT_KEY, products); renderProducts();
+    showToast('Product deleted.');
+  }
+})();
+</script>
+</body>
+</html>
