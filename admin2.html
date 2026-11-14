@@ -6,381 +6,250 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SR TRADE LINK | Admin Dashboard</title>
 <style>
-:root{
-  --navy:#111c2e;--navy2:#1a2940;--navy3:#263a56;--gold:#d6ad61;
-  --bg:#f3f5f8;--surface:#fff;--text:#172235;--muted:#718096;
-  --line:#e4e9f0;--blue:#285d91;--green:#237447;--orange:#a76519;
-  --red:#c34242;--shadow:0 12px 34px rgba(18,32,52,.10);
-}
+:root{--navy:#111c2e;--navy2:#1a2940;--gold:#d6ad61;--bg:#f3f5f8;--text:#172235;--muted:#718096;--line:#e4e9f0;--blue:#285d91;--green:#237447;--orange:#a76519;--red:#c34242;--shadow:0 12px 34px rgba(18,32,52,.10)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
 .topbar{height:76px;background:linear-gradient(110deg,var(--navy),#1b2b43);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 4px 18px #0c172533}
-.brand{display:flex;align-items:center;gap:13px}
-.brand-mark{width:43px;height:43px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-size:24px}
-.brand h1{font-size:21px;letter-spacing:1.6px;margin:0;font-weight:800}
-.brand small{display:block;color:#bac5d4;font-size:10px;letter-spacing:2px;margin-top:4px}
-.top-actions{display:flex;align-items:center;gap:12px;color:#dbe3ed;font-size:13px}
-.admin-pill{border:1px solid #ffffff2b;border-radius:20px;padding:7px 12px}
+.brand{display:flex;align-items:center;gap:13px}.brand-mark{width:43px;height:43px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-size:24px}
+.brand h1{font-size:21px;letter-spacing:1.6px;margin:0;font-weight:800}.brand small{display:block;color:#bac5d4;font-size:10px;letter-spacing:2px;margin-top:4px}
+.top-actions{display:flex;align-items:center;gap:12px;color:#dbe3ed;font-size:13px}.admin-pill{border:1px solid #ffffff2b;border-radius:20px;padding:7px 12px}
 .container{max-width:1500px;margin:0 auto;padding:26px 30px 42px}
-.page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
-.page-heading h2{font-size:20px;margin:0}
-.page-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.page-heading h2{font-size:20px;margin:0}.page-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
 .date-filter{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--muted);font-size:13px}
-.date-filter input{border:0;outline:0;color:var(--text);background:transparent;min-width:135px}
-.date-filter .date-field{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;font-weight:700}
-.date-filter .date-separator{color:#a3adba;font-size:12px}
+.date-filter input{border:0;outline:0;color:var(--text);background:transparent;min-width:135px}.date-field{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;font-weight:700}
 .range-caption{font-size:11px;color:var(--muted);margin-top:7px;text-align:right}
 .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:22px}
 .summary-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;display:flex;align-items:center;gap:14px;min-height:102px;box-shadow:0 3px 12px #1a2c4510}
-.summary-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-size:21px}
-.summary-card:nth-child(1) .summary-icon{background:#e8f0fa;color:var(--blue)}
-.summary-card:nth-child(2) .summary-icon{background:#e7f4eb;color:var(--green)}
-.summary-card:nth-child(3) .summary-icon{background:#fff1df;color:var(--orange)}
-.summary-card label{display:block;font-size:12px;font-weight:700;color:#68778b;margin-bottom:6px}
-.summary-card strong{font-size:24px;letter-spacing:-.5px}
+.summary-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-size:21px;background:#e8f0fa}
+.summary-card:nth-child(2) .summary-icon{background:#e7f4eb}.summary-card:nth-child(3) .summary-icon{background:#fff1df}
+.summary-card label{display:block;font-size:12px;font-weight:700;color:#68778b;margin-bottom:6px}.summary-card strong{font-size:24px}
 .section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:19px;box-shadow:0 3px 12px #1a2c4508}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
-.section-head h3{font-size:15px;margin:0}
-.section-head span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.section-head h3{font-size:15px;margin:0}.section-head span{font-size:12px;color:var(--muted)}
 .quick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
-.quick-btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:83px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text);font-size:12px;font-weight:700;transition:.18s}
-.quick-btn .ico{font-size:22px;color:#52647a}
-.quick-btn:hover:not(:disabled){border-color:#c5a05a;transform:translateY(-2px);box-shadow:0 7px 16px #17223512}
-.quick-btn:disabled{opacity:.45;cursor:not-allowed;background:#f8f9fb}
-.truck-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.truck-tile{background:var(--navy2);border:1px solid #263b57;border-radius:10px;color:#fff;min-height:72px;padding:10px 8px;display:flex;align-items:center;justify-content:center;gap:9px;transition:.18s}
-.truck-tile:hover{background:#263c59;border-color:var(--gold);transform:translateY(-2px)}
-.truck-symbol{font-size:24px;color:var(--gold)}
-.truck-tile strong{font-size:12px;letter-spacing:.4px}
+.quick-btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:83px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text);font-size:12px;font-weight:700}
+.quick-btn .ico{font-size:22px;color:#52647a}.quick-btn:hover:not(:disabled){border-color:#c5a05a;transform:translateY(-2px);box-shadow:0 7px 16px #17223512}.quick-btn:disabled{opacity:.45;cursor:not-allowed;background:#f8f9fb}
+.truck-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.truck-tile{background:var(--navy2);border:1px solid #263b57;border-radius:10px;color:#fff;min-height:72px;padding:10px 8px;display:flex;align-items:center;justify-content:center;gap:9px}
+.truck-tile:hover{background:#263c59;border-color:var(--gold);transform:translateY(-2px)}.truck-symbol{font-size:24px;color:var(--gold)}.truck-tile strong{font-size:12px}
 .footer-note{text-align:center;color:#99a4b3;font-size:11px;padding:10px}
-.overlay{position:fixed;inset:0;background:rgba(8,17,30,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
-.overlay.show{display:flex}
-.modal{background:#fff;border-radius:16px;width:min(900px,100%);max-height:92vh;overflow:auto;box-shadow:var(--shadow);animation:pop .18s ease-out}
-.modal.wide{width:min(1050px,100%)}
-@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+.overlay{position:fixed;inset:0;background:rgba(8,17,30,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;width:min(900px,100%);max-height:92vh;overflow:auto;box-shadow:var(--shadow)}.modal.wide{width:min(1050px,100%)}
 .modal-head{background:linear-gradient(110deg,var(--navy),#20334e);color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:2}
-.modal-title{display:flex;align-items:center;gap:12px}
-.modal-title .big-icon{font-size:26px;color:var(--gold)}
-.modal-title h2{font-size:17px;margin:0;letter-spacing:.4px}
-.modal-title p{margin:4px 0 0;color:#c2ccda;font-size:11px}
-.close-btn{border:1px solid #ffffff35;background:#ffffff12;color:#fff;border-radius:8px;width:35px;height:35px;font-size:20px}
-.modal-body{padding:22px}
-.driver-card{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:17px}
+.modal-title{display:flex;align-items:center;gap:12px}.big-icon{font-size:26px;color:var(--gold)}.modal-title h2{font-size:17px;margin:0}.modal-title p{margin:4px 0 0;color:#c2ccda;font-size:11px}
+.close-btn{border:1px solid #ffffff35;background:#ffffff12;color:#fff;border-radius:8px;width:35px;height:35px;font-size:20px}.modal-body{padding:22px}
+.driver-card,.store-detail{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:17px}
 .driver-card h3,.subheading{font-size:13px;margin:0 0 12px}
-.driver-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.driver-item{font-size:12px;color:var(--muted)}
-.driver-item strong{display:block;color:var(--text);font-size:14px;margin-top:5px}
+.driver-grid,.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.driver-item{font-size:12px;color:var(--muted)}.driver-item strong{display:block;color:var(--text);font-size:14px;margin-top:5px}
 .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:19px}
-.mini-stat{border-radius:10px;padding:13px}
-.mini-stat:nth-child(1){background:#eaf1fa;color:var(--blue)}
-.mini-stat:nth-child(2){background:#eaf5ed;color:var(--green)}
-.mini-stat:nth-child(3){background:#fff3e4;color:var(--orange)}
-.mini-stat label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
-.mini-stat strong{font-size:19px;color:#18283e}
+.mini-stat{border-radius:10px;padding:13px;background:#eaf1fa}.mini-stat:nth-child(2){background:#eaf5ed}.mini-stat:nth-child(3){background:#fff3e4}
+.mini-stat label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.mini-stat strong{font-size:19px;color:#18283e}
 .toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
-.toolbar input{max-width:330px}
 .field,.toolbar input,.form-control{width:100%;border:1px solid #dce3ec;border-radius:8px;padding:10px 11px;background:#fff;color:var(--text);outline:none}
-.field:focus,.form-control:focus,.toolbar input:focus{border-color:#8ba8c8;box-shadow:0 0 0 3px #285d9115}
 .toolbar .field{max-width:340px}
 .btn{border:0;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.btn-primary{background:var(--navy2);color:#fff}
-.btn-primary:hover{background:#2a4262}
-.btn-light{background:#edf1f6;color:#34445a}
-.btn-danger{background:#fff0f0;color:var(--red)}
-.btn-small{padding:7px 9px;font-size:11px}
+.btn-primary{background:var(--navy2);color:#fff}.btn-light{background:#edf1f6;color:#34445a}.btn-danger{background:#fff0f0;color:var(--red)}.btn-small{padding:7px 9px;font-size:11px}
 .store-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .store-row,.product-row{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:11px;min-width:0}
 .store-avatar,.product-avatar{width:37px;height:37px;flex:0 0 37px;border-radius:10px;background:#eef2f7;display:grid;place-items:center;font-size:19px}
-.store-main,.product-main{min-width:0;flex:1}
-.store-main strong,.product-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.store-main,.product-main{min-width:0;flex:1}.store-main strong,.product-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .store-main small,.product-main small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.row-actions{display:flex;gap:5px}
-.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:30px;color:#52647a}
-.icon-btn:hover{background:#f2f5f9}
-.icon-btn.delete{color:var(--red)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-group label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}
-.form-group.full{grid-column:1/-1}
+.row-actions{display:flex;gap:5px}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:30px;color:#52647a}.icon-btn.delete{color:var(--red)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}.form-group.full{grid-column:1/-1}
 .form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
-.empty{border:1px dashed #d6dee8;border-radius:10px;padding:27px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
-.store-detail{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}
-.detail-item strong{font-size:13px;overflow-wrap:anywhere}
+.empty,.report-empty{border:1px dashed #d6dee8;border-radius:10px;padding:22px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
+.detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}.detail-item strong{font-size:13px;overflow-wrap:anywhere}
 .notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* Store item report and bill history */
-.report-section{margin-top:22px}
-.report-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-.report-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}
-.report-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:11px 10px;white-space:nowrap}
-.report-table td{padding:11px 10px;border-top:1px solid var(--line);vertical-align:top}
-.report-table td.num,.report-table th.num{text-align:right;white-space:nowrap}
-.report-table tfoot td{font-weight:800;background:#f8fafc}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translateX(-50%)}
+.report-section{margin-top:22px}.report-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.report-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.report-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px}
+.report-table td{padding:11px 10px;border-top:1px solid var(--line);vertical-align:top}.report-table td.num,.report-table th.num{text-align:right;white-space:nowrap}.report-table tfoot td{font-weight:800;background:#f8fafc}
 .bill-card{border:1px solid var(--line);border-radius:11px;margin-bottom:11px;overflow:hidden}
 .bill-card-head{background:#f5f7fa;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.bill-card-head strong{font-size:12px}
-.bill-card-head small{font-size:10px;color:var(--muted)}
-.bill-card-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.payment-tag{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px}
-.payment-tag.paid{background:#e7f4eb;color:#237447}
-.payment-tag.credit{background:#fff1df;color:#a76519}
-.bill-card-body{padding:12px 14px}
-.bill-card-total{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #dce3ec;padding-top:10px;margin-top:8px;font-size:12px;font-weight:800}
-.report-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;border:1px dashed #d6dee8;border-radius:10px}
-@media(max-width:850px){
- .truck-grid{grid-template-columns:repeat(4,1fr)}
- .quick-grid{grid-template-columns:repeat(4,1fr)}
- .container{padding:20px}
- .store-list{grid-template-columns:1fr}
-}
+.bill-card-head strong{font-size:12px}.bill-card-head small{font-size:10px;color:var(--muted)}.bill-card-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.payment-tag{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px}.payment-tag.paid{background:#e7f4eb;color:#237447}.payment-tag.credit{background:#fff1df;color:#a76519}
+.bill-card-body{padding:12px 14px}.bill-card-total{display:flex;justify-content:space-between;border-top:1px dashed #dce3ec;padding-top:10px;margin-top:8px;font-size:12px;font-weight:800}
+.sales-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0 20px}
+.sales-summary-grid .summary-card{min-height:88px;padding:13px}.sales-summary-grid .summary-card strong{font-size:21px}
+.sales-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:850px){.truck-grid{grid-template-columns:repeat(4,1fr)}.quick-grid{grid-template-columns:repeat(4,1fr)}.container{padding:20px}.store-list{grid-template-columns:1fr}}
 @media(max-width:560px){
- .topbar{height:67px;padding:0 15px}
- .brand h1{font-size:17px}
- .brand-mark{width:38px;height:38px}
- .top-actions .admin-pill{display:none}
- .container{padding:17px 13px 30px}
- .page-heading{align-items:flex-start;gap:10px;flex-direction:column}
- .date-filter{width:100%;justify-content:space-between;gap:7px;flex-wrap:wrap}
- .date-filter input{max-width:125px;min-width:0}
- .date-filter .date-field{gap:4px}
- .summary-grid{gap:7px}
- .summary-card{padding:11px 9px;display:block;min-height:111px}
- .summary-icon{width:31px;height:31px;font-size:16px;margin-bottom:7px}
- .summary-card label{font-size:10px;min-height:25px}
- .summary-card strong{font-size:18px}
- .section{padding:14px}
- .quick-grid{grid-template-columns:repeat(3,1fr);gap:8px}
- .quick-btn{min-height:75px}
- .truck-grid{grid-template-columns:repeat(3,1fr);gap:7px}
- .truck-tile{min-height:63px;gap:5px;flex-direction:column}
- .modal-body{padding:15px}
- .form-grid{grid-template-columns:1fr}
- .form-group.full{grid-column:auto}
- .mini-stats{gap:6px}
- .mini-stat{padding:10px 8px}
- .mini-stat strong{font-size:16px}
- .mini-stat label{font-size:10px}
- .driver-grid,.detail-grid{grid-template-columns:1fr 1fr}
- .report-table{min-width:480px}
+.topbar{height:67px;padding:0 15px}.brand h1{font-size:17px}.brand-mark{width:38px;height:38px}.top-actions .admin-pill{display:none}
+.container{padding:17px 13px 30px}.page-heading{align-items:flex-start;gap:10px;flex-direction:column}.date-filter{width:100%;justify-content:space-between;gap:7px;flex-wrap:wrap}.date-filter input{max-width:125px;min-width:0}
+.summary-grid{gap:7px}.summary-card{padding:11px 9px;display:block;min-height:111px}.summary-icon{width:31px;height:31px;font-size:16px;margin-bottom:7px}.summary-card label{font-size:10px;min-height:25px}.summary-card strong{font-size:18px}
+.section{padding:14px}.quick-grid{grid-template-columns:repeat(3,1fr);gap:8px}.quick-btn{min-height:75px}.truck-grid{grid-template-columns:repeat(3,1fr);gap:7px}.truck-tile{min-height:63px;gap:5px;flex-direction:column}
+.modal-body{padding:15px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.mini-stats{gap:6px}.mini-stat{padding:10px 8px}.mini-stat strong{font-size:16px}
+.driver-grid,.detail-grid{grid-template-columns:1fr 1fr}.sales-filter-grid{grid-template-columns:1fr}.sales-summary-grid{gap:7px}.sales-summary-grid .summary-card{min-height:100px}
 }
 </style>
 </head>
 <body>
-
 <header class="topbar">
-  <div class="brand">
-    <div class="brand-mark">🚚</div>
-    <div><h1>SR TRADE LINK</h1><small>ADMIN CONTROL CENTER</small></div>
-  </div>
-  <div class="top-actions"><span>Company Dashboard</span><span class="admin-pill">ADMIN</span></div>
+<div class="brand"><div class="brand-mark">🚚</div><div><h1>SR TRADE LINK</h1><small>ADMIN CONTROL CENTER</small></div></div>
+<div class="top-actions"><span>Company Dashboard</span><span class="admin-pill">ADMIN</span></div>
 </header>
 
 <main class="container">
-  <div class="page-heading">
-    <div>
-      <h2>Dashboard Overview</h2>
-      <p>Manage your diary distribution operations from one place.</p>
-    </div>
-    <div>
-      <div class="date-filter">
-        <span>📅</span>
-        <label class="date-field">From <input type="date" id="startDate" aria-label="Starting date"></label>
-        <span class="date-separator">—</span>
-        <label class="date-field">To <input type="date" id="endDate" aria-label="Ending date"></label>
-      </div>
-      <div class="range-caption" id="rangeCaption">Showing today's sales</div>
-    </div>
-  </div>
+<div class="page-heading">
+<div><h2>Dashboard Overview</h2><p>Manage your diary distribution operations from one place.</p></div>
+<div>
+<div class="date-filter">📅 <label class="date-field">From <input type="date" id="startDate"></label> — <label class="date-field">To <input type="date" id="endDate"></label></div>
+<div class="range-caption" id="rangeCaption">Showing today's sales</div>
+</div>
+</div>
 
-  <section class="summary-grid" aria-label="Financial overview">
-    <div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong id="totalSales">₹0.00</strong></div></div>
-    <div class="summary-card"><div class="summary-icon">💰</div><div><label>Total Cash Collected</label><strong id="totalPaid">₹0.00</strong></div></div>
-    <div class="summary-card"><div class="summary-icon">🧾</div><div><label>Total Credit Sales</label><strong id="totalCredit">₹0.00</strong></div></div>
-  </section>
+<section class="summary-grid">
+<div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong id="totalSales">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">💰</div><div><label>Total Cash Collected</label><strong id="totalPaid">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">🧾</div><div><label>Total Credit Sales</label><strong id="totalCredit">₹0.00</strong></div></div>
+</section>
 
-  <section class="section">
-    <div class="section-head"><h3>Quick Access</h3><span>Management tools</span></div>
-    <div class="quick-grid">
-      <button class="quick-btn" id="openStores"><span class="ico">🏪</span>Stores</button>
-      <button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
-      <button class="quick-btn" disabled title="To be configured later"><span class="ico">🧾</span>Sales</button>
-      <button class="quick-btn" disabled title="To be configured later"><span class="ico">💳</span>Collections</button>
-      <button class="quick-btn" disabled title="To be configured later"><span class="ico">📊</span>Reports</button>
-      <button class="quick-btn" disabled title="To be configured later"><span class="ico">👥</span>Customers</button>
-      <button class="quick-btn" disabled title="To be configured later"><span class="ico">⚙️</span>Settings</button>
-    </div>
-  </section>
+<section class="section">
+<div class="section-head"><h3>Quick Access</h3><span>Management tools</span></div>
+<div class="quick-grid">
+<button class="quick-btn" id="openStores"><span class="ico">🏪</span>Stores</button>
+<button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
+<button class="quick-btn" id="openSales"><span class="ico">🧾</span>Sales</button>
+<button class="quick-btn" disabled><span class="ico">💳</span>Collections</button>
+<button class="quick-btn" disabled><span class="ico">📊</span>Reports</button>
+<button class="quick-btn" disabled><span class="ico">👥</span>Customers</button>
+<button class="quick-btn" disabled><span class="ico">⚙️</span>Settings</button>
+</div>
+</section>
 
-  <section class="section">
-    <div class="section-head"><h3>Truck Management</h3><span>11 delivery trucks</span></div>
-    <div class="truck-grid" id="truckGrid"></div>
-  </section>
-
-  <div class="footer-note">SR TRADE LINK · Main Admin Dashboard</div>
+<section class="section"><div class="section-head"><h3>Truck Management</h3><span>11 delivery trucks</span></div><div class="truck-grid" id="truckGrid"></div></section>
+<div class="footer-note">SR TRADE LINK · Main Admin Dashboard</div>
 </main>
 
-<!-- Truck window -->
+<!-- TRUCK DETAILS -->
 <div class="overlay" id="truckOverlay">
-  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="truckTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">🚚</span>
-        <div><h2 id="truckTitle">TRUCK 01</h2><p>Truck information and assigned stores</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="driver-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
-          <h3 style="margin:0">Driver Information</h3>
-          <button class="btn btn-primary btn-small" id="editDriverBtn">✎ Edit Driver</button>
-        </div>
-        <div class="driver-grid">
-          <div class="driver-item">Driver Name<strong id="truckDriverName">Not configured</strong></div>
-          <div class="driver-item">Driver Contact Number<strong id="truckDriverPhone">Not configured</strong></div>
-          <div class="driver-item">Assigned Zone<strong id="truckZone">Not assigned</strong></div>
-          <div class="driver-item">Assigned Stores<strong id="truckStoreCount">0 stores</strong></div>
-        </div>
-      </div>
-
-      <div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">
-        <span>📅</span>
-        <label class="date-field">From <input type="date" id="truckStartDate"></label>
-        <span class="date-separator">—</span>
-        <label class="date-field">To <input type="date" id="truckEndDate"></label>
-      </div>
-      <div class="range-caption" id="truckRangeCaption" style="text-align:left;margin-bottom:12px">Truck reporting period</div>
-
-      <h3 class="subheading">Financial Summary</h3>
-      <div class="mini-stats">
-        <div class="mini-stat"><label>Total Sales</label><strong id="truckSales">₹0.00</strong></div>
-        <div class="mini-stat"><label>Total Collection</label><strong id="truckPaid">₹0.00</strong></div>
-        <div class="mini-stat"><label>Total Credit</label><strong id="truckCredit">₹0.00</strong></div>
-      </div>
-
-      <div class="section-head"><h3>Assigned Stores & Store-wise Sales</h3><span id="truckStoreLabel">0 stores</span></div>
-      <div class="store-list" id="truckStoreList"></div>
-      <p class="notice">Only COMPLETED bills are included. PAID and CREDIT are reported separately. Select a store to see its individual financial and item-wise report.</p>
-    </div>
-  </section>
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🚚</span><div><h2 id="truckTitle">TRUCK 01</h2><p>Truck information and assigned stores</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="driver-card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">Driver Information</h3><button class="btn btn-primary btn-small" id="editDriverBtn">✎ Edit Driver</button></div>
+<div class="driver-grid">
+<div class="driver-item">Driver Name<strong id="truckDriverName">Not configured</strong></div>
+<div class="driver-item">Driver Contact Number<strong id="truckDriverPhone">Not configured</strong></div>
+<div class="driver-item">Assigned Zone<strong id="truckZone">Not assigned</strong></div>
+<div class="driver-item">Assigned Stores<strong id="truckStoreCount">0 stores</strong></div>
+</div>
+</div>
+<div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="truckStartDate"></label> — <label class="date-field">To <input type="date" id="truckEndDate"></label></div>
+<div class="range-caption" id="truckRangeCaption" style="text-align:left;margin-bottom:12px"></div>
+<h3 class="subheading">Financial Summary</h3>
+<div class="mini-stats">
+<div class="mini-stat"><label>Total Sales</label><strong id="truckSales">₹0.00</strong></div>
+<div class="mini-stat"><label>Total Collection</label><strong id="truckPaid">₹0.00</strong></div>
+<div class="mini-stat"><label>Total Credit</label><strong id="truckCredit">₹0.00</strong></div>
+</div>
+<div class="section-head"><h3>Assigned Stores & Store-wise Sales</h3><span id="truckStoreLabel">0 stores</span></div>
+<div class="store-list" id="truckStoreList"></div>
+<p class="notice">Only COMPLETED bills are included. PAID and CREDIT are reported separately.</p>
+</div>
+</section>
 </div>
 
-<!-- Store management window -->
+<!-- STORE MANAGEMENT -->
 <div class="overlay" id="storesOverlay">
-  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="storesTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">🏪</span>
-        <div><h2 id="storesTitle">STORE MANAGEMENT</h2><p>Add, edit, search and assign stores to trucks and zones</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="toolbar">
-        <input class="field" id="storeSearch" placeholder="Search stores by name, owner or contact..." aria-label="Search stores">
-        <button class="btn btn-primary" id="addStoreBtn">＋ Add New Store</button>
-      </div>
-      <div class="section-head"><h3>Store Directory</h3><span id="storeCount">0 stores</span></div>
-      <div class="store-list" id="storeList"></div>
-    </div>
-  </section>
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2>STORE MANAGEMENT</h2><p>Add, edit, search and assign stores</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar"><input class="field" id="storeSearch" placeholder="Search stores by name, owner or contact"><button class="btn btn-primary" id="addStoreBtn">＋ Add New Store</button></div>
+<div class="section-head"><h3>Store Directory</h3><span id="storeCount">0 stores</span></div><div class="store-list" id="storeList"></div>
+</div>
+</section>
 </div>
 
-<!-- Add/edit store form -->
+<!-- STORE FORM -->
 <div class="overlay" id="storeFormOverlay">
-  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="storeFormTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">🏪</span>
-        <div><h2 id="storeFormTitle">ADD NEW STORE</h2><p>Enter store information and distribution assignment</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      <form id="storeForm">
-        <input type="hidden" id="storeId">
-        <div class="form-grid">
-          <div class="form-group"><label for="storeName">Store Name *</label><input class="form-control" id="storeName" required maxlength="100" placeholder="Enter store name"></div>
-          <div class="form-group"><label for="ownerName">Store Owner Name</label><input class="form-control" id="ownerName" maxlength="100" placeholder="Enter owner name"></div>
-          <div class="form-group"><label for="storePhone">Contact Number</label><input class="form-control" id="storePhone" type="tel" maxlength="20" placeholder="Enter mobile number"></div>
-          <div class="form-group"><label for="storeTruck">Assign Truck *</label><select class="form-control" id="storeTruck" required><option value="">Select truck</option></select></div>
-          <div class="form-group"><label for="storeZone">Assign Zone *</label><select class="form-control" id="storeZone" required><option value="">Select zone</option></select></div>
-          <div class="form-group full"><label for="storeAddress">Store Address</label><textarea class="form-control" id="storeAddress" rows="2" maxlength="500" placeholder="Enter complete store address"></textarea></div>
-          <div class="form-group full"><label for="storeNotes">Additional Notes</label><textarea class="form-control" id="storeNotes" rows="2" maxlength="500" placeholder="Optional notes"></textarea></div>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-light" data-close>Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Store</button>
-        </div>
-      </form>
-    </div>
-  </section>
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeFormTitle">ADD NEW STORE</h2><p>Store information and assignment</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<form id="storeForm">
+<input type="hidden" id="storeId">
+<div class="form-grid">
+<div class="form-group"><label>Store Name *</label><input class="form-control" id="storeName" required></div>
+<div class="form-group"><label>Store Owner Name</label><input class="form-control" id="ownerName"></div>
+<div class="form-group"><label>Contact Number</label><input class="form-control" id="storePhone"></div>
+<div class="form-group"><label>Assign Truck *</label><select class="form-control" id="storeTruck" required></select></div>
+<div class="form-group"><label>Assign Zone *</label><select class="form-control" id="storeZone" required></select></div>
+<div class="form-group full"><label>Store Address</label><textarea class="form-control" id="storeAddress" rows="2"></textarea></div>
+<div class="form-group full"><label>Additional Notes</label><textarea class="form-control" id="storeNotes" rows="2"></textarea></div>
+</div>
+<div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Store</button></div>
+</form>
+</div>
+</section>
 </div>
 
-<!-- Store detail window -->
+<!-- STORE DETAILS -->
 <div class="overlay" id="storeDetailOverlay">
-  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="storeDetailTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">🏪</span>
-        <div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store information, financials, item sales and bill history</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body" id="storeDetailBody"></div>
-  </section>
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store financials, item-wise report and bill history</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body" id="storeDetailBody"></div>
+</section>
 </div>
 
-<!-- Product management window -->
+<!-- PRODUCT MANAGEMENT -->
 <div class="overlay" id="productsOverlay">
-  <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="productsTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">📚</span>
-        <div><h2 id="productsTitle">PRODUCT MANAGEMENT</h2><p>Manage SR TRADE LINK diary products</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="toolbar">
-        <input class="field" id="productSearch" placeholder="Search products..." aria-label="Search products">
-        <button class="btn btn-primary" id="addProductBtn">＋ Add New Product</button>
-      </div>
-      <div class="section-head"><h3>Product Directory</h3><span id="productCount">0 products</span></div>
-      <div class="store-list" id="productList"></div>
-    </div>
-  </section>
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📚</span><div><h2>PRODUCT MANAGEMENT</h2><p>Manage diary products</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar"><input class="field" id="productSearch" placeholder="Search products"><button class="btn btn-primary" id="addProductBtn">＋ Add New Product</button></div>
+<div class="section-head"><h3>Product Directory</h3><span id="productCount">0 products</span></div><div class="store-list" id="productList"></div>
+</div>
+</section>
 </div>
 
-<!-- Product form -->
+<!-- PRODUCT FORM -->
 <div class="overlay" id="productFormOverlay">
-  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="productFormTitle">
-    <div class="modal-head">
-      <div class="modal-title">
-        <span class="big-icon">📚</span>
-        <div><h2 id="productFormTitle">ADD NEW PRODUCT</h2><p>Enter diary product information</p></div>
-      </div>
-      <button class="close-btn" data-close aria-label="Close">×</button>
-    </div>
-    <div class="modal-body">
-      <form id="productForm">
-        <input type="hidden" id="productId">
-        <div class="form-grid">
-          <div class="form-group"><label for="productName">Product Name *</label><input class="form-control" id="productName" required maxlength="100" placeholder="Enter diary product name"></div>
-          <div class="form-group"><label for="productPrice">Unit Price (₹) *</label><input class="form-control" id="productPrice" type="number" min="0" step="0.01" required value="0" placeholder="Enter selling rate"></div>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-light" data-close>Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Product</button>
-        </div>
-      </form>
-    </div>
-  </section>
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📚</span><div><h2 id="productFormTitle">ADD NEW PRODUCT</h2><p>Enter product information</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<form id="productForm">
+<input type="hidden" id="productId">
+<div class="form-grid">
+<div class="form-group"><label>Product Name *</label><input class="form-control" id="productName" required></div>
+<div class="form-group"><label>Unit Price (₹) *</label><input class="form-control" id="productPrice" type="number" min="0" step="0.01" required></div>
+</div>
+<div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Product</button></div>
+</form>
+</div>
+</section>
+</div>
+
+<!-- SALES PAGE -->
+<div class="overlay" id="salesOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🧾</span><div><h2>SALES MANAGEMENT</h2><p>Completed bills, payment details and sales history</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar">
+<select class="field" id="salesPreset" style="max-width:190px">
+<option value="today">Today</option><option value="yesterday">Yesterday</option><option value="month">This Month</option><option value="custom">Custom Date Range</option>
+</select>
+<button class="btn btn-light" id="salesRefresh">↻ Refresh</button>
+</div>
+<div class="date-filter" style="margin-bottom:8px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="salesStart"></label> — <label class="date-field">To <input type="date" id="salesEnd"></label></div>
+<div class="range-caption" id="salesRangeCaption" style="text-align:left;margin-bottom:16px"></div>
+<div class="sales-summary-grid">
+<div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong id="salesTotal">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">🧾</div><div><label>Completed Bills</label><strong id="salesBillCount">0</strong></div></div>
+<div class="summary-card"><div class="summary-icon">💰</div><div><label>PAID Amount</label><strong id="salesPaid">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">📒</div><div><label>CREDIT Amount</label><strong id="salesCredit">₹0.00</strong></div></div>
+</div>
+<div class="section-head"><h3>Filter Sales</h3><span>Completed bills only</span></div>
+<div class="sales-filter-grid">
+<div class="form-group"><label>Truck</label><select class="form-control" id="salesTruckFilter"><option value="">All Trucks</option></select></div>
+<div class="form-group"><label>Store</label><select class="form-control" id="salesStoreFilter"><option value="">All Stores</option></select></div>
+<div class="form-group"><label>Payment Type</label><select class="form-control" id="salesPaymentFilter"><option value="">All Payments</option><option value="PAID">PAID</option><option value="CREDIT">CREDIT</option></select></div>
+<div class="form-group"><label>Search Bills</label><input class="form-control" id="salesSearch" placeholder="Bill number, store or driver"></div>
+</div>
+<div class="section-head"><h3>Sales History</h3><span id="salesHistoryCount">0 bills</span></div>
+<div id="salesHistory"><div class="report-empty">Select a date range to load sales.</div></div>
+<p class="notice">Only COMPLETED bills are included. PAID and CREDIT amounts are calculated separately. Pending bills are excluded.</p>
+</div>
+</section>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -388,881 +257,350 @@ button{cursor:pointer}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (() => {
-  'use strict';
-
-  const SUPABASE_URL = 'https://ucqeyhcycwksiubmlilg.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_YdIvl7IqdpT0UZOHBumEiw_ZThYEsgV';
-
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const $ = id => document.getElementById(id);
-
-  let trucks = [];
-  let stores = [];
-  let products = [];
-  let driversByTruck = {};
-  let selectedTruck = null;
-  let toastTimer;
-
-  const money = n => '₹' + Number(n || 0).toLocaleString('en-IN',{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
-
-  const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[c]));
-
-  function showToast(message){
-    const el=$('toast');
-    el.textContent=message;
-    el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>el.classList.remove('show'),2600);
-  }
-
-  function open(id){
-    $(id).classList.add('show');
-    document.body.style.overflow='hidden';
-  }
-
-  function close(id){
-    $(id).classList.remove('show');
-    if(!document.querySelector('.overlay.show'))document.body.style.overflow='';
-  }
-
-  document.querySelectorAll('[data-close]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const ov=btn.closest('.overlay');
-      if(ov)close(ov.id);
-    });
-  });
-
-  document.querySelectorAll('.overlay').forEach(ov=>{
-    ov.addEventListener('click',e=>{
-      if(e.target===ov)close(ov.id);
-    });
-  });
-
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
-      const ov=[...document.querySelectorAll('.overlay.show')].reverse()[0];
-      if(ov)close(ov.id);
-    }
-  });
-
-  function localDateString(d){
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  }
-
-  function formatDate(v){
-    if(!v)return '';
-    const [y,m,d]=v.split('-').map(Number);
-    return new Date(y,m-1,d).toLocaleDateString('en-IN',{
-      day:'2-digit',month:'short',year:'numeric'
-    });
-  }
-
-  function dateRange(){
-    return {start:$('startDate').value,end:$('endDate').value};
-  }
-
-  function updateDateCaption(){
-    const {start,end}=dateRange();
-    if(!start||!end){
-      $('rangeCaption').textContent='Select a reporting date range';
-      return;
-    }
-    if(start===end){
-      $('rangeCaption').textContent=start===localDateString(new Date())
-        ?"Showing today's sales":`Showing sales for ${formatDate(start)}`;
-    }else{
-      $('rangeCaption').textContent=`Showing report from ${formatDate(start)} to ${formatDate(end)}`;
-    }
-    refreshFinancials();
-  }
-
-  async function loadBase(){
-    const [tr,st,pr]=await Promise.all([
-      db.from('trucks').select('id,truck_number,driver_id,drivers(id,name,phone)').order('truck_number'),
-      db.from('stores').select('id,name,owner_name,phone,address,notes,truck_id,zone_number,is_active').eq('is_active',true).order('name'),
-      db.from('products').select('id,name,unit_price,sort_order,is_active').eq('is_active',true).order('sort_order').order('name')
-    ]);
-
-    if(tr.error)throw tr.error;
-    if(st.error)throw st.error;
-    if(pr.error)throw pr.error;
-
-    trucks=tr.data||[];
-    stores=st.data||[];
-    products=pr.data||[];
-
-    driversByTruck={};
-    trucks.forEach(t=>{driversByTruck[t.truck_number]=t.drivers||null;});
-
-    renderTruckTiles();
-    fillTruckOptions();
-    renderStores();
-    renderProducts();
-  }
-
-  function renderTruckTiles(){
-    const grid=$('truckGrid');
-    grid.innerHTML='';
-    for(let n=1;n<=11;n++){
-      const tile=document.createElement('button');
-      tile.className='truck-tile';
-      tile.innerHTML=`<span class="truck-symbol">🚚</span><strong>TRUCK ${String(n).padStart(2,'0')}</strong>`;
-      tile.addEventListener('click',()=>showTruck(n));
-      grid.append(tile);
-    }
-  }
-
-  function fillTruckOptions(){
-    const a=$('storeTruck');
-    a.innerHTML='<option value="">Select truck</option>';
-    trucks.forEach(t=>a.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
-
-    const z=$('storeZone');
-    z.innerHTML='<option value="">Select zone</option>';
-    for(let n=1;n<=11;n++)z.add(new Option(`Zone ${String(n).padStart(2,'0')}`,String(n)));
-  }
-
-  async function refreshFinancials(){
-    const {start,end}=dateRange();
-    if(!start||!end)return;
-
-    const {data,error}=await db.from('delivery_bills')
-      .select('total_amount,payment_type')
-      .eq('status','COMPLETED')
-      .gte('bill_date',start)
-      .lte('bill_date',end);
-
-    if(error){showToast('Could not load sales totals: '+error.message);return;}
-
-    const rows=data||[];
-    const sales=rows.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const paid=rows.filter(b=>b.payment_type==='PAID').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const credit=rows.filter(b=>b.payment_type==='CREDIT').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    $('totalSales').textContent=money(sales);
-    $('totalPaid').textContent=money(paid);
-    $('totalCredit').textContent=money(credit);
-  }
-
-  const today=localDateString(new Date());
-  $('startDate').value=today;
-  $('endDate').value=today;
-  $('startDate').max=today;
-  $('endDate').max=today;
-
-  $('startDate').addEventListener('change',()=>{
-    if($('startDate').value>$('endDate').value)$('endDate').value=$('startDate').value;
-    $('endDate').min=$('startDate').value;
-    updateDateCaption();
-  });
-
-  $('endDate').addEventListener('change',()=>{
-    if($('endDate').value<$('startDate').value){
-      $('endDate').value=$('startDate').value;
-      showToast('Ending date cannot be earlier than starting date.');
-    }
-    updateDateCaption();
-  });
-
-  $('openStores').addEventListener('click',()=>{
-    renderStores();
-    open('storesOverlay');
-  });
-
-  $('openProducts').addEventListener('click',()=>{
-    renderProducts();
-    open('productsOverlay');
-  });
-
-  // DRIVER EDITING
-  async function editDriver(n){
-    const truck=trucks.find(t=>Number(t.truck_number)===n);
-    if(!truck){showToast('Truck record not found.');return;}
-
-    const currentDriver=truck.drivers||{};
-    const name=prompt('Enter driver name:',currentDriver.name||'');
-    if(name===null)return;
-    const cleanName=name.trim();
-    if(!cleanName){showToast('Driver name cannot be empty.');return;}
-
-    const phone=prompt('Enter driver contact number:',currentDriver.phone||'');
-    if(phone===null)return;
-    const cleanPhone=phone.trim();
-
-    try{
-      if(currentDriver.id){
-        const {error}=await db.from('drivers').update({
-          name:cleanName,phone:cleanPhone||null,updated_at:new Date().toISOString()
-        }).eq('id',currentDriver.id);
-        if(error)throw error;
-      }else{
-        const {data,error}=await db.from('drivers').insert({
-          name:cleanName,phone:cleanPhone||null,is_active:true,updated_at:new Date().toISOString()
-        }).select('id').single();
-        if(error)throw error;
-
-        const {error:truckError}=await db.from('trucks').update({
-          driver_id:data.id,updated_at:new Date().toISOString()
-        }).eq('id',truck.id);
-        if(truckError)throw truckError;
-      }
-
-      await loadBase();
-      showToast('Driver information updated successfully.');
-      await showTruck(n);
-    }catch(error){
-      console.error(error);
-      showToast('Driver update failed: '+error.message);
-    }
-  }
-
-  // TRUCK WINDOW
-  async function showTruck(n){
-    selectedTruck=trucks.find(t=>Number(t.truck_number)===n);
-    if(!selectedTruck){showToast('Truck record not found in Supabase.');return;}
-
-    $('editDriverBtn').onclick=()=>editDriver(n);
-
-    const assigned=stores.filter(s=>s.truck_id===selectedTruck.id);
-    const zones=[...new Set(assigned.map(s=>Number(s.zone_number)).filter(Boolean))];
-    const driver=selectedTruck.drivers||{};
-
-    $('truckTitle').textContent=`TRUCK ${String(n).padStart(2,'0')}`;
-    $('truckDriverName').textContent=driver.name||'Not configured';
-    $('truckDriverPhone').textContent=driver.phone||'Not configured';
-    $('truckZone').textContent=zones.length?zones.map(z=>`Zone ${String(z).padStart(2,'0')}`).join(', '):'Not assigned';
-    $('truckStoreCount').textContent=`${assigned.length} ${assigned.length===1?'store':'stores'}`;
-    $('truckStoreLabel').textContent=$('truckStoreCount').textContent;
-
-    const truckToday=localDateString(new Date());
-    $('truckStartDate').value=truckToday;
-    $('truckEndDate').value=truckToday;
-    $('truckStartDate').max=truckToday;
-    $('truckEndDate').max=truckToday;
-    $('truckEndDate').min=truckToday;
-
-    $('truckStartDate').onchange=()=>{
-      if($('truckStartDate').value>$('truckEndDate').value)$('truckEndDate').value=$('truckStartDate').value;
-      $('truckEndDate').min=$('truckStartDate').value;
-      refreshTruckFinancials(n);
-    };
-
-    $('truckEndDate').onchange=()=>{
-      if($('truckEndDate').value<$('truckStartDate').value){
-        $('truckEndDate').value=$('truckStartDate').value;
-        showToast('Ending date cannot be earlier than starting date.');
-      }
-      refreshTruckFinancials(n);
-    };
-
-    open('truckOverlay');
-    await refreshTruckFinancials(n);
-  }
-
-  // TRUCK FINANCIALS + STORE-WISE TOTALS
-  async function refreshTruckFinancials(n){
-    const t=trucks.find(x=>Number(x.truck_number)===n);
-    if(!t)return;
-
-    const start=$('truckStartDate').value;
-    const end=$('truckEndDate').value;
-    if(!start||!end)return;
-
-    $('truckRangeCaption').textContent=start===end
-      ?`Showing truck sales for ${formatDate(start)}`
-      :`Showing truck sales from ${formatDate(start)} to ${formatDate(end)}`;
-
-    const {data,error}=await db.from('delivery_bills')
-      .select('store_id,total_amount,payment_type')
-      .eq('truck_id',t.id)
-      .eq('status','COMPLETED')
-      .gte('bill_date',start)
-      .lte('bill_date',end);
-
-    if(error){showToast('Could not load truck sales: '+error.message);return;}
-
-    const rows=data||[];
-    const sales=rows.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const paid=rows.filter(b=>b.payment_type==='PAID').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const credit=rows.filter(b=>b.payment_type==='CREDIT').reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    $('truckSales').textContent=money(sales);
-    $('truckPaid').textContent=money(paid);
-    $('truckCredit').textContent=money(credit);
-
-    const storeTotals={};
-    rows.forEach(b=>{
-      if(!b.store_id)return;
-      if(!storeTotals[b.store_id])storeTotals[b.store_id]={sales:0,paid:0,credit:0};
-      const amount=Number(b.total_amount||0);
-      storeTotals[b.store_id].sales+=amount;
-      if(b.payment_type==='PAID')storeTotals[b.store_id].paid+=amount;
-      else if(b.payment_type==='CREDIT')storeTotals[b.store_id].credit+=amount;
-    });
-
-    const assigned=stores.filter(s=>s.truck_id===t.id);
-    const list=$('truckStoreList');
-    list.innerHTML='';
-
-    if(!assigned.length){
-      list.innerHTML='<div class="empty">No stores have been assigned to this truck yet.<br>Add a store in Store Management.</div>';
-      return;
-    }
-
-    assigned.forEach(s=>{
-      const total=storeTotals[s.id]||{sales:0,paid:0,credit:0};
-      const row=document.createElement('button');
-      row.className='store-row';
-      row.style.textAlign='left';
-      row.style.background='#fff';
-      row.style.width='100%';
-      row.innerHTML=`
-        <span class="store-avatar">🏪</span>
-        <span class="store-main">
-          <strong>${esc(s.name)}</strong>
-          <small>Zone ${String(s.zone_number||0).padStart(2,'0')} · ${esc(s.phone||'No contact added')}</small>
-          <small style="color:#285d91;margin-top:6px">Sales: ${money(total.sales)}</small>
-          <small style="color:#237447">PAID: ${money(total.paid)} · CREDIT: ${money(total.credit)}</small>
-        </span>
-        <span style="color:#8290a2">›</span>
-      `;
-      row.onclick=()=>showStoreDetail(s.id);
-      list.append(row);
-    });
-  }
-
-  // PART 2 CONTINUES HERE — paste the next code block directly after this line.
-
-// STORE MANAGEMENT
-  $('addStoreBtn').addEventListener('click',()=>openStoreForm());
-  $('storeSearch').addEventListener('input',renderStores);
-
-  function renderStores(){
-    const q=$('storeSearch').value.trim().toLowerCase();
-    const filtered=stores.filter(s=>
-      [s.name,s.owner_name,s.phone,s.address].some(v=>String(v||'').toLowerCase().includes(q))
-    );
-
-    $('storeCount').textContent=`${stores.length} ${stores.length===1?'store':'stores'}`;
-    const list=$('storeList');
-    list.innerHTML='';
-
-    if(!filtered.length){
-      list.innerHTML=`<div class="empty">${stores.length?'No stores match your search.':'No stores added yet. Select “Add New Store” to get started.'}</div>`;
-      return;
-    }
-
-    filtered.forEach(s=>{
-      const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';
-      const row=document.createElement('div');
-      row.className='store-row';
-      row.innerHTML=`
-        <span class="store-avatar">🏪</span>
-        <span class="store-main">
-          <strong>${esc(s.name)}</strong>
-          <small>Truck ${String(tn).padStart(2,'0')} · Zone ${String(s.zone_number||0).padStart(2,'0')} · ${esc(s.phone||'No contact')}</small>
-        </span>
-        <span class="row-actions">
-          <button class="icon-btn" title="View details">↗</button>
-          <button class="icon-btn" title="Edit store">✎</button>
-          <button class="icon-btn delete" title="Deactivate store">×</button>
-        </span>
-      `;
-      const b=row.querySelectorAll('button');
-      b[0].onclick=()=>showStoreDetail(s.id);
-      b[1].onclick=()=>openStoreForm(s.id);
-      b[2].onclick=()=>deactivateStore(s.id);
-      list.append(row);
-    });
-  }
-
-  function openStoreForm(id){
-    $('storeForm').reset();
-    $('storeId').value='';
-    $('storeFormTitle').textContent=id?'EDIT STORE':'ADD NEW STORE';
-
-    if(id){
-      const s=stores.find(x=>x.id===id);
-      if(!s)return;
-      $('storeId').value=s.id;
-      $('storeName').value=s.name||'';
-      $('ownerName').value=s.owner_name||'';
-      $('storePhone').value=s.phone||'';
-      $('storeAddress').value=s.address||'';
-      $('storeNotes').value=s.notes||'';
-      $('storeTruck').value=s.truck_id||'';
-      $('storeZone').value=String(s.zone_number||'');
-    }
-
-    open('storeFormOverlay');
-    setTimeout(()=>$('storeName').focus(),50);
-  }
-
-  $('storeForm').addEventListener('submit',async e=>{
-    e.preventDefault();
-    const id=$('storeId').value;
-
-    const payload={
-      name:$('storeName').value.trim(),
-      owner_name:$('ownerName').value.trim()||null,
-      phone:$('storePhone').value.trim()||null,
-      address:$('storeAddress').value.trim()||null,
-      notes:$('storeNotes').value.trim()||null,
-      truck_id:$('storeTruck').value,
-      zone_number:Number($('storeZone').value),
-      is_active:true,
-      updated_at:new Date().toISOString()
-    };
-
-    if(!payload.name||!payload.truck_id||!payload.zone_number)return;
-
-    const res=id
-      ?await db.from('stores').update(payload).eq('id',id)
-      :await db.from('stores').insert(payload);
-
-    if(res.error){showToast('Store save failed: '+res.error.message);return;}
-
-    close('storeFormOverlay');
-    await loadBase();
-    renderStores();
-    showToast(id?'Store updated successfully.':'Store added successfully.');
-  });
-
-  async function deactivateStore(id){
-    const s=stores.find(x=>x.id===id);
-    if(!s||!confirm(`Deactivate "${s.name}"? Existing bills will remain linked.`))return;
-
-    const {error}=await db.from('stores').update({
-      is_active:false,updated_at:new Date().toISOString()
-    }).eq('id',id);
-
-    if(error){showToast(error.message);return;}
-    await loadBase();
-    renderStores();
-    showToast('Store deactivated.');
-  }
-
-  // STORE DETAILS + ITEM-WISE SALES + BILL HISTORY
-  async function showStoreDetail(id){
-    const s=stores.find(x=>x.id===id);
-    if(!s)return;
-
-    const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';
-    const storeToday=localDateString(new Date());
-
-    $('storeDetailTitle').textContent=s.name.toUpperCase();
-
-    $('storeDetailBody').innerHTML=`
-      <div class="store-detail">
-        <div class="detail-grid">
-          <div class="detail-item"><small>Store Name</small><strong>${esc(s.name)}</strong></div>
-          <div class="detail-item"><small>Store Owner</small><strong>${esc(s.owner_name||'Not provided')}</strong></div>
-          <div class="detail-item"><small>Contact Number</small><strong>${esc(s.phone||'Not provided')}</strong></div>
-          <div class="detail-item"><small>Assigned Truck</small><strong>Truck ${String(tn).padStart(2,'0')}</strong></div>
-          <div class="detail-item"><small>Assigned Zone</small><strong>Zone ${String(s.zone_number||0).padStart(2,'0')}</strong></div>
-          <div class="detail-item"><small>Address</small><strong>${esc(s.address||'Not provided')}</strong></div>
-          <div class="detail-item" style="grid-column:1/-1"><small>Additional Notes</small><strong>${esc(s.notes||'None')}</strong></div>
-        </div>
-      </div>
-
-      <h3 class="subheading" style="margin-top:20px">Store Financial Summary</h3>
-
-      <div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">
-        <span>📅</span>
-        <label class="date-field">From <input type="date" id="storeStartDate" value="${storeToday}" max="${storeToday}"></label>
-        <span class="date-separator">—</span>
-        <label class="date-field">To <input type="date" id="storeEndDate" value="${storeToday}" max="${storeToday}"></label>
-      </div>
-
-      <div class="range-caption" id="storeRangeCaption" style="text-align:left;margin-bottom:12px">
-        Showing store sales for ${formatDate(storeToday)}
-      </div>
-
-      <div class="mini-stats">
-        <div class="mini-stat"><label>Total Sales</label><strong id="storeSales">₹0.00</strong></div>
-        <div class="mini-stat"><label>PAID Collection</label><strong id="storePaid">₹0.00</strong></div>
-        <div class="mini-stat"><label>Total Credit</label><strong id="storeCredit">₹0.00</strong></div>
-      </div>
-
-      <p class="notice">Only COMPLETED bills are included. PAID and CREDIT are calculated separately.</p>
-
-      <div class="report-section">
-        <div class="section-head">
-          <h3>📦 Item-wise Sales Report</h3>
-          <span id="itemReportCount">0 products</span>
-        </div>
-        <p class="notice" style="margin-top:-7px;margin-bottom:10px">
-          Total quantity and amount sold for each product during the selected date range.
-        </p>
-        <div id="storeItemReport"></div>
-      </div>
-
-      <div class="report-section">
-        <div class="section-head">
-          <h3>🧾 Date-wise Bill History</h3>
-          <span id="billHistoryCount">0 bills</span>
-        </div>
-        <div id="storeBillHistory"></div>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn btn-light" id="detailClose">Close</button>
-        <button class="btn btn-primary" id="detailEdit">Edit Store</button>
-      </div>
-    `;
-
-    $('storeStartDate').onchange=()=>{
-      if($('storeStartDate').value>$('storeEndDate').value){
-        $('storeEndDate').value=$('storeStartDate').value;
-      }
-      $('storeEndDate').min=$('storeStartDate').value;
-      refreshStoreFinancials(id);
-    };
-
-    $('storeEndDate').onchange=()=>{
-      if($('storeEndDate').value<$('storeStartDate').value){
-        $('storeEndDate').value=$('storeStartDate').value;
-        showToast('Ending date cannot be earlier than starting date.');
-      }
-      refreshStoreFinancials(id);
-    };
-
-    $('detailClose').onclick=()=>close('storeDetailOverlay');
-    $('detailEdit').onclick=()=>{
-      close('storeDetailOverlay');
-      openStoreForm(id);
-    };
-
-    open('storeDetailOverlay');
-    await refreshStoreFinancials(id);
-  }
-
-  // FETCH STORE BILLS AND THEIR LINE ITEMS
-  async function refreshStoreFinancials(id){
-    const s=stores.find(x=>x.id===id);
-    if(!s)return;
-
-    const start=$('storeStartDate').value;
-    const end=$('storeEndDate').value;
-    if(!start||!end)return;
-
-    $('storeRangeCaption').textContent=start===end
-      ?`Showing store sales for ${formatDate(start)}`
-      :`Showing store sales from ${formatDate(start)} to ${formatDate(end)}`;
-
-    $('storeItemReport').innerHTML='<div class="report-empty">Loading item report...</div>';
-    $('storeBillHistory').innerHTML='<div class="report-empty">Loading bill history...</div>';
-
-    // Fetch completed bills for this store and date range.
-    const {data:billData,error:billError}=await db.from('delivery_bills')
-      .select('id,bill_number,bill_date,payment_type,status,total_amount')
-      .eq('store_id',id)
-      .eq('status','COMPLETED')
-      .gte('bill_date',start)
-      .lte('bill_date',end)
-      .order('bill_date',{ascending:false})
-      .order('created_at',{ascending:false});
-
-    if(billError){
-      showToast('Could not load store bills: '+billError.message);
-      $('storeItemReport').innerHTML='<div class="report-empty">Could not load item report.</div>';
-      $('storeBillHistory').innerHTML='<div class="report-empty">Could not load bill history.</div>';
-      return;
-    }
-
-    const bills=billData||[];
-    const sales=bills.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const paid=bills.filter(b=>b.payment_type==='PAID')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-    const credit=bills.filter(b=>b.payment_type==='CREDIT')
-      .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
-
-    $('storeSales').textContent=money(sales);
-    $('storePaid').textContent=money(paid);
-    $('storeCredit').textContent=money(credit);
-
-    if(!bills.length){
-      $('itemReportCount').textContent='0 products';
-      $('billHistoryCount').textContent='0 bills';
-      $('storeItemReport').innerHTML='<div class="report-empty">No completed sales for this store during the selected dates.</div>';
-      $('storeBillHistory').innerHTML='<div class="report-empty">No completed bills found for this date range.</div>';
-      return;
-    }
-
-    const billIds=bills.map(b=>b.id);
-
-    // Use item snapshots so old bills retain their original product names and prices.
-    const {data:itemData,error:itemError}=await db.from('delivery_bill_items')
-      .select('id,bill_id,product_name_snapshot,quantity,unit_price,line_total')
-      .in('bill_id',billIds)
-      .order('created_at',{ascending:true});
-
-    if(itemError){
-      showToast('Could not load bill items: '+itemError.message);
-      $('storeItemReport').innerHTML='<div class="report-empty">Could not load item report.</div>';
-      $('storeBillHistory').innerHTML='<div class="report-empty">Bill totals are available, but item details could not be loaded.</div>';
-      return;
-    }
-
-    const items=itemData||[];
-    const itemsByBill={};
-    const productTotals={};
-
-    items.forEach(item=>{
-      if(!itemsByBill[item.bill_id])itemsByBill[item.bill_id]=[];
-      itemsByBill[item.bill_id].push(item);
-
-      const name=item.product_name_snapshot||'Unnamed product';
-      const key=name.trim().toLowerCase();
-
-      if(!productTotals[key]){
-        productTotals[key]={
-          name,
-          quantity:0,
-          amount:0
-        };
-      }
-
-      productTotals[key].quantity+=Number(item.quantity||0);
-      productTotals[key].amount+=Number(item.line_total||0);
-    });
-
-    renderStoreItemReport(productTotals);
-    renderStoreBillHistory(bills,itemsByBill);
-  }
-
-  // ITEM-WISE TOTALS FOR SELECTED PERIOD
-  function renderStoreItemReport(productTotals){
-    const list=Object.values(productTotals)
-      .sort((a,b)=>a.name.localeCompare(b.name));
-
-    $('itemReportCount').textContent=`${list.length} ${list.length===1?'product':'products'}`;
-
-    if(!list.length){
-      $('storeItemReport').innerHTML='<div class="report-empty">No product items were recorded in completed bills for this period.</div>';
-      return;
-    }
-
-    const totalQty=list.reduce((sum,p)=>sum+p.quantity,0);
-    const totalAmount=list.reduce((sum,p)=>sum+p.amount,0);
-
-    $('storeItemReport').innerHTML=`
-      <div class="report-table-wrap">
-        <table class="report-table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th class="num">Quantity Sold</th>
-              <th class="num">Sales Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${list.map(p=>`
-              <tr>
-                <td><strong>${esc(p.name)}</strong></td>
-                <td class="num">${p.quantity.toLocaleString('en-IN')}</td>
-                <td class="num">${money(p.amount)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Total</td>
-              <td class="num">${totalQty.toLocaleString('en-IN')}</td>
-              <td class="num">${money(totalAmount)}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    `;
-  }
-
-  // INDIVIDUAL BILLS WITH ITEM DETAILS
-  function renderStoreBillHistory(bills,itemsByBill){
-    $('billHistoryCount').textContent=`${bills.length} ${bills.length===1?'bill':'bills'}`;
-
-    if(!bills.length){
-      $('storeBillHistory').innerHTML='<div class="report-empty">No bills found.</div>';
-      return;
-    }
-
-    $('storeBillHistory').innerHTML=bills.map(b=>{
-      const billItems=itemsByBill[b.id]||[];
-      const paymentClass=b.payment_type==='PAID'?'paid':'credit';
-      const paymentLabel=b.payment_type==='PAID'?'PAID':'CREDIT';
-
-      return `
-        <div class="bill-card">
-          <div class="bill-card-head">
-            <div>
-              <strong>Bill ${esc(b.bill_number||'—')}</strong><br>
-              <small>${formatDate(b.bill_date)}</small>
-            </div>
-            <div class="bill-card-meta">
-              <span class="payment-tag ${paymentClass}">${paymentLabel}</span>
-            </div>
-          </div>
-          <div class="bill-card-body">
-            ${billItems.length?`
-              <div class="report-table-wrap">
-                <table class="report-table">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th class="num">Qty</th>
-                      <th class="num">Rate</th>
-                      <th class="num">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${billItems.map(item=>`
-                      <tr>
-                        <td>${esc(item.product_name_snapshot||'Unnamed product')}</td>
-                        <td class="num">${Number(item.quantity||0).toLocaleString('en-IN')}</td>
-                        <td class="num">${money(item.unit_price)}</td>
-                        <td class="num">${money(item.line_total)}</td>
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
-              </div>
-            `:'<div class="report-empty">No item details recorded for this bill.</div>'}
-            <div class="bill-card-total">
-              <span>Bill Total</span>
-              <strong>${money(b.total_amount)}</strong>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // PRODUCT MANAGEMENT
-  $('addProductBtn').addEventListener('click',()=>openProductForm());
-  $('productSearch').addEventListener('input',renderProducts);
-
-  function renderProducts(){
-    const q=$('productSearch').value.trim().toLowerCase();
-    const filtered=products.filter(p=>p.name.toLowerCase().includes(q));
-
-    $('productCount').textContent=`${products.length} ${products.length===1?'product':'products'}`;
-    const list=$('productList');
-    list.innerHTML='';
-
-    if(!filtered.length){
-      list.innerHTML=`<div class="empty">${products.length?'No products match your search.':'No diary products added yet. Select “Add New Product” to get started.'}</div>`;
-      return;
-    }
-
-    filtered.forEach((p,i)=>{
-      const row=document.createElement('div');
-      row.className='product-row';
-      row.innerHTML=`
-        <span class="product-avatar">📖</span>
-        <span class="product-main">
-          <strong>${esc(p.name)}</strong>
-          <small>₹${Number(p.unit_price||0).toFixed(2)} · Product ${String(i+1).padStart(2,'0')}</small>
-        </span>
-        <span class="row-actions">
-          <button class="icon-btn" title="Edit product">✎</button>
-          <button class="icon-btn delete" title="Deactivate product">×</button>
-        </span>
-      `;
-      const b=row.querySelectorAll('button');
-      b[0].onclick=()=>openProductForm(p.id);
-      b[1].onclick=()=>deactivateProduct(p.id);
-      list.append(row);
-    });
-  }
-
-  function openProductForm(id){
-    $('productForm').reset();
-    $('productId').value='';
-    $('productPrice').value='0';
-    $('productFormTitle').textContent=id?'EDIT PRODUCT':'ADD NEW PRODUCT';
-
-    if(id){
-      const p=products.find(x=>x.id===id);
-      if(!p)return;
-      $('productId').value=p.id;
-      $('productName').value=p.name;
-      $('productPrice').value=Number(p.unit_price||0);
-    }
-
-    open('productFormOverlay');
-    setTimeout(()=>$('productName').focus(),50);
-  }
-
-  $('productForm').addEventListener('submit',async e=>{
-    e.preventDefault();
-
-    const id=$('productId').value;
-    const name=$('productName').value.trim();
-    const price=Number($('productPrice').value);
-
-    if(!name||!Number.isFinite(price)||price<0)return;
-
-    if(products.some(p=>p.name.toLowerCase()===name.toLowerCase()&&p.id!==id)){
-      showToast('A product with this name already exists.');
-      return;
-    }
-
-    const payload={
-      name,
-      unit_price:price,
-      sort_order:id?(products.find(p=>p.id===id)?.sort_order||0):products.length+1,
-      is_active:true,
-      updated_at:new Date().toISOString()
-    };
-
-    const res=id
-      ?await db.from('products').update(payload).eq('id',id)
-      :await db.from('products').insert(payload);
-
-    if(res.error){showToast('Product save failed: '+res.error.message);return;}
-
-    close('productFormOverlay');
-    await loadBase();
-    renderProducts();
-    showToast(id?'Product updated successfully.':'Product added successfully.');
-  });
-
-  async function deactivateProduct(id){
-    const p=products.find(x=>x.id===id);
-    if(!p||!confirm(`Deactivate product "${p.name}"? Existing bills will retain their saved item details.`))return;
-
-    const {error}=await db.from('products').update({
-      is_active:false,updated_at:new Date().toISOString()
-    }).eq('id',id);
-
-    if(error){showToast(error.message);return;}
-    await loadBase();
-    renderProducts();
-    showToast('Product deactivated.');
-  }
-
-  // INITIALIZE DASHBOARD
-  async function init(){
-    try{
-      if(!window.supabase){
-        throw new Error('Supabase library could not be loaded. Check your internet connection.');
-      }
-
-      await loadBase();
-      await refreshFinancials();
-      showToast('Connected to SR TRADE LINK database.');
-    }catch(err){
-      console.error(err);
-      showToast('Supabase connection failed: '+(err.message||err));
-    }
-  }
-
-  init();
+'use strict';
+
+const SUPABASE_URL='https://ucqeyhcycwksiubmlilg.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_YdIvl7IqdpT0UZOHBumEiw_ZThYEsgV';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=id=>document.getElementById(id);
+
+let trucks=[],stores=[],products=[],selectedTruck=null,toastTimer;
+let salesBills=[],salesRequest=0;
+
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function showToast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600);}
+function open(id){$(id).classList.add('show');document.body.style.overflow='hidden';}
+function close(id){$(id).classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.style.overflow='';}
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>close(b.closest('.overlay').id)));
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)close(o.id)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=[...document.querySelectorAll('.overlay.show')].reverse()[0];if(o)close(o.id)}});
+
+function localDateString(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function nextDateString(value){const d=new Date(value+'T12:00:00');d.setDate(d.getDate()+1);return localDateString(d);}
+function formatDate(v){if(!v)return '';const [y,m,d]=String(v).slice(0,10).split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
+function dateRange(){return {start:$('startDate').value,end:$('endDate').value};}
+
+async function loadBase(){
+const [tr,st,pr]=await Promise.all([
+db.from('trucks').select('id,truck_number,driver_id,drivers(id,name,phone)').order('truck_number'),
+db.from('stores').select('id,name,owner_name,phone,address,notes,truck_id,zone_number,is_active').eq('is_active',true).order('name'),
+db.from('products').select('id,name,unit_price,sort_order,is_active').eq('is_active',true).order('sort_order').order('name')
+]);
+if(tr.error)throw tr.error;if(st.error)throw st.error;if(pr.error)throw pr.error;
+trucks=tr.data||[];stores=st.data||[];products=pr.data||[];
+renderTruckTiles();fillTruckOptions();renderStores();renderProducts();
+}
+
+function renderTruckTiles(){
+const grid=$('truckGrid');grid.innerHTML='';
+for(let n=1;n<=11;n++){
+const b=document.createElement('button');b.className='truck-tile';b.innerHTML=`<span class="truck-symbol">🚚</span><strong>TRUCK ${String(n).padStart(2,'0')}</strong>`;
+b.onclick=()=>showTruck(n);grid.append(b);
+}
+}
+function fillTruckOptions(){
+$('storeTruck').innerHTML='<option value="">Select truck</option>';
+trucks.forEach(t=>$('storeTruck').add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
+$('storeZone').innerHTML='<option value="">Select zone</option>';
+for(let n=1;n<=11;n++)$('storeZone').add(new Option(`Zone ${String(n).padStart(2,'0')}`,String(n)));
+}
+
+async function refreshFinancials(){
+const {start,end}=dateRange();if(!start||!end)return;
+const {data,error}=await db.from('delivery_bills').select('total_amount,payment_type').eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end));
+if(error){showToast('Could not load sales totals: '+error.message);return;}
+const rows=data||[];
+$('totalSales').textContent=money(rows.reduce((s,b)=>s+Number(b.total_amount||0),0));
+$('totalPaid').textContent=money(rows.filter(b=>b.payment_type==='PAID').reduce((s,b)=>s+Number(b.total_amount||0),0));
+$('totalCredit').textContent=money(rows.filter(b=>b.payment_type==='CREDIT').reduce((s,b)=>s+Number(b.total_amount||0),0));
+}
+const today=localDateString(new Date());
+$('startDate').value=today;$('endDate').value=today;$('startDate').max=today;$('endDate').max=today;
+function updateMainDates(){
+if($('startDate').value>$('endDate').value)$('endDate').value=$('startDate').value;
+const {start,end}=dateRange();
+$('rangeCaption').textContent=start===end?`Showing sales for ${formatDate(start)}`:`Showing report from ${formatDate(start)} to ${formatDate(end)}`;
+refreshFinancials();
+}
+$('startDate').onchange=()=>{ $('endDate').min=$('startDate').value;updateMainDates(); };
+$('endDate').onchange=()=>{if($('endDate').value<$('startDate').value)$('endDate').value=$('startDate').value;updateMainDates();};
+$('openStores').onclick=()=>{renderStores();open('storesOverlay')};
+$('openProducts').onclick=()=>{renderProducts();open('productsOverlay')};
+
+/* DRIVER EDIT */
+async function editDriver(n){
+const truck=trucks.find(t=>Number(t.truck_number)===n);if(!truck)return;
+const current=truck.drivers||{};
+const name=prompt('Enter driver name:',current.name||'');if(name===null)return;
+if(!name.trim()){showToast('Driver name cannot be empty.');return;}
+const phone=prompt('Enter driver contact number:',current.phone||'');if(phone===null)return;
+try{
+if(current.id){
+const {error}=await db.from('drivers').update({name:name.trim(),phone:phone.trim()||null,updated_at:new Date().toISOString()}).eq('id',current.id);
+if(error)throw error;
+}else{
+const {data,error}=await db.from('drivers').insert({name:name.trim(),phone:phone.trim()||null,is_active:true}).select('id').single();
+if(error)throw error;
+const {error:truckError}=await db.from('trucks').update({driver_id:data.id,updated_at:new Date().toISOString()}).eq('id',truck.id);
+if(truckError)throw truckError;
+}
+await loadBase();showToast('Driver information updated.');await showTruck(n);
+}catch(e){showToast('Driver update failed: '+e.message);}
+}
+
+/* TRUCK DETAILS */
+async function showTruck(n){
+selectedTruck=trucks.find(t=>Number(t.truck_number)===n);if(!selectedTruck){showToast('Truck record not found.');return;}
+$('editDriverBtn').onclick=()=>editDriver(n);
+const assigned=stores.filter(s=>s.truck_id===selectedTruck.id),zones=[...new Set(assigned.map(s=>Number(s.zone_number)).filter(Boolean))],driver=selectedTruck.drivers||{};
+$('truckTitle').textContent=`TRUCK ${String(n).padStart(2,'0')}`;
+$('truckDriverName').textContent=driver.name||'Not configured';$('truckDriverPhone').textContent=driver.phone||'Not configured';
+$('truckZone').textContent=zones.length?zones.map(z=>`Zone ${String(z).padStart(2,'0')}`).join(', '):'Not assigned';
+$('truckStoreCount').textContent=assigned.length+' stores';$('truckStoreLabel').textContent=assigned.length+' stores';
+const d=localDateString(new Date());$('truckStartDate').value=d;$('truckEndDate').value=d;$('truckStartDate').max=d;$('truckEndDate').max=d;$('truckEndDate').min=d;
+$('truckStartDate').onchange=()=>{if($('truckStartDate').value>$('truckEndDate').value)$('truckEndDate').value=$('truckStartDate').value;$('truckEndDate').min=$('truckStartDate').value;refreshTruckFinancials(n)};
+$('truckEndDate').onchange=()=>{if($('truckEndDate').value<$('truckStartDate').value)$('truckEndDate').value=$('truckStartDate').value;refreshTruckFinancials(n)};
+open('truckOverlay');await refreshTruckFinancials(n);
+}
+async function refreshTruckFinancials(n){
+const t=trucks.find(x=>Number(x.truck_number)===n);if(!t)return;
+const start=$('truckStartDate').value,end=$('truckEndDate').value;if(!start||!end)return;
+$('truckRangeCaption').textContent=`${formatDate(start)} — ${formatDate(end)}`;
+const {data,error}=await db.from('delivery_bills').select('store_id,total_amount,payment_type').eq('truck_id',t.id).eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end));
+if(error){showToast('Could not load truck sales: '+error.message);return;}
+const rows=data||[],sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((s,b)=>s+Number(b.total_amount||0),0);
+$('truckSales').textContent=money(sum());$('truckPaid').textContent=money(sum('PAID'));$('truckCredit').textContent=money(sum('CREDIT'));
+const totals={};rows.forEach(b=>{if(!totals[b.store_id])totals[b.store_id]={sales:0,paid:0,credit:0};const a=Number(b.total_amount||0);totals[b.store_id].sales+=a;if(b.payment_type==='PAID')totals[b.store_id].paid+=a;else if(b.payment_type==='CREDIT')totals[b.store_id].credit+=a;});
+const assigned=stores.filter(s=>s.truck_id===t.id),list=$('truckStoreList');list.innerHTML='';
+if(!assigned.length){list.innerHTML='<div class="empty">No stores assigned to this truck yet.</div>';return;}
+assigned.forEach(s=>{
+const x=totals[s.id]||{sales:0,paid:0,credit:0},b=document.createElement('button');b.className='store-row';b.style.width='100%';b.style.textAlign='left';
+b.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Zone ${s.zone_number} · ${esc(s.phone||'No contact')}</small><small style="color:#285d91">Sales: ${money(x.sales)}</small><small style="color:#237447">PAID: ${money(x.paid)} · CREDIT: ${money(x.credit)}</small></span>›`;
+b.onclick=()=>showStoreDetail(s.id);list.append(b);
+});
+}
+
+/* STORE MANAGEMENT */
+$('addStoreBtn').onclick=()=>openStoreForm();$('storeSearch').oninput=renderStores;
+function renderStores(){
+const q=$('storeSearch').value.trim().toLowerCase(),filtered=stores.filter(s=>[s.name,s.owner_name,s.phone,s.address].some(v=>String(v||'').toLowerCase().includes(q)));
+$('storeCount').textContent=stores.length+' stores';const list=$('storeList');list.innerHTML='';
+if(!filtered.length){list.innerHTML='<div class="empty">No stores found.</div>';return;}
+filtered.forEach(s=>{
+const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const row=document.createElement('div');row.className='store-row';
+row.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Truck ${tn} · Zone ${s.zone_number} · ${esc(s.phone||'No contact')}</small></span><span class="row-actions"><button class="icon-btn" title="View">↗</button><button class="icon-btn" title="Edit">✎</button><button class="icon-btn delete" title="Deactivate">×</button></span>`;
+const b=row.querySelectorAll('button');b[0].onclick=()=>showStoreDetail(s.id);b[1].onclick=()=>openStoreForm(s.id);b[2].onclick=()=>deactivateStore(s.id);list.append(row);
+});
+}
+function openStoreForm(id){
+$('storeForm').reset();$('storeId').value='';$('storeFormTitle').textContent=id?'EDIT STORE':'ADD NEW STORE';
+if(id){const s=stores.find(x=>x.id===id);if(!s)return;$('storeId').value=s.id;$('storeName').value=s.name||'';$('ownerName').value=s.owner_name||'';$('storePhone').value=s.phone||'';$('storeAddress').value=s.address||'';$('storeNotes').value=s.notes||'';$('storeTruck').value=s.truck_id||'';$('storeZone').value=String(s.zone_number||'');}
+open('storeFormOverlay');
+}
+$('storeForm').onsubmit=async e=>{
+e.preventDefault();const id=$('storeId').value;
+const payload={name:$('storeName').value.trim(),owner_name:$('ownerName').value.trim()||null,phone:$('storePhone').value.trim()||null,address:$('storeAddress').value.trim()||null,notes:$('storeNotes').value.trim()||null,truck_id:$('storeTruck').value,zone_number:Number($('storeZone').value),is_active:true,updated_at:new Date().toISOString()};
+if(!payload.name||!payload.truck_id||!payload.zone_number)return;
+const res=id?await db.from('stores').update(payload).eq('id',id):await db.from('stores').insert(payload);
+if(res.error){showToast(res.error.message);return;}
+close('storeFormOverlay');await loadBase();renderStores();showToast('Store saved.');
+};
+async function deactivateStore(id){
+const s=stores.find(x=>x.id===id);if(!s||!confirm(`Deactivate "${s.name}"?`))return;
+const {error}=await db.from('stores').update({is_active:false,updated_at:new Date().toISOString()}).eq('id',id);
+if(error){showToast(error.message);return;}await loadBase();renderStores();showToast('Store deactivated.');
+}
+
+/* STORE DETAILS, ITEM REPORT AND BILL HISTORY */
+async function showStoreDetail(id){
+const s=stores.find(x=>x.id===id);if(!s)return;
+const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const d=localDateString(new Date());
+$('storeDetailTitle').textContent=s.name.toUpperCase();
+$('storeDetailBody').innerHTML=`
+<div class="store-detail"><div class="detail-grid">
+<div class="detail-item"><small>Store Name</small><strong>${esc(s.name)}</strong></div>
+<div class="detail-item"><small>Store Owner</small><strong>${esc(s.owner_name||'Not provided')}</strong></div>
+<div class="detail-item"><small>Contact</small><strong>${esc(s.phone||'Not provided')}</strong></div>
+<div class="detail-item"><small>Assigned Truck</small><strong>Truck ${tn}</strong></div>
+<div class="detail-item"><small>Assigned Zone</small><strong>Zone ${s.zone_number}</strong></div>
+<div class="detail-item"><small>Address</small><strong>${esc(s.address||'Not provided')}</strong></div>
+<div class="detail-item" style="grid-column:1/-1"><small>Notes</small><strong>${esc(s.notes||'None')}</strong></div>
+</div></div>
+<h3 class="subheading">Store Financial Summary</h3>
+<div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="storeStartDate" value="${d}" max="${d}"></label> — <label class="date-field">To <input type="date" id="storeEndDate" value="${d}" max="${d}"></label></div>
+<div class="range-caption" id="storeRangeCaption" style="text-align:left"></div>
+<div class="mini-stats"><div class="mini-stat"><label>Total Sales</label><strong id="storeSales">₹0.00</strong></div><div class="mini-stat"><label>PAID Collection</label><strong id="storePaid">₹0.00</strong></div><div class="mini-stat"><label>Total Credit</label><strong id="storeCredit">₹0.00</strong></div></div>
+<div class="report-section"><div class="section-head"><h3>📦 Item-wise Sales Report</h3><span id="itemReportCount">0 products</span></div><div id="storeItemReport"></div></div>
+<div class="report-section"><div class="section-head"><h3>🧾 Date-wise Bill History</h3><span id="billHistoryCount">0 bills</span></div><div id="storeBillHistory"></div></div>
+<div class="form-actions"><button class="btn btn-light" id="detailClose">Close</button><button class="btn btn-primary" id="detailEdit">Edit Store</button></div>`;
+$('storeStartDate').onchange=()=>{if($('storeStartDate').value>$('storeEndDate').value)$('storeEndDate').value=$('storeStartDate').value;$('storeEndDate').min=$('storeStartDate').value;refreshStoreFinancials(id)};
+$('storeEndDate').onchange=()=>{if($('storeEndDate').value<$('storeStartDate').value)$('storeEndDate').value=$('storeStartDate').value;refreshStoreFinancials(id)};
+$('detailClose').onclick=()=>close('storeDetailOverlay');$('detailEdit').onclick=()=>{close('storeDetailOverlay');openStoreForm(id)};
+open('storeDetailOverlay');await refreshStoreFinancials(id);
+}
+async function refreshStoreFinancials(id){
+const start=$('storeStartDate').value,end=$('storeEndDate').value;if(!start||!end)return;
+$('storeRangeCaption').textContent=`${formatDate(start)} — ${formatDate(end)}`;
+$('storeItemReport').innerHTML='<div class="report-empty">Loading item report...</div>';$('storeBillHistory').innerHTML='<div class="report-empty">Loading bills...</div>';
+const {data:bills,error}=await db.from('delivery_bills').select('id,bill_number,bill_date,payment_type,total_amount,created_at').eq('store_id',id).eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end)).order('bill_date',{ascending:false}).order('created_at',{ascending:false});
+if(error){showToast(error.message);return;}
+const rows=bills||[],sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((a,b)=>a+Number(b.total_amount||0),0);
+$('storeSales').textContent=money(sum());$('storePaid').textContent=money(sum('PAID'));$('storeCredit').textContent=money(sum('CREDIT'));
+if(!rows.length){$('itemReportCount').textContent='0 products';$('billHistoryCount').textContent='0 bills';$('storeItemReport').innerHTML='<div class="report-empty">No completed sales for this period.</div>';$('storeBillHistory').innerHTML='<div class="report-empty">No completed bills found.</div>';return;}
+const ids=rows.map(b=>b.id);
+const {data:items,error:itemError}=await db.from('delivery_bill_items').select('bill_id,product_name_snapshot,quantity,unit_price,line_total,created_at').in('bill_id',ids).order('created_at');
+if(itemError){showToast(itemError.message);return;}
+const byBill={},totals={};
+(items||[]).forEach(i=>{
+(byBill[i.bill_id]??=[]).push(i);const name=i.product_name_snapshot||'Unnamed product',key=name.toLowerCase();
+totals[key]??={name,quantity:0,amount:0};totals[key].quantity+=Number(i.quantity||0);totals[key].amount+=Number(i.line_total||0);
+});
+const list=Object.values(totals).sort((a,b)=>a.name.localeCompare(b.name));
+$('itemReportCount').textContent=list.length+' products';
+$('storeItemReport').innerHTML=list.length?`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Product</th><th class="num">Quantity Sold</th><th class="num">Sales Amount</th></tr></thead><tbody>${list.map(p=>`<tr><td>${esc(p.name)}</td><td class="num">${p.quantity}</td><td class="num">${money(p.amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="report-empty">No product items recorded.</div>';
+$('billHistoryCount').textContent=rows.length+' bills';
+$('storeBillHistory').innerHTML=rows.map(b=>{
+const its=byBill[b.id]||[];
+return `<div class="bill-card"><div class="bill-card-head"><div><strong>Bill ${esc(b.bill_number||'—')}</strong><br><small>${formatDate(b.bill_date)}</small></div><span class="payment-tag ${b.payment_type==='PAID'?'paid':'credit'}">${b.payment_type}</span></div><div class="bill-card-body">${its.length?`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>${its.map(i=>`<tr><td>${esc(i.product_name_snapshot)}</td><td class="num">${i.quantity}</td><td class="num">${money(i.unit_price)}</td><td class="num">${money(i.line_total)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="report-empty">No item details recorded.</div>'}<div class="bill-card-total"><span>Bill Total</span><strong>${money(b.total_amount)}</strong></div></div></div>`;
+}).join('');
+}
+
+/* PRODUCT MANAGEMENT */
+$('addProductBtn').onclick=()=>openProductForm();$('productSearch').oninput=renderProducts;
+function renderProducts(){
+const q=$('productSearch').value.trim().toLowerCase(),filtered=products.filter(p=>p.name.toLowerCase().includes(q));
+$('productCount').textContent=products.length+' products';const list=$('productList');list.innerHTML='';
+if(!filtered.length){list.innerHTML='<div class="empty">No products found.</div>';return;}
+filtered.forEach(p=>{
+const row=document.createElement('div');row.className='product-row';
+row.innerHTML=`<span class="product-avatar">📖</span><span class="product-main"><strong>${esc(p.name)}</strong><small>${money(p.unit_price)}</small></span><span class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn delete">×</button></span>`;
+const b=row.querySelectorAll('button');b[0].onclick=()=>openProductForm(p.id);b[1].onclick=()=>deactivateProduct(p.id);list.append(row);
+});
+}
+function openProductForm(id){
+$('productForm').reset();$('productId').value='';$('productPrice').value='0';$('productFormTitle').textContent=id?'EDIT PRODUCT':'ADD NEW PRODUCT';
+if(id){const p=products.find(x=>x.id===id);if(!p)return;$('productId').value=p.id;$('productName').value=p.name;$('productPrice').value=p.unit_price;}
+open('productFormOverlay');
+}
+$('productForm').onsubmit=async e=>{
+e.preventDefault();const id=$('productId').value,name=$('productName').value.trim(),price=Number($('productPrice').value);
+if(!name||!Number.isFinite(price)||price<0)return;
+if(products.some(p=>p.name.toLowerCase()===name.toLowerCase()&&p.id!==id)){showToast('Product name already exists.');return;}
+const payload={name,unit_price:price,sort_order:id?(products.find(p=>p.id===id)?.sort_order||0):products.length+1,is_active:true,updated_at:new Date().toISOString()};
+const res=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);
+if(res.error){showToast(res.error.message);return;}
+close('productFormOverlay');await loadBase();showToast('Product saved.');
+};
+async function deactivateProduct(id){
+const p=products.find(x=>x.id===id);if(!p||!confirm(`Deactivate product "${p.name}"?`))return;
+const {error}=await db.from('products').update({is_active:false,updated_at:new Date().toISOString()}).eq('id',id);
+if(error){showToast(error.message);return;}await loadBase();showToast('Product deactivated.');
+}
+
+/* SALES PAGE: COMPLETED BILLS ONLY */
+function populateSalesFilters(){
+const truck=$('salesTruckFilter'),store=$('salesStoreFilter'),oldT=truck.value,oldS=store.value;
+truck.innerHTML='<option value="">All Trucks</option>';store.innerHTML='<option value="">All Stores</option>';
+trucks.forEach(t=>truck.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
+stores.forEach(s=>store.add(new Option(s.name,s.id)));
+if(trucks.some(t=>t.id===oldT))truck.value=oldT;if(stores.some(s=>s.id===oldS))store.value=oldS;
+}
+function openSalesPage(){
+populateSalesFilters();$('salesPreset').value='today';$('salesSearch').value='';
+$('salesTruckFilter').value='';$('salesStoreFilter').value='';$('salesPaymentFilter').value='';
+setSalesDates('today');open('salesOverlay');
+}
+$('openSales').onclick=openSalesPage;
+
+function setSalesDates(preset){
+const now=new Date(),today=localDateString(now);let start=today,end=today;
+if(preset==='yesterday'){const d=new Date(now);d.setDate(d.getDate()-1);start=localDateString(d);end=start;}
+if(preset==='month')start=localDateString(new Date(now.getFullYear(),now.getMonth(),1));
+if(preset==='custom')return;
+$('salesStart').value=start;$('salesEnd').value=end;$('salesStart').max=today;$('salesEnd').max=today;$('salesEnd').min=start;
+loadSales();
+}
+$('salesPreset').onchange=()=>setSalesDates($('salesPreset').value);
+$('salesStart').onchange=()=>{
+if($('salesStart').value>$('salesEnd').value)$('salesEnd').value=$('salesStart').value;
+$('salesEnd').min=$('salesStart').value;$('salesPreset').value='custom';loadSales();
+};
+$('salesEnd').onchange=()=>{
+if($('salesEnd').value<$('salesStart').value){$('salesEnd').value=$('salesStart').value;showToast('Ending date cannot be earlier than starting date.');}
+$('salesPreset').value='custom';loadSales();
+};
+$('salesRefresh').onclick=loadSales;
+['salesTruckFilter','salesStoreFilter','salesPaymentFilter'].forEach(id=>$(id).addEventListener('change',renderSales));
+$('salesSearch').addEventListener('input',renderSales);
+
+async function fetchCompletedSales(start,end){
+const all=[],pageSize=1000;let from=0;
+while(true){
+const {data,error}=await db.from('delivery_bills')
+.select('id,bill_number,bill_date,truck_id,driver_id,driver_name_snapshot,store_id,payment_type,status,total_amount')
+.eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end))
+.order('bill_date',{ascending:false}).range(from,from+pageSize-1);
+if(error)throw error;
+const rows=data||[];all.push(...rows);if(rows.length<pageSize)break;from+=pageSize;
+}
+return all;
+}
+async function loadSales(){
+const start=$('salesStart').value,end=$('salesEnd').value;if(!start||!end)return;
+if(start>end){showToast('Invalid date range.');return;}
+const request=++salesRequest;
+$('salesHistory').innerHTML='<div class="report-empty">Loading completed sales...</div>';
+$('salesRangeCaption').textContent=start===end?`Completed sales for ${formatDate(start)}`:`Completed sales from ${formatDate(start)} to ${formatDate(end)}`;
+try{
+const data=await fetchCompletedSales(start,end);
+if(request!==salesRequest)return;
+salesBills=data;renderSales();
+}catch(e){if(request!==salesRequest)return;console.error(e);$('salesHistory').innerHTML='<div class="report-empty">Could not load sales. Please refresh.</div>';showToast('Sales loading failed: '+e.message);}
+}
+function getFilteredSales(){
+const truck=$('salesTruckFilter').value,store=$('salesStoreFilter').value,payment=$('salesPaymentFilter').value,q=$('salesSearch').value.trim().toLowerCase();
+return salesBills.filter(b=>{
+if(truck&&b.truck_id!==truck)return false;if(store&&b.store_id!==store)return false;if(payment&&b.payment_type!==payment)return false;
+const s=stores.find(x=>x.id===b.store_id),t=trucks.find(x=>x.id===b.truck_id);
+const search=[b.bill_number,s?.name,t?`truck ${t.truck_number}`:'',b.driver_name_snapshot].join(' ').toLowerCase();
+return !q||search.includes(q);
+});
+}
+function renderSales(){
+const rows=getFilteredSales(),sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((s,b)=>s+Number(b.total_amount||0),0);
+$('salesTotal').textContent=money(sum());$('salesPaid').textContent=money(sum('PAID'));$('salesCredit').textContent=money(sum('CREDIT'));
+$('salesBillCount').textContent=rows.length.toLocaleString('en-IN');$('salesHistoryCount').textContent=rows.length+' bills';
+if(!rows.length){$('salesHistory').innerHTML='<div class="report-empty">No completed bills match your selected filters.</div>';return;}
+$('salesHistory').innerHTML=rows.map(b=>{
+const s=stores.find(x=>x.id===b.store_id),t=trucks.find(x=>x.id===b.truck_id);
+return `<div class="bill-card"><div class="bill-card-head"><div><strong>Bill ${esc(b.bill_number||'—')}</strong><br><small>${formatDate(b.bill_date)}</small></div><div class="bill-card-meta"><span class="payment-tag ${b.payment_type==='PAID'?'paid':'credit'}">${b.payment_type}</span></div></div>
+<div class="bill-card-body"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><strong style="font-size:12px">${esc(s?.name||'Store unavailable')}</strong><div class="notice">Truck ${t?String(t.truck_number).padStart(2,'0'):'unavailable'} · ${esc(b.driver_name_snapshot||'Driver unavailable')}</div></div><div style="text-align:right"><strong style="font-size:15px">${money(b.total_amount)}</strong><div class="notice">Bill amount</div></div></div>
+<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn btn-light btn-small sales-detail-btn" data-bill-id="${esc(b.id)}">View Items ↓</button></div>
+<div class="sales-bill-items" id="salesItems-${esc(b.id)}" style="display:none;margin-top:12px"></div></div></div>`;
+}).join('');
+$('salesHistory').querySelectorAll('.sales-detail-btn').forEach(b=>b.onclick=()=>toggleSalesBillDetails(b.dataset.billId,b));
+}
+async function toggleSalesBillDetails(id,button){
+const box=$('salesItems-'+id);if(!box)return;
+if(box.style.display!=='none'){box.style.display='none';button.textContent='View Items ↓';return;}
+box.style.display='block';box.innerHTML='<div class="report-empty">Loading bill items...</div>';button.textContent='Hide Items ↑';
+try{
+const {data,error}=await db.from('delivery_bill_items').select('product_name_snapshot,quantity,unit_price,line_total,created_at').eq('bill_id',id).order('created_at');
+if(error)throw error;const items=data||[];
+if(!items.length){box.innerHTML='<div class="report-empty">No item details recorded.</div>';return;}
+box.innerHTML=`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Product</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>${items.map(i=>`<tr><td>${esc(i.product_name_snapshot||'Unnamed product')}</td><td class="num">${Number(i.quantity||0)}</td><td class="num">${money(i.unit_price)}</td><td class="num">${money(i.line_total)}</td></tr>`).join('')}</tbody></table></div>`;
+}catch(e){box.innerHTML='<div class="report-empty">Could not load bill items.</div>';showToast('Could not load bill details: '+e.message);}
+}
+
+/* START */
+async function init(){
+try{
+if(!window.supabase)throw new Error('Supabase library could not be loaded. Check internet connection.');
+await loadBase();await refreshFinancials();showToast('Connected to SR TRADE LINK database.');
+}catch(e){console.error(e);showToast('Supabase connection failed: '+e.message);}
+}
+init();
 
 })();
 </script>
