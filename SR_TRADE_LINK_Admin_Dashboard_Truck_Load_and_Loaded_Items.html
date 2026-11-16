@@ -1,4 +1,4 @@
-
+Here is the complete content of the admin_dashboard.html file:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,41 +81,6 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 .modal-body{padding:15px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.mini-stats{gap:6px}.mini-stat{padding:10px 8px}.mini-stat strong{font-size:16px}
 .driver-grid,.detail-grid{grid-template-columns:1fr 1fr}.sales-filter-grid{grid-template-columns:1fr}.sales-summary-grid{gap:7px}.sales-summary-grid .summary-card{min-height:100px}
 }
-
-/* TRUCK LOAD */
-.stock-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px}
-.stock-controls .form-group{min-width:0}
-.stock-controls label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}
-.stock-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-.stock-table{width:100%;border-collapse:collapse;min-width:690px;font-size:12px}
-.stock-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px;white-space:nowrap}
-.stock-table td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:middle}
-.stock-table td input{width:88px;border:1px solid #dce3ec;border-radius:7px;padding:8px;background:#fff;color:var(--text);text-align:center}
-.stock-table .sold-cell{text-align:center;font-weight:800;color:var(--blue)}
-.stock-table .remaining-cell{text-align:center;font-weight:800;color:var(--green)}
-.stock-table .remaining-cell.negative{color:var(--red);background:#fff1f1}
-.stock-total{display:flex;gap:12px;flex-wrap:wrap;padding:12px 4px 3px;color:var(--muted);font-size:11px}
-.stock-total span{background:#f5f7fa;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
-.stock-total strong{display:block;color:var(--text);font-size:15px;margin-top:3px}
-.stock-history-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:9px;margin-bottom:8px;font-size:12px}
-.stock-history-row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.stock-history-row>div:last-child{text-align:right;white-space:nowrap;color:var(--muted)}
-.stock-history-row>div:last-child strong{color:var(--text)}
-.stock-warning{margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff5e9;color:#985c16;font-size:11px;line-height:1.5}
-@media(max-width:650px){.stock-controls{grid-template-columns:1fr 1fr}.stock-controls .stock-refresh{grid-column:1/-1}.stock-history-row{align-items:flex-start;flex-direction:column}.stock-history-row>div:last-child{text-align:left}}
-
-
-/* LOADED ITEMS QUICK VIEW */
-.loaded-items-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
-.loaded-items-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-.loaded-items-table{width:100%;min-width:570px;border-collapse:collapse;font-size:12px}
-.loaded-items-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px}
-.loaded-items-table td{padding:11px 10px;border-top:1px solid var(--line)}
-.loaded-items-table .num{text-align:right;white-space:nowrap}
-.loaded-items-table tfoot td{font-weight:800;background:#f8fafc}
-.loaded-items-table .negative{color:var(--red);font-weight:800;background:#fff1f1}
-@media(max-width:560px){.loaded-items-summary{gap:6px}.loaded-items-summary .mini-stat{padding:10px 8px}}
-
 </style>
 </head>
 <body>
@@ -145,7 +110,6 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 <button class="quick-btn" id="openStores"><span class="ico">🏪</span>Stores</button>
 <button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
 <button class="quick-btn" id="openSales"><span class="ico">🧾</span>Sales</button>
-<button class="quick-btn" id="openTruckLoad"><span class="ico">📦</span>Truck Load</button>
 <button class="quick-btn" disabled><span class="ico">💳</span>Collections</button>
 <button class="quick-btn" disabled><span class="ico">📊</span>Reports</button>
 <button class="quick-btn" disabled><span class="ico">👥</span>Customers</button>
@@ -170,10 +134,6 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 <div class="driver-item">Assigned Zone<strong id="truckZone">Not assigned</strong></div>
 <div class="driver-item">Assigned Stores<strong id="truckStoreCount">0 stores</strong></div>
 </div>
-</div>
-
-<div style="display:flex;justify-content:flex-end;margin:-3px 0 15px">
-<button class="btn btn-primary" id="truckLoadedItemsBtn">📦 Loaded Items</button>
 </div>
 <div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="truckStartDate"></label> — <label class="date-field">To <input type="date" id="truckEndDate"></label></div>
 <div class="range-caption" id="truckRangeCaption" style="text-align:left;margin-bottom:12px"></div>
@@ -292,41 +252,6 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 </section>
 </div>
 
-
-<!-- TRUCK LOAD MANAGEMENT -->
-<div class="overlay" id="truckLoadOverlay">
-<section class="modal wide">
-<div class="modal-head"><div class="modal-title"><span class="big-icon">📦</span><div><h2>TRUCK LOAD MANAGEMENT</h2><p>Daily loaded stock, completed sales and returned quantities</p></div></div><button class="close-btn" data-close>×</button></div>
-<div class="modal-body">
-<div class="stock-controls">
-<div class="form-group"><label for="truckLoadTruck">Select Truck</label><select class="form-control" id="truckLoadTruck"><option value="">Select truck</option></select></div>
-<div class="form-group"><label for="truckLoadDate">Stock Date</label><input class="form-control" type="date" id="truckLoadDate"></div>
-<button class="btn btn-light stock-refresh" id="truckLoadRefresh">↻ Refresh</button>
-</div>
-<div class="section-head"><h3>Product Stock Sheet</h3><span id="truckLoadProductCount">0 products</span></div>
-<div id="truckLoadProductRows"><div class="empty">Select a truck and date to load the stock sheet.</div></div>
-<div class="stock-warning">Sold quantity is calculated automatically from COMPLETED delivery bills for the selected truck and date. PENDING bills are excluded. Remaining = Loaded − Sold − Returned. Negative balances are shown as discrepancies and will not prevent saving.</div>
-<div class="form-actions"><button class="btn btn-primary" id="truckLoadSave">Save Stock Sheet</button></div>
-<div class="report-section"><div class="section-head"><h3>Recent Stock History</h3><span>Latest 30 entries for selected truck</span></div><div id="truckLoadHistory"><div class="report-empty">Select a truck to view stock history.</div></div></div>
-</div>
-</section>
-</div>
-
-
-<!-- TRUCK LOADED ITEMS QUICK VIEW -->
-<div class="overlay" id="truckLoadedItemsOverlay">
-<section class="modal wide">
-<div class="modal-head"><div class="modal-title"><span class="big-icon">📦</span><div><h2 id="truckLoadedItemsTitle">LOADED ITEMS</h2><p>Daily loaded stock, completed sales, returns and remaining quantities</p></div></div><button class="close-btn" data-close>×</button></div>
-<div class="modal-body">
-<div class="toolbar">
-<label class="date-field">📅 Date <input class="form-control" type="date" id="truckLoadedItemsDate" style="width:auto"></label>
-<button class="btn btn-light" id="truckLoadedItemsRefresh">↻ Refresh</button>
-</div>
-<div id="truckLoadedItemsContent"><div class="report-empty">Select a date to view loaded items.</div></div>
-</div>
-</section>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -341,7 +266,6 @@ const $=id=>document.getElementById(id);
 
 let trucks=[],stores=[],products=[],selectedTruck=null,toastTimer;
 let salesBills=[],salesRequest=0;
-let truckLoadRows=[],truckLoadEntryId=null,truckLoadRequest=0;
 
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -403,7 +327,6 @@ $('startDate').onchange=()=>{ $('endDate').min=$('startDate').value;updateMainDa
 $('endDate').onchange=()=>{if($('endDate').value<$('startDate').value)$('endDate').value=$('startDate').value;updateMainDates();};
 $('openStores').onclick=()=>{renderStores();open('storesOverlay')};
 $('openProducts').onclick=()=>{renderProducts();open('productsOverlay')};
-$('openTruckLoad').onclick=openTruckLoadPage;
 
 /* DRIVER EDIT */
 async function editDriver(n){
@@ -670,239 +593,6 @@ box.innerHTML=`<div class="report-table-wrap"><table class="report-table"><thead
 }catch(e){box.innerHTML='<div class="report-empty">Could not load bill items.</div>';showToast('Could not load bill details: '+e.message);}
 }
 
-
-/* TRUCK LOAD MANAGEMENT */
-function openTruckLoadPage(){
-  const select=$('truckLoadTruck');
-  const previous=select.value;
-  select.innerHTML='<option value="">Select truck</option>';
-  trucks.forEach(t=>select.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
-  if(trucks.some(t=>t.id===previous))select.value=previous;
-  else if(trucks.length)select.value=trucks[0].id;
-  $('truckLoadDate').value=localDateString(new Date());
-  open('truckLoadOverlay');
-  loadTruckLoad();
-}
-$('truckLoadTruck').addEventListener('change',loadTruckLoad);
-$('truckLoadDate').addEventListener('change',loadTruckLoad);
-$('truckLoadRefresh').addEventListener('click',loadTruckLoad);
-$('truckLoadSave').addEventListener('click',saveTruckLoad);
-
-async function loadTruckLoad(){
-  const truckId=$('truckLoadTruck').value,date=$('truckLoadDate').value;
-  const request=++truckLoadRequest;
-  if(!truckId||!date){
-    $('truckLoadProductRows').innerHTML='<div class="empty">Select a truck and date to load the stock sheet.</div>';
-    $('truckLoadHistory').innerHTML='<div class="report-empty">Select a truck to view stock history.</div>';
-    $('truckLoadProductCount').textContent='0 products';
-    return;
-  }
-  $('truckLoadProductRows').innerHTML='<div class="empty">Loading stock and completed sales...</div>';
-  $('truckLoadHistory').innerHTML='<div class="report-empty">Loading stock history...</div>';
-  try{
-    const [entryResult,billsResult,historyResult]=await Promise.all([
-      db.from('truck_stock_entries').select('id').eq('truck_id',truckId).eq('stock_date',date).maybeSingle(),
-      db.from('delivery_bills').select('id').eq('truck_id',truckId).eq('bill_date',date).eq('status','COMPLETED'),
-      db.from('truck_stock_entries').select('id,stock_date,created_at,truck_stock_items(product_name_snapshot,quantity_loaded,quantity_returned)').eq('truck_id',truckId).order('stock_date',{ascending:false}).limit(30)
-    ]);
-    if(entryResult.error)throw entryResult.error;
-    if(billsResult.error)throw billsResult.error;
-    if(historyResult.error)throw historyResult.error;
-    const entryId=entryResult.data?.id||null;
-    const billIds=(billsResult.data||[]).map(b=>b.id);
-    let soldItems=[];
-    if(billIds.length){
-      const soldResult=await db.from('delivery_bill_items').select('product_id,quantity').in('bill_id',billIds);
-      if(soldResult.error)throw soldResult.error;
-      soldItems=soldResult.data||[];
-    }
-    let savedItems=[];
-    if(entryId){
-      const savedResult=await db.from('truck_stock_items').select('product_id,quantity_loaded,quantity_returned').eq('entry_id',entryId);
-      if(savedResult.error)throw savedResult.error;
-      savedItems=savedResult.data||[];
-    }
-    if(request!==truckLoadRequest)return;
-    const soldById={};
-    soldItems.forEach(item=>{
-      if(!item.product_id)return;
-      soldById[item.product_id]=(soldById[item.product_id]||0)+Number(item.quantity||0);
-    });
-    const savedById=Object.fromEntries(savedItems.map(item=>[item.product_id,item]));
-    truckLoadEntryId=entryId;
-    truckLoadRows=products.map(product=>{
-      const saved=savedById[product.id]||{};
-      return {productId:product.id,name:product.name,loaded:Number(saved.quantity_loaded)||0,sold:Number(soldById[product.id])||0,returned:Number(saved.quantity_returned)||0};
-    });
-    renderTruckLoadRows();
-    renderTruckLoadHistory(historyResult.data||[]);
-  }catch(error){
-    if(request!==truckLoadRequest)return;
-    console.error('Truck load loading error:',error);
-    $('truckLoadProductRows').innerHTML=`<div class="empty">Could not load stock sheet: ${esc(error.message||error)}</div>`;
-    $('truckLoadHistory').innerHTML='<div class="report-empty">Could not load stock history.</div>';
-    showToast('Truck Load error: '+(error.message||error));
-  }
-}
-function renderTruckLoadRows(){
-  $('truckLoadProductCount').textContent=truckLoadRows.length+' products';
-  if(!truckLoadRows.length){$('truckLoadProductRows').innerHTML='<div class="empty">No active products found. Add products in Product Management.</div>';return;}
-  const rows=truckLoadRows.map((r,i)=>{
-    const remaining=r.loaded-r.sold-r.returned;
-    return `<tr><td><strong>${esc(r.name)}</strong></td><td><input type="number" min="0" step="1" inputmode="numeric" data-load-qty="${i}" value="${r.loaded}" aria-label="Loaded quantity for ${esc(r.name)}"></td><td class="sold-cell">${r.sold}</td><td><input type="number" min="0" step="1" inputmode="numeric" data-return-qty="${i}" value="${r.returned}" aria-label="Returned quantity for ${esc(r.name)}"></td><td class="remaining-cell ${remaining<0?'negative':''}" id="truckLoadRemaining${i}">${remaining}${remaining<0?' · Check':''}</td></tr>`;
-  }).join('');
-  $('truckLoadProductRows').innerHTML=`<div class="stock-table-wrap"><table class="stock-table"><thead><tr><th>Product</th><th>Loaded</th><th>Sold (Auto)</th><th>Returned</th><th>Remaining</th></tr></thead><tbody>${rows}</tbody></table></div><div class="stock-total"><span>Total loaded<strong id="truckLoadLoadedTotal">0</strong></span><span>Total sold<strong id="truckLoadSoldTotal">0</strong></span><span>Total returned<strong id="truckLoadReturnedTotal">0</strong></span><span>Total remaining<strong id="truckLoadRemainingTotal">0</strong></span></div>`;
-  $('truckLoadProductRows').querySelectorAll('[data-load-qty]').forEach(input=>input.addEventListener('input',()=>updateTruckLoadQty(Number(input.dataset.loadQty),'loaded',input.value)));
-  $('truckLoadProductRows').querySelectorAll('[data-return-qty]').forEach(input=>input.addEventListener('input',()=>updateTruckLoadQty(Number(input.dataset.returnQty),'returned',input.value)));
-  updateTruckLoadTotals();
-}
-function updateTruckLoadQty(index,key,value){
-  if(!truckLoadRows[index])return;
-  truckLoadRows[index][key]=value===''?0:Number(value);
-  const r=truckLoadRows[index],remaining=r.loaded-r.sold-r.returned,cell=$('truckLoadRemaining'+index);
-  if(cell){cell.textContent=`${remaining}${remaining<0?' · Check':''}`;cell.classList.toggle('negative',remaining<0);}
-  updateTruckLoadTotals();
-}
-function updateTruckLoadTotals(){
-  const total=key=>truckLoadRows.reduce((sum,r)=>sum+(Number(r[key])||0),0);
-  const remaining=total('loaded')-total('sold')-total('returned');
-  if($('truckLoadLoadedTotal'))$('truckLoadLoadedTotal').textContent=total('loaded');
-  if($('truckLoadSoldTotal'))$('truckLoadSoldTotal').textContent=total('sold');
-  if($('truckLoadReturnedTotal'))$('truckLoadReturnedTotal').textContent=total('returned');
-  if($('truckLoadRemainingTotal'))$('truckLoadRemainingTotal').textContent=remaining;
-}
-function renderTruckLoadHistory(entries){
-  const host=$('truckLoadHistory');
-  if(!entries.length){host.innerHTML='<div class="report-empty">No stock history found for this truck.</div>';return;}
-  host.innerHTML=entries.map(entry=>{
-    const items=entry.truck_stock_items||[];
-    const loaded=items.reduce((sum,item)=>sum+(Number(item.quantity_loaded)||0),0);
-    const returned=items.reduce((sum,item)=>sum+(Number(item.quantity_returned)||0),0);
-    return `<div class="stock-history-row"><div><strong>${formatDate(entry.stock_date)}</strong><small>${items.length} product lines · Saved ${entry.created_at?new Date(entry.created_at).toLocaleString('en-IN'):''}</small></div><div>Loaded: <strong>${loaded}</strong> &nbsp; Returned: <strong>${returned}</strong></div></div>`;
-  }).join('');
-}
-async function saveTruckLoad(){
-  const truckId=$('truckLoadTruck').value,date=$('truckLoadDate').value;
-  if(!truckId||!date){showToast('Select a truck and date first.');return;}
-  if(!truckLoadRows.length){showToast('No products available to save.');return;}
-  for(const row of truckLoadRows){
-    if(!Number.isInteger(Number(row.loaded))||Number(row.loaded)<0||!Number.isInteger(Number(row.returned))||Number(row.returned)<0){
-      showToast(`Enter valid whole-number quantities for ${row.name}.`);return;
-    }
-  }
-  const button=$('truckLoadSave');button.disabled=true;button.textContent='Saving...';
-  try{
-    const truck=trucks.find(t=>t.id===truckId);
-    const entryPayload={truck_id:truckId,driver_id:truck?.driver_id||null,stock_date:date,updated_at:new Date().toISOString()};
-    const entryResult=await db.from('truck_stock_entries').upsert(entryPayload,{onConflict:'truck_id,stock_date'}).select('id').single();
-    if(entryResult.error)throw entryResult.error;
-    truckLoadEntryId=entryResult.data.id;
-    const itemPayload=truckLoadRows.map(row=>({entry_id:truckLoadEntryId,product_id:row.productId,product_name_snapshot:row.name,quantity_loaded:Number(row.loaded),quantity_returned:Number(row.returned),updated_at:new Date().toISOString()}));
-    if(itemPayload.length){
-      const itemResult=await db.from('truck_stock_items').upsert(itemPayload,{onConflict:'entry_id,product_id'});
-      if(itemResult.error)throw itemResult.error;
-    }
-    showToast('Truck stock sheet saved successfully.');
-    await loadTruckLoad();
-  }catch(error){
-    console.error('Truck load save error:',error);
-    showToast('Could not save stock: '+(error.message||error));
-  }finally{button.disabled=false;button.textContent='Save Stock Sheet';}
-}
-
-
-/* TRUCK LOADED ITEMS QUICK VIEW */
-let loadedItemsRequest=0;
-$('truckLoadedItemsBtn').addEventListener('click',openTruckLoadedItems);
-$('truckLoadedItemsDate').addEventListener('change',loadTruckLoadedItems);
-$('truckLoadedItemsRefresh').addEventListener('click',loadTruckLoadedItems);
-
-function openTruckLoadedItems(){
-  if(!selectedTruck){showToast('Select a truck first.');return;}
-  const today=localDateString(new Date());
-  $('truckLoadedItemsTitle').textContent=`TRUCK ${String(selectedTruck.truck_number).padStart(2,'0')} · LOADED ITEMS`;
-  $('truckLoadedItemsDate').value=today;
-  $('truckLoadedItemsDate').max=today;
-  open('truckLoadedItemsOverlay');
-  loadTruckLoadedItems();
-}
-
-async function loadTruckLoadedItems(){
-  if(!selectedTruck)return;
-  const request=++loadedItemsRequest;
-  const truckId=selectedTruck.id;
-  const date=$('truckLoadedItemsDate').value;
-  const host=$('truckLoadedItemsContent');
-  if(!date){host.innerHTML='<div class="report-empty">Select a date.</div>';return;}
-  host.innerHTML='<div class="report-empty">Loading loaded items...</div>';
-  try{
-    const [entryResult,billsResult]=await Promise.all([
-      db.from('truck_stock_entries')
-        .select('id,stock_date,created_at,truck_stock_items(product_id,product_name_snapshot,quantity_loaded,quantity_returned)')
-        .eq('truck_id',truckId).eq('stock_date',date).maybeSingle(),
-      db.from('delivery_bills').select('id')
-        .eq('truck_id',truckId).eq('bill_date',date).eq('status','COMPLETED')
-    ]);
-    if(entryResult.error)throw entryResult.error;
-    if(billsResult.error)throw billsResult.error;
-    if(request!==loadedItemsRequest)return;
-    const entry=entryResult.data;
-    if(!entry){
-      host.innerHTML=`<div class="report-empty">No stock sheet has been saved for ${formatDate(date)}.</div>`;
-      return;
-    }
-    const billIds=(billsResult.data||[]).map(b=>b.id);
-    let soldItems=[];
-    if(billIds.length){
-      const soldResult=await db.from('delivery_bill_items').select('product_id,quantity').in('bill_id',billIds);
-      if(soldResult.error)throw soldResult.error;
-      soldItems=soldResult.data||[];
-    }
-    if(request!==loadedItemsRequest)return;
-    const soldById={};
-    soldItems.forEach(item=>{
-      if(item.product_id)soldById[item.product_id]=(soldById[item.product_id]||0)+Number(item.quantity||0);
-    });
-    const items=(entry.truck_stock_items||[]).slice().sort((a,b)=>
-      String(a.product_name_snapshot||'').localeCompare(String(b.product_name_snapshot||''))
-    );
-    if(!items.length){
-      host.innerHTML='<div class="report-empty">A stock sheet exists, but it contains no product entries.</div>';
-      return;
-    }
-    const loadedTotal=items.reduce((sum,item)=>sum+Number(item.quantity_loaded||0),0);
-    const returnedTotal=items.reduce((sum,item)=>sum+Number(item.quantity_returned||0),0);
-    const soldTotal=items.reduce((sum,item)=>sum+Number(soldById[item.product_id]||0),0);
-    const remainingTotal=items.reduce((sum,item)=>sum+Number(item.quantity_loaded||0)-Number(soldById[item.product_id]||0)-Number(item.quantity_returned||0),0);
-    const rows=items.map(item=>{
-      const loaded=Number(item.quantity_loaded)||0;
-      const sold=Number(soldById[item.product_id]||0);
-      const returned=Number(item.quantity_returned)||0;
-      const remaining=loaded-sold-returned;
-      return `<tr><td><strong>${esc(item.product_name_snapshot||'Unnamed product')}</strong></td>
-        <td class="num">${loaded}</td><td class="num">${sold}</td><td class="num">${returned}</td>
-        <td class="num ${remaining<0?'negative':''}">${remaining}${remaining<0?' · Check':''}</td></tr>`;
-    }).join('');
-    host.innerHTML=`
-      <div class="loaded-items-summary">
-        <div class="mini-stat"><label>Total Loaded</label><strong>${loadedTotal}</strong></div>
-        <div class="mini-stat"><label>Total Sold</label><strong>${soldTotal}</strong></div>
-        <div class="mini-stat"><label>Total Remaining</label><strong>${remainingTotal}</strong></div>
-      </div>
-      <div class="loaded-items-table-wrap"><table class="loaded-items-table">
-        <thead><tr><th>Product</th><th class="num">Loaded</th><th class="num">Sold</th><th class="num">Returned</th><th class="num">Remaining</th></tr></thead>
-        <tbody>${rows}</tbody>
-        <tfoot><tr><td>Total</td><td class="num">${loadedTotal}</td><td class="num">${soldTotal}</td><td class="num">${returnedTotal}</td><td class="num ${remainingTotal<0?'negative':''}">${remainingTotal}</td></tr></tfoot>
-      </table></div>
-      <p class="notice">Stock sheet saved: ${entry.created_at?new Date(entry.created_at).toLocaleString('en-IN'):'Date unavailable'}</p>`;
-  }catch(error){
-    if(request!==loadedItemsRequest)return;
-    console.error('Loaded Items quick view error:',error);
-    host.innerHTML=`<div class="report-empty">Could not load items: ${esc(error.message||error)}</div>`;
-    showToast('Loaded Items error: '+(error.message||error));
-  }
-}
-
 /* START */
 async function init(){
 try{
@@ -916,3 +606,4 @@ init();
 </script>
 </body>
 </html>
+
