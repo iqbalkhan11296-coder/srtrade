@@ -1,4 +1,4 @@
-Here is the complete content of the admin_dashboard.html file:
+Here is the complete content of the admin_dashboard-1.html file:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,6 +60,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 .empty,.report-empty{border:1px dashed #d6dee8;border-radius:10px;padding:22px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
 .detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}.detail-item strong{font-size:13px;overflow-wrap:anywhere}
 .notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+.ledger-table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:10px}.ledger-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.ledger-table th,.ledger-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.ledger-table th:first-child,.ledger-table td:first-child{text-align:left}.ledger-table th{background:#f2f5f9;color:#526176;font-size:10px;text-transform:uppercase}.ledger-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}.ledger-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.ledger-summary>div{background:#f3f6fa;border-radius:9px;padding:11px}.ledger-summary small{display:block;color:var(--muted);font-size:10px}.ledger-summary strong{display:block;margin-top:5px;font-size:16px}@media(max-width:560px){.ledger-form{grid-template-columns:1fr 1fr}.ledger-summary strong{font-size:13px}}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translateX(-50%)}
 .report-section{margin-top:22px}.report-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
 .report-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.report-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px}
@@ -111,6 +112,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 <button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
 <button class="quick-btn" id="openSales"><span class="ico">🧾</span>Sales</button>
 <button class="quick-btn" disabled><span class="ico">💳</span>Collections</button>
+<button class="quick-btn" id="openLedger"><span class="ico">📒</span>Store Ledger</button>
 <button class="quick-btn" disabled><span class="ico">📊</span>Reports</button>
 <button class="quick-btn" disabled><span class="ico">👥</span>Customers</button>
 <button class="quick-btn" disabled><span class="ico">⚙️</span>Settings</button>
@@ -252,6 +254,8 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 </section>
 </div>
 
+<div class="overlay" id="ledgerOverlay"><section class="modal wide"><div class="modal-head"><div class="modal-title"><span class="big-icon">📒</span><div><h2>STORE LEDGER</h2><p>Independent manual credit ledger for each store</p></div></div><button class="close-btn" id="ledgerClose">×</button></div><div class="modal-body"><div class="toolbar"><input class="field" id="ledgerSearch" placeholder="Search store name"><span id="ledgerStoreCount" class="notice"></span></div><div class="store-list" id="ledgerStoreList"></div></div></section></div>
+<div class="overlay" id="ledgerDetailOverlay"><section class="modal wide"><div class="modal-head"><div class="modal-title"><span class="big-icon">📒</span><div><h2 id="ledgerStoreTitle">STORE LEDGER</h2><p>Manual store credit record</p></div></div><button class="close-btn" id="ledgerDetailClose">×</button></div><div class="modal-body"><div class="ledger-summary"><div><small>Total Credit Given</small><strong id="ledgerGiven">₹0.00</strong></div><div><small>Total Credit Paid</small><strong id="ledgerPaid">₹0.00</strong></div><div><small>Outstanding Balance</small><strong id="ledgerBalance">₹0.00</strong></div></div><form id="adminLedgerForm" class="ledger-form"><div class="form-group"><label>DATE</label><input class="form-control" type="date" id="adminLedgerDate" required></div><div class="form-group"><label>ENTRY TYPE</label><select class="form-control" id="adminLedgerType" required><option value="GIVEN">Credit Given</option><option value="PAID">Credit Paid</option><option value="OPENING">Opening Balance</option></select></div><div class="form-group"><label>AMOUNT (₹)</label><input class="form-control" id="adminLedgerAmount" type="number" min="0.01" step="0.01" required></div><button class="btn btn-primary" type="submit">Add Entry</button></form><p class="notice">Opening Balance records an amount already outstanding before this ledger started. Date defaults to today and can be changed.</p><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Date</th><th class="num">Credit Given</th><th class="num">Credit Paid</th><th class="num">Balance</th></tr></thead><tbody id="adminLedgerRows"><tr><td colspan="4">Select a store.</td></tr></tbody></table></div></div></section></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -266,6 +270,7 @@ const $=id=>document.getElementById(id);
 
 let trucks=[],stores=[],products=[],selectedTruck=null,toastTimer;
 let salesBills=[],salesRequest=0;
+let activeLedgerStore=null,ledgerEntries=[];
 
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -592,6 +597,14 @@ if(!items.length){box.innerHTML='<div class="report-empty">No item details recor
 box.innerHTML=`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Product</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>${items.map(i=>`<tr><td>${esc(i.product_name_snapshot||'Unnamed product')}</td><td class="num">${Number(i.quantity||0)}</td><td class="num">${money(i.unit_price)}</td><td class="num">${money(i.line_total)}</td></tr>`).join('')}</tbody></table></div>`;
 }catch(e){box.innerHTML='<div class="report-empty">Could not load bill items.</div>';showToast('Could not load bill details: '+e.message);}
 }
+
+/* INDEPENDENT STORE LEDGER — shared by admin and truck pages */
+const ledgerToday=()=>localDateString(new Date());
+function renderLedgerStores(){const q=$('ledgerSearch').value.trim().toLowerCase(),filtered=stores.filter(s=>String(s.name||'').toLowerCase().includes(q));$('ledgerStoreCount').textContent=filtered.length+' stores';const box=$('ledgerStoreList');box.innerHTML='';if(!filtered.length){box.innerHTML='<div class="empty">No stores found.</div>';return;}filtered.forEach(s=>{const truckNo=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const row=document.createElement('button');row.className='store-row';row.style.width='100%';row.style.textAlign='left';row.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Truck ${String(truckNo).padStart(2,'0')} · Zone ${s.zone_number}</small></span><span>Open ledger →</span>`;row.onclick=()=>openAdminLedger(s.id);box.append(row);});}
+async function openAdminLedger(id){activeLedgerStore=stores.find(s=>s.id===id);if(!activeLedgerStore)return;$('ledgerStoreTitle').textContent=activeLedgerStore.name.toUpperCase();$('adminLedgerDate').value=ledgerToday();$('adminLedgerAmount').value='';$('adminLedgerType').value='GIVEN';open('ledgerDetailOverlay');await loadAdminLedger();}
+async function loadAdminLedger(){if(!activeLedgerStore)return;$('adminLedgerRows').innerHTML='<tr><td colspan="4">Loading...</td></tr>';const {data,error}=await db.from('store_ledger_entries').select('id,entry_date,entry_type,credit_given,credit_paid,created_at').eq('store_id',activeLedgerStore.id).order('entry_date',{ascending:true}).order('created_at',{ascending:true});if(error){showToast('Ledger loading failed: '+error.message);$('adminLedgerRows').innerHTML=`<tr><td colspan="4">${esc(error.message)}</td></tr>`;return;}ledgerEntries=data||[];let bal=0,given=0,paid=0;const rows=[];ledgerEntries.forEach(e=>{const g=Number(e.credit_given||0),p=Number(e.credit_paid||0);given+=g;paid+=p;bal+=g-p;rows.push(`<tr><td>${esc(formatDate(e.entry_date))}</td><td class="num">${g?money(g):'—'}</td><td class="num">${p?money(p):'—'}</td><td class="num"><strong>${money(bal)}</strong></td></tr>`);});$('ledgerGiven').textContent=money(given);$('ledgerPaid').textContent=money(paid);$('ledgerBalance').textContent=money(bal);$('adminLedgerRows').innerHTML=rows.length?rows.reverse().join(''):'<tr><td colspan="4" style="text-align:center">No ledger entries yet.</td></tr>';$('adminLedgerType').querySelector('option[value="OPENING"]').disabled=ledgerEntries.some(e=>e.entry_type==='OPENING');}
+$('openLedger').onclick=()=>{renderLedgerStores();open('ledgerOverlay');};$('ledgerSearch').oninput=renderLedgerStores;$('ledgerClose').onclick=()=>close('ledgerOverlay');$('ledgerDetailClose').onclick=()=>{close('ledgerDetailOverlay');activeLedgerStore=null;};
+$('adminLedgerForm').onsubmit=async e=>{e.preventDefault();if(!activeLedgerStore)return;const type=$('adminLedgerType').value,amount=Number($('adminLedgerAmount').value),date=$('adminLedgerDate').value;if(!date||!Number.isFinite(amount)||amount<=0){showToast('Enter a valid date and amount.');return;}if(type==='OPENING'&&ledgerEntries.some(x=>x.entry_type==='OPENING')){showToast('Opening balance already entered.');return;}const payload={store_id:activeLedgerStore.id,entry_date:date,entry_type:type,credit_given:type==='PAID'?0:amount,credit_paid:type==='PAID'?amount:0};const {error}=await db.from('store_ledger_entries').insert(payload);if(error){showToast('Could not save ledger entry: '+error.message);return;}$('adminLedgerAmount').value='';await loadAdminLedger();showToast('Ledger entry saved.');};
 
 /* START */
 async function init(){
