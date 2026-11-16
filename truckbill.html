@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,6 +86,7 @@ button{cursor:pointer}
 .status{font-size:11px;font-weight:700;padding:7px 10px;border-radius:8px;background:#edf1f6;color:#52647a}
 .status.online{background:#e7f4eb;color:#237447}
 .status.offline{background:#fff1dc;color:#98601c}
+.ledger-overlay{position:fixed;inset:0;background:#08111e99;display:none;align-items:center;justify-content:center;padding:14px;z-index:60}.ledger-overlay.show{display:flex}.ledger-modal{background:#fff;width:min(850px,100%);max-height:92vh;overflow:auto;border-radius:15px;box-shadow:0 20px 60px #0003}.ledger-head{background:linear-gradient(110deg,var(--navy),#203550);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}.ledger-body{padding:16px}.ledger-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}.ledger-table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:10px}.ledger-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.ledger-table th,.ledger-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.ledger-table th:first-child,.ledger-table td:first-child{text-align:left}.ledger-table th{background:#f3f6fa;color:#526176;font-size:10px;text-transform:uppercase}.ledger-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.ledger-summary>div{background:#f3f6fa;border-radius:9px;padding:11px}.ledger-summary small{display:block;color:var(--muted);font-size:10px}.ledger-summary strong{display:block;margin-top:5px;font-size:16px}@media(max-width:600px){.ledger-form{grid-template-columns:1fr 1fr}.ledger-summary strong{font-size:13px}}
 @media(max-width:820px){.layout{grid-template-columns:1fr}.wrap{margin-top:18px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:20px}}
 @media(max-width:520px){.top{padding:13px 14px}.brand h1{font-size:16px}.logo{width:38px;height:38px}.truck-tag{font-size:10px;padding:8px}.wrap{padding:0 12px 30px}.heading{align-items:flex-start;flex-direction:column}.driver{text-align:left}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.stat{padding:10px 8px}.stat label{font-size:9px;min-height:23px}.stat strong{font-size:16px}.panel{padding:14px}.items{grid-template-columns:1fr}.store-row{grid-template-columns:1fr}.total{font-size:24px}}
 @media print{body{background:#fff}.top,.stats,.layout>.right,.heading,.panel:not(.invoice-panel){display:none!important}.wrap{margin:0;padding:0}.invoice-panel{display:block!important;border:0;box-shadow:none}}
@@ -134,7 +134,7 @@ button{cursor:pointer}
             <label class="field-label" for="billDate">BILL DATE</label>
             <input class="input" id="billDate" type="date">
           </div>
-        </div>
+        </div><div style="margin-top:12px"><button class="btn secondary full" id="ledgerStoreQuick" disabled type="button">📒 Open Selected Store Ledger</button></div>
       </section>
 
       <section class="panel">
@@ -180,6 +180,7 @@ button{cursor:pointer}
   </div>
 </main>
 
+<div class="ledger-overlay" id="ledgerOverlay"><section class="ledger-modal"><div class="ledger-head"><div><strong id="ledgerStoreTitle">STORE LEDGER</strong><div style="font-size:11px;color:#c5cfdb;margin-top:4px">Manual store credit record</div></div><button class="btn secondary" id="closeLedger">Close</button></div><div class="ledger-body"><div class="ledger-summary"><div><small>Total Credit Given</small><strong id="ledgerGiven">₹0.00</strong></div><div><small>Total Credit Paid</small><strong id="ledgerPaid">₹0.00</strong></div><div><small>Outstanding Balance</small><strong id="ledgerBalance">₹0.00</strong></div></div><form id="ledgerForm" class="ledger-form"><div><label class="field-label">DATE</label><input class="input" type="date" id="ledgerDate" required></div><div><label class="field-label">ENTRY TYPE</label><select id="ledgerType" required><option value="GIVEN">Credit Given</option><option value="PAID">Credit Paid</option><option value="OPENING">Opening Balance</option></select></div><div><label class="field-label">AMOUNT (₹)</label><input class="input" id="ledgerAmount" type="number" min="0.01" step="0.01" required placeholder="0.00"></div><button class="btn primary" type="submit">Add Entry</button></form><div class="note">Opening Balance is used to enter an amount already outstanding before this ledger started. The date can be changed for any entry.</div><div class="ledger-table-wrap"><table class="ledger-table"><thead><tr><th>Date</th><th>Credit Given</th><th>Credit Paid</th><th>Balance</th></tr></thead><tbody id="ledgerRows"><tr><td colspan="4" style="text-align:center">Select a store to view its ledger.</td></tr></tbody></table></div></div></section></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -214,6 +215,8 @@ let products=[];
 let bills=[];
 let quantities={};
 let saving=false;
+let activeLedgerStore=null;
+let ledgerEntries=[];
 
 /* ==========================================
    HELPERS
@@ -799,6 +802,41 @@ $('clearBill').addEventListener('click',()=>{
 });
 
 /* ==========================================
+   INDEPENDENT STORE LEDGER
+========================================== */
+function openStoreLedger(storeId){
+  const store=stores.find(x=>x.id===storeId);if(!store)return;
+  activeLedgerStore=store;$('ledgerStoreTitle').textContent=store.name.toUpperCase();
+  $('ledgerDate').value=today();$('ledgerAmount').value='';$('ledgerType').value='GIVEN';
+  $('ledgerOverlay').classList.add('show');document.body.style.overflow='hidden';
+  loadStoreLedger();
+}
+async function loadStoreLedger(){
+  if(!activeLedgerStore)return;
+  $('ledgerRows').innerHTML='<tr><td colspan="4" style="text-align:center">Loading ledger...</td></tr>';
+  const {data,error}=await db.from('store_ledger_entries').select('id,entry_date,entry_type,credit_given,credit_paid,created_at').eq('store_id',activeLedgerStore.id).order('entry_date',{ascending:true}).order('created_at',{ascending:true});
+  if(error){$('ledgerRows').innerHTML=`<tr><td colspan="4" style="text-align:center">${escapeHtml(error.message)}</td></tr>`;notify('Ledger loading failed: '+error.message);return;}
+  ledgerEntries=data||[];let balance=0,totalGiven=0,totalPaid=0;const rows=[];
+  ledgerEntries.forEach(e=>{const given=Number(e.credit_given||0),paid=Number(e.credit_paid||0);totalGiven+=given;totalPaid+=paid;balance+=given-paid;rows.push(`<tr><td>${escapeHtml(e.entry_date)}</td><td>${given?money(given):'—'}</td><td>${paid?money(paid):'—'}</td><td><strong>${money(balance)}</strong></td></tr>`);});
+  $('ledgerGiven').textContent=money(totalGiven);$('ledgerPaid').textContent=money(totalPaid);$('ledgerBalance').textContent=money(balance);
+  $('ledgerRows').innerHTML=rows.length?rows.reverse().join(''):'<tr><td colspan="4" style="text-align:center;color:#718096">No ledger entries yet.</td></tr>';
+  const hasOpening=ledgerEntries.some(e=>e.entry_type==='OPENING');$('ledgerType').querySelector('option[value="OPENING"]').disabled=hasOpening;
+}
+$('ledgerStoreQuick').addEventListener('click',()=>{const id=$('ledgerStoreQuick').dataset.store;if(id)openStoreLedger(id);});
+$('ledgerForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!activeLedgerStore)return;
+  const type=$('ledgerType').value,amount=Number($('ledgerAmount').value),date=$('ledgerDate').value;
+  if(!date||!Number.isFinite(amount)||amount<=0){notify('Enter a valid date and amount.');return;}
+  if(type==='OPENING'&&ledgerEntries.some(x=>x.entry_type==='OPENING')){notify('Opening balance has already been entered.');return;}
+  const payload={store_id:activeLedgerStore.id,entry_date:date,entry_type:type,credit_given:type==='PAID'?0:amount,credit_paid:type==='PAID'?amount:0};
+  const {error}=await db.from('store_ledger_entries').insert(payload);
+  if(error){notify('Could not save ledger entry: '+error.message);return;}
+  $('ledgerAmount').value='';await loadStoreLedger();notify('Ledger entry saved.');
+});
+$('closeLedger').onclick=()=>{$('ledgerOverlay').classList.remove('show');document.body.style.overflow='';activeLedgerStore=null;};
+$('storeSelect').addEventListener('change',e=>{if(e.target.value){$('ledgerStoreQuick').disabled=false;$('ledgerStoreQuick').dataset.store=e.target.value;}else{$('ledgerStoreQuick').disabled=true;}});
+
+/* ==========================================
    INITIALIZE
 ========================================== */
 async function init(){
@@ -813,7 +851,16 @@ async function init(){
     }
 
     await loadTruck();
-    await loadStores();
+      await loadStores();
+    // Keep this driver's store list synchronized with Admin store assignments.
+    if (!window.__storeAssignmentChannel) {
+      window.__storeAssignmentChannel = db
+        .channel('store-assignment-truck-' + TRUCK_NUMBER)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'stores' }, () => {
+          loadStores().catch(error => console.error('Store list refresh failed:', error));
+        })
+        .subscribe();
+    }
     await loadProducts();
     await loadBills();
     await loadStats();
@@ -835,7 +882,7 @@ init();
 /* Refresh shared data when the page becomes active again */
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden&&truck){
-    loadBills().then(loadStats).catch(console.error);
+    loadStores().then(loadBills).then(loadStats).catch(console.error);
   }
 });
 
