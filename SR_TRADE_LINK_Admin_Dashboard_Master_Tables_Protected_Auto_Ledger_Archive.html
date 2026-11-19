@@ -1,0 +1,1348 @@
+Here is the complete content of the SR_TRADE_LINK_Admin_Store_Ledger_Truck_Filter.html file:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SR TRADE LINK | Admin Dashboard</title>
+<style>
+:root{--navy:#111c2e;--navy2:#1a2940;--gold:#d6ad61;--bg:#f3f5f8;--text:#172235;--muted:#718096;--line:#e4e9f0;--blue:#285d91;--green:#237447;--orange:#a76519;--red:#c34242;--shadow:0 12px 34px rgba(18,32,52,.10)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.topbar{height:76px;background:linear-gradient(110deg,var(--navy),#1b2b43);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 4px 18px #0c172533}
+.brand{display:flex;align-items:center;gap:13px}.brand-mark{width:43px;height:43px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:var(--navy);font-size:24px}
+.brand h1{font-size:21px;letter-spacing:1.6px;margin:0;font-weight:800}.brand small{display:block;color:#bac5d4;font-size:10px;letter-spacing:2px;margin-top:4px}
+.top-actions{display:flex;align-items:center;gap:12px;color:#dbe3ed;font-size:13px}.admin-pill{border:1px solid #ffffff2b;border-radius:20px;padding:7px 12px}
+.container{max-width:1500px;margin:0 auto;padding:26px 30px 42px}
+.page-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.page-heading h2{font-size:20px;margin:0}.page-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.date-filter{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--muted);font-size:13px}
+.date-filter input{border:0;outline:0;color:var(--text);background:transparent;min-width:135px}.date-field{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px;font-weight:700}
+.range-caption{font-size:11px;color:var(--muted);margin-top:7px;text-align:right}
+.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:22px}
+.summary-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;display:flex;align-items:center;gap:14px;min-height:102px;box-shadow:0 3px 12px #1a2c4510}
+.summary-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;font-size:21px;background:#e8f0fa}
+.summary-card:nth-child(2) .summary-icon{background:#e7f4eb}.summary-card:nth-child(3) .summary-icon{background:#fff1df}
+.summary-card label{display:block;font-size:12px;font-weight:700;color:#68778b;margin-bottom:6px}.summary-card strong{font-size:24px}
+.section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;margin-bottom:19px;box-shadow:0 3px 12px #1a2c4508}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.section-head h3{font-size:15px;margin:0}.section-head span{font-size:12px;color:var(--muted)}
+.quick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.quick-btn{border:1px solid var(--line);background:#fff;border-radius:11px;min-height:83px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text);font-size:12px;font-weight:700}
+.quick-btn .ico{font-size:22px;color:#52647a}.quick-btn:hover:not(:disabled){border-color:#c5a05a;transform:translateY(-2px);box-shadow:0 7px 16px #17223512}.quick-btn:disabled{opacity:.45;cursor:not-allowed;background:#f8f9fb}
+.truck-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.truck-tile{background:var(--navy2);border:1px solid #263b57;border-radius:10px;color:#fff;min-height:72px;padding:10px 8px;display:flex;align-items:center;justify-content:center;gap:9px}
+.truck-tile:hover{background:#263c59;border-color:var(--gold);transform:translateY(-2px)}.truck-symbol{font-size:24px;color:var(--gold)}.truck-tile strong{font-size:12px}
+.footer-note{text-align:center;color:#99a4b3;font-size:11px;padding:10px}
+.overlay{position:fixed;inset:0;background:rgba(8,17,30,.58);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;width:min(900px,100%);max-height:92vh;overflow:auto;box-shadow:var(--shadow)}.modal.wide{width:min(1050px,100%)}
+.modal-head{background:linear-gradient(110deg,var(--navy),#20334e);color:#fff;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:2}
+.modal-title{display:flex;align-items:center;gap:12px}.big-icon{font-size:26px;color:var(--gold)}.modal-title h2{font-size:17px;margin:0}.modal-title p{margin:4px 0 0;color:#c2ccda;font-size:11px}
+.close-btn{border:1px solid #ffffff35;background:#ffffff12;color:#fff;border-radius:8px;width:35px;height:35px;font-size:20px}.modal-body{padding:22px}
+.driver-card,.store-detail{background:#f7f9fc;border:1px solid var(--line);border-radius:11px;padding:15px;margin-bottom:17px}
+.driver-card h3,.subheading{font-size:13px;margin:0 0 12px}
+.driver-grid,.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.driver-item{font-size:12px;color:var(--muted)}.driver-item strong{display:block;color:var(--text);font-size:14px;margin-top:5px}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:19px}
+.mini-stat{border-radius:10px;padding:13px;background:#eaf1fa}.mini-stat:nth-child(2){background:#eaf5ed}.mini-stat:nth-child(3){background:#fff3e4}
+.mini-stat label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}.mini-stat strong{font-size:19px;color:#18283e}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+.field,.toolbar input,.form-control{width:100%;border:1px solid #dce3ec;border-radius:8px;padding:10px 11px;background:#fff;color:var(--text);outline:none}
+.toolbar .field{max-width:340px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn-primary{background:var(--navy2);color:#fff}.btn-light{background:#edf1f6;color:#34445a}.btn-danger{background:#fff0f0;color:var(--red)}.btn-small{padding:7px 9px;font-size:11px}
+.store-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.store-row,.product-row{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;align-items:center;gap:11px;min-width:0}
+.store-avatar,.product-avatar{width:37px;height:37px;flex:0 0 37px;border-radius:10px;background:#eef2f7;display:grid;place-items:center;font-size:19px}
+.store-main,.product-main{min-width:0;flex:1}.store-main strong,.product-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.store-main small,.product-main small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.row-actions{display:flex;gap:5px}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:30px;color:#52647a}.icon-btn.delete{color:var(--red)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}.form-group.full{grid-column:1/-1}
+.form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.empty,.report-empty{border:1px dashed #d6dee8;border-radius:10px;padding:22px;text-align:center;color:var(--muted);font-size:13px;grid-column:1/-1}
+.detail-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}.detail-item strong{font-size:13px;overflow-wrap:anywhere}
+.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+.ledger-table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:10px}.ledger-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.ledger-table th,.ledger-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.ledger-table th:first-child,.ledger-table td:first-child{text-align:left}.ledger-table th{background:#f2f5f9;color:#526176;font-size:10px;text-transform:uppercase}.ledger-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}.ledger-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.ledger-summary>div{background:#f3f6fa;border-radius:9px;padding:11px}.ledger-summary small{display:block;color:var(--muted);font-size:10px}.ledger-summary strong{display:block;margin-top:5px;font-size:16px}@media(max-width:560px){.ledger-form{grid-template-columns:1fr 1fr}.ledger-summary strong{font-size:13px}}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#15243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:50;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translateX(-50%)}
+.report-section{margin-top:22px}.report-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.report-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.report-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px}
+.report-table td{padding:11px 10px;border-top:1px solid var(--line);vertical-align:top}.report-table td.num,.report-table th.num{text-align:right;white-space:nowrap}.report-table tfoot td{font-weight:800;background:#f8fafc}
+.bill-card{border:1px solid var(--line);border-radius:11px;margin-bottom:11px;overflow:hidden}
+.bill-card-head{background:#f5f7fa;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bill-card-head strong{font-size:12px}.bill-card-head small{font-size:10px;color:var(--muted)}.bill-card-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.payment-tag{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px}.payment-tag.paid{background:#e7f4eb;color:#237447}.payment-tag.credit{background:#fff1df;color:#a76519}
+.bill-card-body{padding:12px 14px}.bill-card-total{display:flex;justify-content:space-between;border-top:1px dashed #dce3ec;padding-top:10px;margin-top:8px;font-size:12px;font-weight:800}
+.sales-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0 20px}
+.sales-summary-grid .summary-card{min-height:88px;padding:13px}.sales-summary-grid .summary-card strong{font-size:21px}
+.sales-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:850px){.truck-grid{grid-template-columns:repeat(4,1fr)}.quick-grid{grid-template-columns:repeat(4,1fr)}.container{padding:20px}.store-list{grid-template-columns:1fr}}
+@media(max-width:560px){
+.topbar{height:67px;padding:0 15px}.brand h1{font-size:17px}.brand-mark{width:38px;height:38px}.top-actions .admin-pill{display:none}
+.container{padding:17px 13px 30px}.page-heading{align-items:flex-start;gap:10px;flex-direction:column}.date-filter{width:100%;justify-content:space-between;gap:7px;flex-wrap:wrap}.date-filter input{max-width:125px;min-width:0}
+.summary-grid{gap:7px}.summary-card{padding:11px 9px;display:block;min-height:111px}.summary-icon{width:31px;height:31px;font-size:16px;margin-bottom:7px}.summary-card label{font-size:10px;min-height:25px}.summary-card strong{font-size:18px}
+.section{padding:14px}.quick-grid{grid-template-columns:repeat(3,1fr);gap:8px}.quick-btn{min-height:75px}.truck-grid{grid-template-columns:repeat(3,1fr);gap:7px}.truck-tile{min-height:63px;gap:5px;flex-direction:column}
+.modal-body{padding:15px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.mini-stats{gap:6px}.mini-stat{padding:10px 8px}.mini-stat strong{font-size:16px}
+.driver-grid,.detail-grid{grid-template-columns:1fr 1fr}.sales-filter-grid{grid-template-columns:1fr}.sales-summary-grid{gap:7px}.sales-summary-grid .summary-card{min-height:100px}
+}
+/* TRUCK LOAD */
+.stock-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-bottom:16px}
+.stock-controls .form-group{min-width:0}
+.stock-controls label{display:block;font-size:11px;font-weight:700;color:#58677b;margin-bottom:6px}
+.stock-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.stock-table{width:100%;border-collapse:collapse;min-width:690px;font-size:12px}
+.stock-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px;white-space:nowrap}
+.stock-table td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:middle}
+.stock-table td input{width:88px;border:1px solid #dce3ec;border-radius:7px;padding:8px;background:#fff;color:var(--text);text-align:center}
+.stock-table .sold-cell{text-align:center;font-weight:800;color:var(--blue)}
+.stock-table .remaining-cell{text-align:center;font-weight:800;color:var(--green)}
+.stock-table .remaining-cell.negative{color:var(--red);background:#fff1f1}
+.stock-total{display:flex;gap:12px;flex-wrap:wrap;padding:12px 4px 3px;color:var(--muted);font-size:11px}
+.stock-total span{background:#f5f7fa;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.stock-total strong{display:block;color:var(--text);font-size:15px;margin-top:3px}
+.stock-history-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:9px;margin-bottom:8px;font-size:12px}
+.stock-history-row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.stock-history-row>div:last-child{text-align:right;white-space:nowrap;color:var(--muted)}
+.stock-history-row>div:last-child strong{color:var(--text)}
+.stock-warning{margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff5e9;color:#985c16;font-size:11px;line-height:1.5}
+@media(max-width:650px){.stock-controls{grid-template-columns:1fr 1fr}.stock-controls .stock-refresh{grid-column:1/-1}.stock-history-row{align-items:flex-start;flex-direction:column}.stock-history-row>div:last-child{text-align:left}}
+
+
+/* LOADED ITEMS QUICK VIEW */
+.loaded-items-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.loaded-items-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.loaded-items-table{width:100%;min-width:570px;border-collapse:collapse;font-size:12px}
+.loaded-items-table th{background:#f2f5f9;color:#526176;text-align:left;font-size:10px;text-transform:uppercase;padding:11px 10px}
+.loaded-items-table td{padding:11px 10px;border-top:1px solid var(--line)}
+.loaded-items-table .num{text-align:right;white-space:nowrap}
+.loaded-items-table tfoot td{font-weight:800;background:#f8fafc}
+.loaded-items-table .negative{color:var(--red);font-weight:800;background:#fff1f1}
+@media(max-width:560px){.loaded-items-summary{gap:6px}.loaded-items-summary .mini-stat{padding:10px 8px}}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><div class="brand-mark">🚚</div><div><h1>SR TRADE LINK</h1><small>ADMIN CONTROL CENTER</small></div></div>
+<div class="top-actions"><span>Company Dashboard</span><span class="admin-pill">ADMIN</span></div>
+</header>
+
+<main class="container">
+<div class="page-heading">
+<div><h2>Dashboard Overview</h2><p>Manage your diary distribution operations from one place.</p></div>
+<div>
+<div class="date-filter">📅 <label class="date-field">From <input type="date" id="startDate"></label> — <label class="date-field">To <input type="date" id="endDate"></label></div>
+<div class="range-caption" id="rangeCaption">Showing today's sales</div>
+</div>
+</div>
+
+<section class="summary-grid">
+<div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong id="totalSales">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">💰</div><div><label>Total Cash Collected</label><strong id="totalPaid">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">🧾</div><div><label>Total Credit Sales</label><strong id="totalCredit">₹0.00</strong></div></div>
+</section>
+
+<section class="section">
+<div class="section-head"><h3>Quick Access</h3><span>Management tools</span></div>
+<div class="quick-grid">
+<button class="quick-btn" id="openStores"><span class="ico">🏪</span>Stores</button>
+<button class="quick-btn" id="openProducts"><span class="ico">📚</span>Products</button>
+<button class="quick-btn" id="openSales"><span class="ico">🧾</span>Sales</button>
+<button class="quick-btn" id="openTruckLoad"><span class="ico">📦</span>Truck Load</button>
+<button class="quick-btn" disabled><span class="ico">💳</span>Collections</button>
+<button class="quick-btn" id="openLedger"><span class="ico">📒</span>Store Ledger</button>
+<button class="quick-btn" id="openBackup"><span class="ico">💾</span>Backup &amp; Restore</button>
+<button class="quick-btn" id="syncTrucksBtn"><span class="ico">🔄</span>Sync Trucks to Supabase</button>
+<button class="quick-btn" disabled><span class="ico">📊</span>Reports</button>
+<button class="quick-btn" disabled><span class="ico">👥</span>Customers</button>
+<button class="quick-btn" disabled><span class="ico">⚙️</span>Settings</button>
+</div>
+</section>
+
+<section class="section"><div class="section-head"><h3>Truck Management</h3><span>11 delivery trucks</span></div><div class="truck-grid" id="truckGrid"></div></section>
+<div class="footer-note">SR TRADE LINK · Main Admin Dashboard</div>
+</main>
+
+<!-- TRUCK DETAILS -->
+<div class="overlay" id="truckOverlay">
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🚚</span><div><h2 id="truckTitle">TRUCK 01</h2><p>Truck information and assigned stores</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="driver-card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">Driver Information</h3><button class="btn btn-primary btn-small" id="editDriverBtn">✎ Edit Driver</button></div>
+<div class="driver-grid">
+<div class="driver-item">Driver Name<strong id="truckDriverName">Not configured</strong></div>
+<div class="driver-item">Driver Contact Number<strong id="truckDriverPhone">Not configured</strong></div>
+<div class="driver-item">Assigned Zone<strong id="truckZone">Not assigned</strong></div>
+<div class="driver-item">Assigned Stores<strong id="truckStoreCount">0 stores</strong></div>
+</div>
+</div>
+<div style="display:flex;justify-content:flex-end;margin:-3px 0 15px">
+<button class="btn btn-primary" id="truckLoadedItemsBtn">📦 Loaded Items</button>
+</div>
+<div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="truckStartDate"></label> — <label class="date-field">To <input type="date" id="truckEndDate"></label></div>
+<div class="range-caption" id="truckRangeCaption" style="text-align:left;margin-bottom:12px"></div>
+<h3 class="subheading">Financial Summary</h3>
+<div class="mini-stats">
+<div class="mini-stat"><label>Total Sales</label><strong id="truckSales">₹0.00</strong></div>
+<div class="mini-stat"><label>Total Collection</label><strong id="truckPaid">₹0.00</strong></div>
+<div class="mini-stat"><label>Total Credit</label><strong id="truckCredit">₹0.00</strong></div>
+</div>
+<div class="section-head"><h3>Assigned Stores & Store-wise Sales</h3><span id="truckStoreLabel">0 stores</span></div>
+<div class="store-list" id="truckStoreList"></div>
+<p class="notice">Only COMPLETED bills are included. PAID and CREDIT are reported separately.</p>
+</div>
+</section>
+</div>
+
+<!-- STORE MANAGEMENT -->
+<div class="overlay" id="storesOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2>STORE MANAGEMENT</h2><p>Add, edit, search and assign stores</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar"><input class="field" id="storeSearch" placeholder="Search stores by name, owner or contact"><button class="btn btn-primary" id="addStoreBtn">＋ Add New Store</button></div>
+<div class="section-head"><h3>Store Directory</h3><span id="storeCount">0 stores</span></div><div class="store-list" id="storeList"></div>
+</div>
+</section>
+</div>
+
+<!-- STORE FORM -->
+<div class="overlay" id="storeFormOverlay">
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeFormTitle">ADD NEW STORE</h2><p>Store information and assignment</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<form id="storeForm">
+<input type="hidden" id="storeId">
+<div class="form-grid">
+<div class="form-group"><label>Store Name *</label><input class="form-control" id="storeName" required></div>
+<div class="form-group"><label>Store Owner Name</label><input class="form-control" id="ownerName"></div>
+<div class="form-group"><label>Contact Number</label><input class="form-control" id="storePhone"></div>
+<div class="form-group"><label>Assign Truck *</label><select class="form-control" id="storeTruck" required></select></div>
+<div class="form-group"><label>Assign Zone *</label><select class="form-control" id="storeZone" required></select></div>
+<div class="form-group full"><label>Store Address</label><textarea class="form-control" id="storeAddress" rows="2"></textarea></div>
+<div class="form-group full"><label>Additional Notes</label><textarea class="form-control" id="storeNotes" rows="2"></textarea></div>
+</div>
+<div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Store</button></div>
+</form>
+</div>
+</section>
+</div>
+
+<!-- STORE DETAILS -->
+<div class="overlay" id="storeDetailOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🏪</span><div><h2 id="storeDetailTitle">STORE DETAILS</h2><p>Store financials, item-wise report and bill history</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body" id="storeDetailBody"></div>
+</section>
+</div>
+
+<!-- PRODUCT MANAGEMENT -->
+<div class="overlay" id="productsOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📚</span><div><h2>PRODUCT MANAGEMENT</h2><p>Manage diary products</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar"><input class="field" id="productSearch" placeholder="Search products"><button class="btn btn-primary" id="addProductBtn">＋ Add New Product</button></div>
+<div class="section-head"><h3>Product Directory</h3><span id="productCount">0 products</span></div><div class="store-list" id="productList"></div>
+</div>
+</section>
+</div>
+
+<!-- PRODUCT FORM -->
+<div class="overlay" id="productFormOverlay">
+<section class="modal">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📚</span><div><h2 id="productFormTitle">ADD NEW PRODUCT</h2><p>Enter product information</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<form id="productForm">
+<input type="hidden" id="productId">
+<div class="form-grid">
+<div class="form-group"><label>Product Name *</label><input class="form-control" id="productName" required></div>
+<div class="form-group"><label>Unit Price (₹) *</label><input class="form-control" id="productPrice" type="number" min="0" step="0.01" required></div>
+</div>
+<div class="form-actions"><button type="button" class="btn btn-light" data-close>Cancel</button><button type="submit" class="btn btn-primary">Save Product</button></div>
+</form>
+</div>
+</section>
+</div>
+
+<!-- SALES PAGE -->
+<div class="overlay" id="salesOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">🧾</span><div><h2>SALES MANAGEMENT</h2><p>Completed bills, payment details and sales history</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar">
+<select class="field" id="salesPreset" style="max-width:190px">
+<option value="today">Today</option><option value="yesterday">Yesterday</option><option value="month">This Month</option><option value="custom">Custom Date Range</option>
+</select>
+<button class="btn btn-light" id="salesRefresh">↻ Refresh</button>
+</div>
+<div class="date-filter" style="margin-bottom:8px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="salesStart"></label> — <label class="date-field">To <input type="date" id="salesEnd"></label></div>
+<div class="range-caption" id="salesRangeCaption" style="text-align:left;margin-bottom:16px"></div>
+<div class="sales-summary-grid">
+<div class="summary-card"><div class="summary-icon">📈</div><div><label>Total Sales</label><strong id="salesTotal">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">🧾</div><div><label>Completed Bills</label><strong id="salesBillCount">0</strong></div></div>
+<div class="summary-card"><div class="summary-icon">💰</div><div><label>PAID Amount</label><strong id="salesPaid">₹0.00</strong></div></div>
+<div class="summary-card"><div class="summary-icon">📒</div><div><label>CREDIT Amount</label><strong id="salesCredit">₹0.00</strong></div></div>
+</div>
+<div class="section-head"><h3>Filter Sales</h3><span>Completed bills only</span></div>
+<div class="sales-filter-grid">
+<div class="form-group"><label>Truck</label><select class="form-control" id="salesTruckFilter"><option value="">All Trucks</option></select></div>
+<div class="form-group"><label>Store</label><select class="form-control" id="salesStoreFilter"><option value="">All Stores</option></select></div>
+<div class="form-group"><label>Payment Type</label><select class="form-control" id="salesPaymentFilter"><option value="">All Payments</option><option value="PAID">PAID</option><option value="CREDIT">CREDIT</option></select></div>
+<div class="form-group"><label>Search Bills</label><input class="form-control" id="salesSearch" placeholder="Bill number, store or driver"></div>
+</div>
+<div class="section-head"><h3>Sales History</h3><span id="salesHistoryCount">0 bills</span></div>
+<div id="salesHistory"><div class="report-empty">Select a date range to load sales.</div></div>
+<p class="notice">Only COMPLETED bills are included. PAID and CREDIT amounts are calculated separately. Pending bills are excluded.</p>
+</div>
+</section>
+</div>
+
+<div class="overlay" id="ledgerOverlay"><section class="modal wide"><div class="modal-head"><div class="modal-title"><span class="big-icon">📒</span><div><h2>STORE LEDGER</h2><p>Independent manual credit ledger for each store</p></div></div><button class="close-btn" id="ledgerClose">×</button></div><div class="modal-body"><div class="toolbar"><select class="field" id="ledgerTruckFilter" aria-label="Filter stores by truck" style="max-width:220px"><option value="">All Trucks</option></select><input class="field" id="ledgerSearch" placeholder="Search store name"><span id="ledgerStoreCount" class="notice"></span></div><div class="store-list" id="ledgerStoreList"></div></div></section></div>
+<div class="overlay" id="ledgerDetailOverlay"><section class="modal wide"><div class="modal-head"><div class="modal-title"><span class="big-icon">📒</span><div><h2 id="ledgerStoreTitle">STORE LEDGER</h2><p>Manual store credit record</p></div></div><button class="close-btn" id="ledgerDetailClose">×</button></div><div class="modal-body"><div class="ledger-summary"><div><small>Total Credit Given</small><strong id="ledgerGiven">₹0.00</strong></div><div><small>Total Credit Paid</small><strong id="ledgerPaid">₹0.00</strong></div><div><small>Outstanding Balance</small><strong id="ledgerBalance">₹0.00</strong></div></div><form id="adminLedgerForm" class="ledger-form"><div class="form-group"><label>DATE</label><input class="form-control" type="date" id="adminLedgerDate" required></div><div class="form-group"><label>ENTRY TYPE</label><select class="form-control" id="adminLedgerType" required><option value="GIVEN">Credit Given</option><option value="PAID">Credit Paid</option><option value="OPENING">Opening Balance</option></select></div><div class="form-group"><label>AMOUNT (₹)</label><input class="form-control" id="adminLedgerAmount" type="number" min="0.01" step="0.01" required></div><button class="btn btn-primary" type="submit">Add Entry</button></form><p class="notice">Opening Balance records an amount already outstanding before this ledger started. Date defaults to today and can be changed.</p><div style="display:flex;justify-content:flex-end;margin:8px 0"><button class="btn btn-light" id="syncArchivedLedgerBtn" type="button">↥ Sync this store’s archived ledger</button></div><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Date</th><th class="num">Credit Given</th><th class="num">Credit Paid</th><th class="num">Balance</th></tr></thead><tbody id="adminLedgerRows"><tr><td colspan="4">Select a store.</td></tr></tbody></table></div></div></section></div>
+<!-- TRUCK LOAD MANAGEMENT -->
+<div class="overlay" id="truckLoadOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📦</span><div><h2>TRUCK LOAD MANAGEMENT</h2><p>Daily loaded stock, completed sales and returned quantities</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="stock-controls">
+<div class="form-group"><label for="truckLoadTruck">Select Truck</label><select class="form-control" id="truckLoadTruck"><option value="">Select truck</option></select></div>
+<div class="form-group"><label for="truckLoadDate">Stock Date</label><input class="form-control" type="date" id="truckLoadDate"></div>
+<button class="btn btn-light stock-refresh" id="truckLoadRefresh">↻ Refresh</button>
+</div>
+<div class="section-head"><h3>Product Stock Sheet</h3><span id="truckLoadProductCount">0 products</span></div>
+<div id="truckLoadProductRows"><div class="empty">Select a truck and date to load the stock sheet.</div></div>
+<div class="stock-warning">Sold quantity is calculated automatically from COMPLETED delivery bills for the selected truck and date. PENDING bills are excluded. Remaining = Loaded − Sold − Returned. Negative balances are shown as discrepancies and will not prevent saving.</div>
+<div class="form-actions"><button class="btn btn-primary" id="truckLoadSave">Save Stock Sheet</button></div>
+<div class="report-section"><div class="section-head"><h3>Recent Stock History</h3><span>Latest 30 entries for selected truck</span></div><div id="truckLoadHistory"><div class="report-empty">Select a truck to view stock history.</div></div></div>
+</div>
+</section>
+</div>
+
+
+<!-- TRUCK LOADED ITEMS QUICK VIEW -->
+<div class="overlay" id="truckLoadedItemsOverlay">
+<section class="modal wide">
+<div class="modal-head"><div class="modal-title"><span class="big-icon">📦</span><div><h2 id="truckLoadedItemsTitle">LOADED ITEMS</h2><p>Daily loaded stock, completed sales, returns and remaining quantities</p></div></div><button class="close-btn" data-close>×</button></div>
+<div class="modal-body">
+<div class="toolbar">
+<label class="date-field">📅 Date <input class="form-control" type="date" id="truckLoadedItemsDate" style="width:auto"></label>
+<button class="btn btn-light" id="truckLoadedItemsRefresh">↻ Refresh</button>
+</div>
+<div id="truckLoadedItemsContent"><div class="report-empty">Select a date to view loaded items.</div></div>
+</div>
+</section>
+</div>
+
+
+<div class="overlay" id="backupOverlay"><section class="modal wide"><div class="modal-head"><div class="modal-title"><span class="big-icon">💾</span><div><h2>BACKUP &amp; RESTORE</h2><p>Export or restore all SR TRADE LINK dashboard records</p></div></div><button class="close-btn" data-close>×</button></div><div class="modal-body"><div class="driver-card"><h3>📤 Export complete backup</h3><p class="notice">Combines the browser IndexedDB archive with all current Supabase records into one complete JSON file. After the JSON backup is created and archived in this browser, confirm to clear the five Supabase transaction tables. The dashboard verifies that each is empty. Master tables are protected.</p><button class="btn btn-primary" id="exportBackup">⬇ Export Full Backup</button></div><div class="driver-card"><h3>📥 Import backup to browser</h3><p class="notice">Choose a backup JSON file. Its records are merged into this browser's IndexedDB archive only. Nothing is uploaded to or deleted from Supabase.</p><div class="form-group" style="margin:12px 0"><label for="backupFile">BACKUP FILE (.JSON)</label><input class="form-control" id="backupFile" type="file" accept=".json,application/json"></div><div id="backupFileInfo" class="notice">No backup file selected.</div><button class="btn btn-danger" id="restoreBackup" disabled>↻ Import to Browser Archive</button></div><p class="notice">New records continue to save in Supabase. Historical records remain in IndexedDB. All dashboard views combine both sources. Keep a copy of each downloaded JSON file somewhere safe.</p></div></section></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+'use strict';
+
+const SUPABASE_URL='https://vypqxnwvgeskugsmtzvu.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_DBtO5XkgjX-8wiFz-tPR-A_pWiOSYBa';
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+/* HYBRID DATA LAYER: archived history in IndexedDB + new records in Supabase */
+const ARCHIVE_DB_NAME='SR_TRADE_LINK_ARCHIVE';
+const ARCHIVE_DB_VERSION=1;
+const ARCHIVE_TABLES=['drivers','trucks','products','stores','delivery_bills','delivery_bill_items','store_ledger_entries','truck_stock_entries','truck_stock_items'];
+let archiveDbPromise;
+function openArchiveDB(){
+  if(archiveDbPromise)return archiveDbPromise;
+  archiveDbPromise=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(ARCHIVE_DB_NAME,ARCHIVE_DB_VERSION);
+    req.onupgradeneeded=()=>{const idb=req.result;ARCHIVE_TABLES.forEach(t=>{if(!idb.objectStoreNames.contains(t))idb.createObjectStore(t,{keyPath:'id'});});};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('Could not open IndexedDB archive.'));
+  });
+  return archiveDbPromise;
+}
+async function idbGetAll(table){
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readonly'),req=tx.objectStore(table).getAll();
+    req.onsuccess=()=>resolve(req.result||[]);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function idbPutMany(table,rows){
+  if(!rows.length)return;
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readwrite'),store=tx.objectStore(table);
+    rows.forEach(row=>{if(row&&row.id)store.put(row);});
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||new Error('IndexedDB write failed.'));
+    tx.onabort=()=>reject(tx.error||new Error('IndexedDB write was aborted.'));
+  });
+}
+async function idbUpdateRows(table,ids,payload){
+  if(!ids.length)return;
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readwrite'),store=tx.objectStore(table);
+    ids.forEach(id=>{const req=store.get(id);req.onsuccess=()=>{if(req.result)store.put({...req.result,...payload});};});
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||new Error('IndexedDB update failed.'));
+  });
+}
+function splitSelectFields(str){
+  const out=[];let depth=0,start=0;
+  for(let i=0;i<str.length;i++){if(str[i]==='(')depth++;else if(str[i]===')')depth--;else if(str[i]===','&&depth===0){out.push(str.slice(start,i).trim());start=i+1;}}
+  if(str.slice(start).trim())out.push(str.slice(start).trim());
+  return out;
+}
+const RELATIONS={
+  'trucks:drivers':{localKey:'driver_id',foreignKey:'id',many:false},
+  'truck_stock_entries:truck_stock_items':{localKey:'id',foreignKey:'entry_id',many:true}
+};
+class HybridReadQuery{
+  constructor(table){this.table=table;this.columns='*';this.filters=[];this.orders=[];this.start=0;this.end=Infinity;this.singleMode=null;this.mutation=null;this.payload=null;this.conflict=null;this.returnColumns=null;}
+  select(columns='*'){if(this.mutation){this.returnColumns=columns;return this;}this.columns=columns;return this;}
+  eq(k,v){this.filters.push([k,'eq',v]);return this;} neq(k,v){this.filters.push([k,'neq',v]);return this;}
+  gt(k,v){this.filters.push([k,'gt',v]);return this;} gte(k,v){this.filters.push([k,'gte',v]);return this;}
+  lt(k,v){this.filters.push([k,'lt',v]);return this;} lte(k,v){this.filters.push([k,'lte',v]);return this;}
+  in(k,v){this.filters.push([k,'in',v]);return this;} is(k,v){this.filters.push([k,'is',v]);return this;}
+  order(k,opt={}){this.orders.push([k,opt.ascending!==false]);return this;}
+  limit(n){this.end=this.start+Number(n);return this;} range(a,b){this.start=Number(a);this.end=Number(b)+1;return this;}
+  maybeSingle(){this.singleMode='maybe';return this;} single(){this.singleMode='single';return this;}
+  insert(payload){
+    if(this.table==='store_ledger_entries')return this.insertLedgerRows(payload);
+    return supabaseClient.from(this.table).insert(payload);
+  }
+  async insertLedgerRows(payload){
+    const rows=Array.isArray(payload)?payload:[payload];
+    try{
+      const localRows=[];
+      for(const row of rows){
+        const archivedStores=await idbGetAll('stores');
+        const parentArchived=archivedStores.some(s=>s.id===row.store_id);
+        let parentOnline=false;
+        if(parentArchived){const check=await supabaseClient.from('stores').select('id').eq('id',row.store_id).maybeSingle();if(check.error)throw check.error;parentOnline=!!check.data;}
+        if(parentArchived&&!parentOnline)localRows.push({...row,id:row.id||crypto.randomUUID(),created_at:row.created_at||new Date().toISOString()});
+      }
+      if(localRows.length){await idbPutMany('store_ledger_entries',localRows);const remoteRows=rows.filter(r=>!localRows.some(x=>x.store_id===r.store_id&&x.entry_date===r.entry_date&&x.entry_type===r.entry_type&&x.credit_given===r.credit_given&&x.credit_paid===r.credit_paid));if(!remoteRows.length)return {data:localRows,error:null};return await supabaseClient.from(this.table).insert(remoteRows);}
+      return await supabaseClient.from(this.table).insert(payload);
+    }catch(error){return {data:null,error:{message:error.message||String(error)}};}
+  }
+  delete(){return supabaseClient.from(this.table).delete();}
+  update(payload){this.mutation='update';this.payload=payload;return this;}
+  upsert(payload,options={}){this.mutation='upsert';this.payload=payload;this.conflict=(options.onConflict||'id').split(',').map(x=>x.trim());return this;}
+  async execute(){
+    if(this.mutation)return this.executeMutation();
+    try{
+      // Fetch live rows first. For ledger reads, immediately archive every
+      // successfully fetched Supabase row on THIS admin device before merging.
+      const remote=await fetchSupabaseTable(this.table);
+      if(this.table==='store_ledger_entries'&&remote.length){
+        await idbPutMany('store_ledger_entries',remote.map(row=>({...row,__local_sync_state:'synced'})));
+      }
+      const archived=await idbGetAll(this.table);
+      const byId=new Map();archived.forEach(r=>byId.set(r.id,r));remote.forEach(r=>byId.set(r.id,r));
+      let rows=[...byId.values()];
+      rows=rows.filter(row=>this.filters.every(([key,op,val])=>{
+        const x=row[key];
+        if(op==='eq')return x===val;
+        if(op==='neq')return x!==val;
+        if(op==='gt')return x>val;
+        if(op==='gte')return x>=val;
+        if(op==='lt')return x<val;
+        if(op==='lte')return x<=val;
+        if(op==='in')return Array.isArray(val)&&val.includes(x);
+        if(op==='is')return val===null?x==null:x===val;
+        return true;
+      }));
+      for(const [key,ascending] of this.orders.slice().reverse())rows.sort((a,b)=>{
+        const x=a[key],y=b[key];if(x==null&&y==null)return 0;if(x==null)return ascending?-1:1;if(y==null)return ascending?1:-1;
+        const cmp=typeof x==='number'&&typeof y==='number'?x-y:String(x).localeCompare(String(y));return ascending?cmp:-cmp;
+      });
+      const total=rows.length;rows=rows.slice(this.start,this.end);
+      const projected=await Promise.all(rows.map(row=>projectHybridRow(this.table,row,this.columns)));
+      if(this.singleMode==='single'){
+        if(projected.length!==1)return {data:null,error:{message:`Expected 1 row, received ${projected.length}`,code:'PGRST116'},count:total};
+        return {data:projected[0],error:null,count:total};
+      }
+      if(this.singleMode==='maybe')return {data:projected[0]||null,error:null,count:total};
+      return {data:projected,error:null,count:total};
+    }catch(error){return {data:null,error:{message:error.message||String(error)},count:null};}
+  }
+  async executeMutation(){
+    try{
+      const rows=Array.isArray(this.payload)?this.payload:[this.payload];
+      if(this.mutation==='update'){
+        const archived=await idbGetAll(this.table);
+        const matches=archived.filter(r=>this.filters.every(([k,op,v])=>matchesFilter(r[k],op,v)));
+        const ids=matches.map(r=>r.id);
+        if(ids.length)await idbUpdateRows(this.table,ids,this.payload);
+        let remoteQuery=supabaseClient.from(this.table).update(this.payload);
+        this.filters.forEach(([k,op,v])=>{if(op==='eq')remoteQuery=remoteQuery.eq(k,v);else if(op==='neq')remoteQuery=remoteQuery.neq(k,v);else if(op==='in')remoteQuery=remoteQuery.in(k,v);});
+        if(ids.length&&this.filters.some(f=>f[0]==='id'&&f[1]==='eq'))return {data:null,error:null};
+        const result=await remoteQuery;
+        if(result.error)throw result.error;
+        return result;
+      }
+      if(this.mutation==='upsert'){
+        const archived=await idbGetAll(this.table),remaining=[],localResults=[];
+        for(const row of rows){
+          const existing=archived.find(a=>this.conflict.every(k=>a[k]===row[k]));
+          if(existing){await idbUpdateRows(this.table,[existing.id],row);localResults.push({...existing,...row});continue;}
+          let mustStayLocal=false;
+          if(this.table==='truck_stock_entries'){
+            mustStayLocal=await isArchivedOnly('trucks',row.truck_id);
+          }else if(this.table==='truck_stock_items'){
+            mustStayLocal=await isArchivedOnly('truck_stock_entries',row.entry_id)||await isArchivedOnly('products',row.product_id);
+          }
+          if(mustStayLocal){const local={...row,id:row.id||crypto.randomUUID(),created_at:row.created_at||new Date().toISOString()};await idbPutMany(this.table,[local]);localResults.push(local);}
+          else remaining.push(row);
+        }
+        if(!remaining.length){
+          let data=localResults;
+          if(this.returnColumns&&this.returnColumns!=='*')data=await Promise.all(data.map(r=>projectHybridRow(this.table,r,this.returnColumns)));
+          if(this.singleMode==='single')return {data:data[0]||null,error:data.length===1?null:{message:`Expected 1 row, received ${data.length}`}};
+          if(this.singleMode==='maybe')return {data:data[0]||null,error:null};
+          return {data,error:null};
+        }
+        let q=supabaseClient.from(this.table).upsert(Array.isArray(this.payload)?remaining:remaining[0],{onConflict:this.conflict.join(',')});
+        if(this.returnColumns)q=q.select(this.returnColumns);
+        let result=q;
+        if(this.singleMode==='single')result=q.single();else if(this.singleMode==='maybe')result=q.maybeSingle();
+        return await result;
+      }
+      return {data:null,error:null};
+    }catch(error){return {data:null,error:{message:error.message||String(error)}};}
+  }
+  then(resolve,reject){return this.execute().then(resolve,reject);}
+}
+async function isArchivedOnly(table,id){
+  if(!id)return false;
+  const archived=await idbGetAll(table);
+  if(!archived.some(row=>row.id===id))return false;
+  const remote=await supabaseClient.from(table).select('id').eq('id',id).maybeSingle();
+  if(remote.error)throw remote.error;
+  return !remote.data;
+}
+function matchesFilter(x,op,v){if(op==='eq')return x===v;if(op==='neq')return x!==v;if(op==='in')return Array.isArray(v)&&v.includes(x);if(op==='gte')return x>=v;if(op==='gt')return x>v;if(op==='lte')return x<=v;if(op==='lt')return x<v;if(op==='is')return v===null?x==null:x===v;return true;}
+async function fetchSupabaseTable(table){
+  const all=[],size=1000;
+  for(let from=0;;from+=size){
+    const {data,error}=await supabaseClient.from(table).select('*').range(from,from+size-1);
+    if(error)throw error;all.push(...(data||[]));if(!data||data.length<size)break;
+  }
+  return all;
+}
+async function projectHybridRow(table,row,columns){
+  if(columns==='*'||!columns)return {...row};
+  const out={};
+  for(const field of splitSelectFields(columns)){
+    const rel=field.match(/^([a-zA-Z0-9_]+)\((.*)\)$/);
+    if(rel){
+      const name=rel[1],spec=RELATIONS[`${table}:${name}`];
+      if(!spec){out[name]=spec?.many?[]:null;continue;}
+      const related=await getHybridRows(name);
+      const matches=related.filter(r=>r[spec.foreignKey]===row[spec.localKey]);
+      out[name]=spec.many?await Promise.all(matches.map(r=>projectHybridRow(name,r,rel[2]))):(matches[0]?await projectHybridRow(name,matches[0],rel[2]):null);
+    }else if(field==='*')Object.assign(out,row);
+    else if(field in row)out[field]=row[field];
+  }
+  return out;
+}
+async function getHybridRows(table){
+  const [remote,archived]=await Promise.all([fetchSupabaseTable(table),idbGetAll(table)]);
+  const map=new Map();archived.forEach(r=>map.set(r.id,r));remote.forEach(r=>map.set(r.id,r));return [...map.values()];
+}
+const db={from:table=>new HybridReadQuery(table)};
+const $=id=>document.getElementById(id);
+
+let trucks=[],stores=[],products=[],selectedTruck=null,toastTimer;
+let salesBills=[],salesRequest=0;
+let truckLoadRows=[],truckLoadEntryId=null,truckLoadRequest=0;
+let activeLedgerStore=null,ledgerEntries=[];
+
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function showToast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600);}
+function open(id){$(id).classList.add('show');document.body.style.overflow='hidden';}
+function close(id){$(id).classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.style.overflow='';}
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>close(b.closest('.overlay').id)));
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)close(o.id)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=[...document.querySelectorAll('.overlay.show')].reverse()[0];if(o)close(o.id)}});
+
+function localDateString(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function nextDateString(value){const d=new Date(value+'T12:00:00');d.setDate(d.getDate()+1);return localDateString(d);}
+function formatDate(v){if(!v)return '';const [y,m,d]=String(v).slice(0,10).split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
+function dateRange(){return {start:$('startDate').value,end:$('endDate').value};}
+
+async function syncArchivedTrucksToSupabase(requiredTruckId=null){
+  // Insert only missing parent truck rows. Never update or delete existing Supabase trucks.
+  const [archived,onlineResult,archivedDrivers,onlineDriversResult]=await Promise.all([
+    idbGetAll('trucks'),
+    supabaseClient.from('trucks').select('id,truck_number'),
+    idbGetAll('drivers'),
+    supabaseClient.from('drivers').select('id')
+  ]);
+  if(onlineResult.error)throw onlineResult.error;
+  if(onlineDriversResult.error)throw onlineDriversResult.error;
+  const onlineDriverIds=new Set((onlineDriversResult.data||[]).map(r=>String(r.id)));
+  const missingDrivers=archivedDrivers.filter(r=>r&&r.id&&!onlineDriverIds.has(String(r.id)));
+  if(missingDrivers.length){
+    const driverRows=missingDrivers.map(r=>({id:r.id,name:r.name,phone:r.phone||null,is_active:r.is_active!==false}));
+    const {error:driverError}=await supabaseClient.from('drivers').insert(driverRows);
+    if(driverError)throw new Error('Could not sync assigned drivers before trucks: '+driverError.message);
+  }
+  const onlineIds=new Set((onlineResult.data||[]).map(r=>String(r.id)));
+  const missing=archived.filter(r=>r&&r.id&&!onlineIds.has(String(r.id)));
+  const missingDriverRefs=missing.filter(r=>r.driver_id&&!onlineDriverIds.has(String(r.driver_id))&&!missingDrivers.some(d=>String(d.id)===String(r.driver_id)));
+  if(missingDriverRefs.length)throw new Error('Some archived trucks reference drivers missing from both online and local driver records. Restore the correct driver archive before syncing.');
+  if(requiredTruckId&&!onlineIds.has(String(requiredTruckId))&&!missing.some(r=>String(r.id)===String(requiredTruckId))){
+    throw new Error('Selected truck is not present in Supabase or the local archive. Export/restore the correct truck archive before assigning stores.');
+  }
+  if(!missing.length)return {inserted:0,alreadyOnline:onlineIds.size};
+  // Copy only known trucks-table columns; IDs and truck numbers are preserved exactly.
+  const rows=missing.map(r=>({id:r.id,truck_number:r.truck_number,driver_id:r.driver_id||null}));
+  const {data,error}=await supabaseClient.from('trucks').insert(rows).select('id,truck_number');
+  if(error)throw error;
+  return {inserted:(data||[]).length,alreadyOnline:onlineIds.size};
+}
+$('syncTrucksBtn').onclick=async()=>{
+  const btn=$('syncTrucksBtn');btn.disabled=true;const old=btn.innerHTML;btn.innerHTML='<span class="ico">⏳</span>Syncing trucks…';
+  try{const result=await syncArchivedTrucksToSupabase();await loadBase();showToast(result.inserted?`${result.inserted} missing truck record(s) safely added to Supabase.`:'All archived truck records already exist in Supabase.');}
+  catch(e){console.error('Truck sync failed:',e);showToast('Truck sync failed: '+(e.message||e));}
+  finally{btn.disabled=false;btn.innerHTML=old;}
+};
+
+async function loadBase(){
+const [tr,st,pr]=await Promise.all([
+db.from('trucks').select('id,truck_number,driver_id,drivers(id,name,phone)').order('truck_number'),
+db.from('stores').select('id,name,owner_name,phone,address,notes,truck_id,zone_number,is_active').eq('is_active',true).order('name'),
+db.from('products').select('id,name,unit_price,sort_order,is_active').eq('is_active',true).order('sort_order').order('name')
+]);
+if(tr.error)throw tr.error;if(st.error)throw st.error;if(pr.error)throw pr.error;
+trucks=tr.data||[];stores=st.data||[];products=pr.data||[];
+renderTruckTiles();fillTruckOptions();renderStores();renderProducts();
+}
+
+function renderTruckTiles(){
+const grid=$('truckGrid');grid.innerHTML='';
+for(let n=1;n<=11;n++){
+const b=document.createElement('button');b.className='truck-tile';b.innerHTML=`<span class="truck-symbol">🚚</span><strong>TRUCK ${String(n).padStart(2,'0')}</strong>`;
+b.onclick=()=>showTruck(n);grid.append(b);
+}
+}
+function fillTruckOptions(){
+$('storeTruck').innerHTML='<option value="">Select truck</option>';
+trucks.forEach(t=>$('storeTruck').add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
+$('storeZone').innerHTML='<option value="">Select zone</option>';
+for(let n=1;n<=11;n++)$('storeZone').add(new Option(`Zone ${String(n).padStart(2,'0')}`,String(n)));
+}
+
+async function refreshFinancials(){
+const {start,end}=dateRange();if(!start||!end)return;
+const {data,error}=await db.from('delivery_bills').select('total_amount,payment_type').eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end));
+if(error){showToast('Could not load sales totals: '+error.message);return;}
+const rows=data||[];
+$('totalSales').textContent=money(rows.reduce((s,b)=>s+Number(b.total_amount||0),0));
+$('totalPaid').textContent=money(rows.filter(b=>b.payment_type==='PAID').reduce((s,b)=>s+Number(b.total_amount||0),0));
+$('totalCredit').textContent=money(rows.filter(b=>b.payment_type==='CREDIT').reduce((s,b)=>s+Number(b.total_amount||0),0));
+}
+const today=localDateString(new Date());
+$('startDate').value=today;$('endDate').value=today;$('startDate').max=today;$('endDate').max=today;
+function updateMainDates(){
+if($('startDate').value>$('endDate').value)$('endDate').value=$('startDate').value;
+const {start,end}=dateRange();
+$('rangeCaption').textContent=start===end?`Showing sales for ${formatDate(start)}`:`Showing report from ${formatDate(start)} to ${formatDate(end)}`;
+refreshFinancials();
+}
+$('startDate').onchange=()=>{ $('endDate').min=$('startDate').value;updateMainDates(); };
+$('endDate').onchange=()=>{if($('endDate').value<$('startDate').value)$('endDate').value=$('startDate').value;updateMainDates();};
+$('openStores').onclick=()=>{renderStores();open('storesOverlay')};
+$('openProducts').onclick=()=>{renderProducts();open('productsOverlay')};
+
+/* DRIVER EDIT */
+async function editDriver(n){
+const truck=trucks.find(t=>Number(t.truck_number)===n);if(!truck)return;
+const current=truck.drivers||{};
+const name=prompt('Enter driver name:',current.name||'');if(name===null)return;
+if(!name.trim()){showToast('Driver name cannot be empty.');return;}
+const phone=prompt('Enter driver contact number:',current.phone||'');if(phone===null)return;
+try{
+if(current.id){
+const {error}=await db.from('drivers').update({name:name.trim(),phone:phone.trim()||null,updated_at:new Date().toISOString()}).eq('id',current.id);
+if(error)throw error;
+}else{
+const {data,error}=await db.from('drivers').insert({name:name.trim(),phone:phone.trim()||null,is_active:true}).select('id').single();
+if(error)throw error;
+const {error:truckError}=await db.from('trucks').update({driver_id:data.id,updated_at:new Date().toISOString()}).eq('id',truck.id);
+if(truckError)throw truckError;
+}
+await loadBase();showToast('Driver information updated.');await showTruck(n);
+}catch(e){showToast('Driver update failed: '+e.message);}
+}
+
+/* TRUCK DETAILS */
+async function showTruck(n){
+selectedTruck=trucks.find(t=>Number(t.truck_number)===n);if(!selectedTruck){showToast('Truck record not found.');return;}
+$('editDriverBtn').onclick=()=>editDriver(n);
+const assigned=stores.filter(s=>s.truck_id===selectedTruck.id),zones=[...new Set(assigned.map(s=>Number(s.zone_number)).filter(Boolean))],driver=selectedTruck.drivers||{};
+$('truckTitle').textContent=`TRUCK ${String(n).padStart(2,'0')}`;
+$('truckDriverName').textContent=driver.name||'Not configured';$('truckDriverPhone').textContent=driver.phone||'Not configured';
+$('truckZone').textContent=zones.length?zones.map(z=>`Zone ${String(z).padStart(2,'0')}`).join(', '):'Not assigned';
+$('truckStoreCount').textContent=assigned.length+' stores';$('truckStoreLabel').textContent=assigned.length+' stores';
+const d=localDateString(new Date());$('truckStartDate').value=d;$('truckEndDate').value=d;$('truckStartDate').max=d;$('truckEndDate').max=d;$('truckEndDate').min=d;
+$('truckStartDate').onchange=()=>{if($('truckStartDate').value>$('truckEndDate').value)$('truckEndDate').value=$('truckStartDate').value;$('truckEndDate').min=$('truckStartDate').value;refreshTruckFinancials(n)};
+$('truckEndDate').onchange=()=>{if($('truckEndDate').value<$('truckStartDate').value)$('truckEndDate').value=$('truckStartDate').value;refreshTruckFinancials(n)};
+open('truckOverlay');await refreshTruckFinancials(n);
+}
+async function refreshTruckFinancials(n){
+const t=trucks.find(x=>Number(x.truck_number)===n);if(!t)return;
+const start=$('truckStartDate').value,end=$('truckEndDate').value;if(!start||!end)return;
+$('truckRangeCaption').textContent=`${formatDate(start)} — ${formatDate(end)}`;
+const {data,error}=await db.from('delivery_bills').select('store_id,total_amount,payment_type').eq('truck_id',t.id).eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end));
+if(error){showToast('Could not load truck sales: '+error.message);return;}
+const rows=data||[],sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((s,b)=>s+Number(b.total_amount||0),0);
+$('truckSales').textContent=money(sum());$('truckPaid').textContent=money(sum('PAID'));$('truckCredit').textContent=money(sum('CREDIT'));
+const totals={};rows.forEach(b=>{if(!totals[b.store_id])totals[b.store_id]={sales:0,paid:0,credit:0};const a=Number(b.total_amount||0);totals[b.store_id].sales+=a;if(b.payment_type==='PAID')totals[b.store_id].paid+=a;else if(b.payment_type==='CREDIT')totals[b.store_id].credit+=a;});
+const assigned=stores.filter(s=>s.truck_id===t.id),list=$('truckStoreList');list.innerHTML='';
+if(!assigned.length){list.innerHTML='<div class="empty">No stores assigned to this truck yet.</div>';return;}
+assigned.forEach(s=>{
+const x=totals[s.id]||{sales:0,paid:0,credit:0},b=document.createElement('button');b.className='store-row';b.style.width='100%';b.style.textAlign='left';
+b.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Zone ${s.zone_number} · ${esc(s.phone||'No contact')}</small><small style="color:#285d91">Sales: ${money(x.sales)}</small><small style="color:#237447">PAID: ${money(x.paid)} · CREDIT: ${money(x.credit)}</small></span>›`;
+b.onclick=()=>showStoreDetail(s.id);list.append(b);
+});
+}
+
+/* STORE MANAGEMENT */
+$('addStoreBtn').onclick=()=>openStoreForm();$('storeSearch').oninput=renderStores;
+function renderStores(){
+const q=$('storeSearch').value.trim().toLowerCase(),filtered=stores.filter(s=>[s.name,s.owner_name,s.phone,s.address].some(v=>String(v||'').toLowerCase().includes(q)));
+$('storeCount').textContent=stores.length+' stores';const list=$('storeList');list.innerHTML='';
+if(!filtered.length){list.innerHTML='<div class="empty">No stores found.</div>';return;}
+filtered.forEach(s=>{
+const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const row=document.createElement('div');row.className='store-row';
+row.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Truck ${tn} · Zone ${s.zone_number} · ${esc(s.phone||'No contact')}</small></span><span class="row-actions"><button class="icon-btn" title="View">↗</button><button class="icon-btn" title="Edit">✎</button><button class="icon-btn delete" title="Deactivate">×</button></span>`;
+const b=row.querySelectorAll('button');b[0].onclick=()=>showStoreDetail(s.id);b[1].onclick=()=>openStoreForm(s.id);b[2].onclick=()=>deactivateStore(s.id);list.append(row);
+});
+}
+function openStoreForm(id){
+$('storeForm').reset();$('storeId').value='';$('storeFormTitle').textContent=id?'EDIT STORE':'ADD NEW STORE';
+if(id){const s=stores.find(x=>x.id===id);if(!s)return;$('storeId').value=s.id;$('storeName').value=s.name||'';$('ownerName').value=s.owner_name||'';$('storePhone').value=s.phone||'';$('storeAddress').value=s.address||'';$('storeNotes').value=s.notes||'';$('storeTruck').value=s.truck_id||'';$('storeZone').value=String(s.zone_number||'');}
+open('storeFormOverlay');
+}
+$('storeForm').onsubmit=async e=>{
+e.preventDefault();const id=$('storeId').value;
+const payload={name:$('storeName').value.trim(),owner_name:$('ownerName').value.trim()||null,phone:$('storePhone').value.trim()||null,address:$('storeAddress').value.trim()||null,notes:$('storeNotes').value.trim()||null,truck_id:$('storeTruck').value,zone_number:Number($('storeZone').value),is_active:true,updated_at:new Date().toISOString()};
+if(!payload.name||!payload.truck_id||!payload.zone_number)return;
+try{await syncArchivedTrucksToSupabase(payload.truck_id);}catch(syncError){showToast('Cannot assign store: '+(syncError.message||syncError));return;}
+const res=id?await db.from('stores').update(payload).eq('id',id):await db.from('stores').insert(payload);
+if(res.error){showToast(res.error.message);return;}
+close('storeFormOverlay');await loadBase();renderStores();showToast('Store saved.');
+};
+async function deactivateStore(id){
+const s=stores.find(x=>x.id===id);if(!s||!confirm(`Deactivate "${s.name}"?`))return;
+const {error}=await db.from('stores').update({is_active:false,updated_at:new Date().toISOString()}).eq('id',id);
+if(error){showToast(error.message);return;}await loadBase();renderStores();showToast('Store deactivated.');
+}
+
+/* STORE DETAILS, ITEM REPORT AND BILL HISTORY */
+async function showStoreDetail(id){
+const s=stores.find(x=>x.id===id);if(!s)return;
+const tn=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const d=localDateString(new Date());
+$('storeDetailTitle').textContent=s.name.toUpperCase();
+$('storeDetailBody').innerHTML=`
+<div class="store-detail"><div class="detail-grid">
+<div class="detail-item"><small>Store Name</small><strong>${esc(s.name)}</strong></div>
+<div class="detail-item"><small>Store Owner</small><strong>${esc(s.owner_name||'Not provided')}</strong></div>
+<div class="detail-item"><small>Contact</small><strong>${esc(s.phone||'Not provided')}</strong></div>
+<div class="detail-item"><small>Assigned Truck</small><strong>Truck ${tn}</strong></div>
+<div class="detail-item"><small>Assigned Zone</small><strong>Zone ${s.zone_number}</strong></div>
+<div class="detail-item"><small>Address</small><strong>${esc(s.address||'Not provided')}</strong></div>
+<div class="detail-item" style="grid-column:1/-1"><small>Notes</small><strong>${esc(s.notes||'None')}</strong></div>
+</div></div>
+<h3 class="subheading">Store Financial Summary</h3>
+<div class="date-filter" style="margin-bottom:10px;flex-wrap:wrap">📅 <label class="date-field">From <input type="date" id="storeStartDate" value="${d}" max="${d}"></label> — <label class="date-field">To <input type="date" id="storeEndDate" value="${d}" max="${d}"></label></div>
+<div class="range-caption" id="storeRangeCaption" style="text-align:left"></div>
+<div class="mini-stats"><div class="mini-stat"><label>Total Sales</label><strong id="storeSales">₹0.00</strong></div><div class="mini-stat"><label>PAID Collection</label><strong id="storePaid">₹0.00</strong></div><div class="mini-stat"><label>Total Credit</label><strong id="storeCredit">₹0.00</strong></div></div>
+<div class="report-section"><div class="section-head"><h3>📦 Item-wise Sales Report</h3><span id="itemReportCount">0 products</span></div><div id="storeItemReport"></div></div>
+<div class="report-section"><div class="section-head"><h3>🧾 Date-wise Bill History</h3><span id="billHistoryCount">0 bills</span></div><div id="storeBillHistory"></div></div>
+<div class="form-actions"><button class="btn btn-light" id="detailClose">Close</button><button class="btn btn-primary" id="detailEdit">Edit Store</button></div>`;
+$('storeStartDate').onchange=()=>{if($('storeStartDate').value>$('storeEndDate').value)$('storeEndDate').value=$('storeStartDate').value;$('storeEndDate').min=$('storeStartDate').value;refreshStoreFinancials(id)};
+$('storeEndDate').onchange=()=>{if($('storeEndDate').value<$('storeStartDate').value)$('storeEndDate').value=$('storeStartDate').value;refreshStoreFinancials(id)};
+$('detailClose').onclick=()=>close('storeDetailOverlay');$('detailEdit').onclick=()=>{close('storeDetailOverlay');openStoreForm(id)};
+open('storeDetailOverlay');await refreshStoreFinancials(id);
+}
+async function refreshStoreFinancials(id){
+const start=$('storeStartDate').value,end=$('storeEndDate').value;if(!start||!end)return;
+$('storeRangeCaption').textContent=`${formatDate(start)} — ${formatDate(end)}`;
+$('storeItemReport').innerHTML='<div class="report-empty">Loading item report...</div>';$('storeBillHistory').innerHTML='<div class="report-empty">Loading bills...</div>';
+const {data:bills,error}=await db.from('delivery_bills').select('id,bill_number,bill_date,payment_type,total_amount,created_at').eq('store_id',id).eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end)).order('bill_date',{ascending:false}).order('created_at',{ascending:false});
+if(error){showToast(error.message);return;}
+const rows=bills||[],sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((a,b)=>a+Number(b.total_amount||0),0);
+$('storeSales').textContent=money(sum());$('storePaid').textContent=money(sum('PAID'));$('storeCredit').textContent=money(sum('CREDIT'));
+if(!rows.length){$('itemReportCount').textContent='0 products';$('billHistoryCount').textContent='0 bills';$('storeItemReport').innerHTML='<div class="report-empty">No completed sales for this period.</div>';$('storeBillHistory').innerHTML='<div class="report-empty">No completed bills found.</div>';return;}
+const ids=rows.map(b=>b.id);
+const {data:items,error:itemError}=await db.from('delivery_bill_items').select('bill_id,product_name_snapshot,quantity,unit_price,line_total,created_at').in('bill_id',ids).order('created_at');
+if(itemError){showToast(itemError.message);return;}
+const byBill={},totals={};
+(items||[]).forEach(i=>{
+(byBill[i.bill_id]??=[]).push(i);const name=i.product_name_snapshot||'Unnamed product',key=name.toLowerCase();
+totals[key]??={name,quantity:0,amount:0};totals[key].quantity+=Number(i.quantity||0);totals[key].amount+=Number(i.line_total||0);
+});
+const list=Object.values(totals).sort((a,b)=>a.name.localeCompare(b.name));
+$('itemReportCount').textContent=list.length+' products';
+$('storeItemReport').innerHTML=list.length?`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Product</th><th class="num">Quantity Sold</th><th class="num">Sales Amount</th></tr></thead><tbody>${list.map(p=>`<tr><td>${esc(p.name)}</td><td class="num">${p.quantity}</td><td class="num">${money(p.amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="report-empty">No product items recorded.</div>';
+$('billHistoryCount').textContent=rows.length+' bills';
+$('storeBillHistory').innerHTML=rows.map(b=>{
+const its=byBill[b.id]||[];
+return `<div class="bill-card"><div class="bill-card-head"><div><strong>Bill ${esc(b.bill_number||'—')}</strong><br><small>${formatDate(b.bill_date)}</small></div><span class="payment-tag ${b.payment_type==='PAID'?'paid':'credit'}">${b.payment_type}</span></div><div class="bill-card-body">${its.length?`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>${its.map(i=>`<tr><td>${esc(i.product_name_snapshot)}</td><td class="num">${i.quantity}</td><td class="num">${money(i.unit_price)}</td><td class="num">${money(i.line_total)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="report-empty">No item details recorded.</div>'}<div class="bill-card-total"><span>Bill Total</span><strong>${money(b.total_amount)}</strong></div></div></div>`;
+}).join('');
+}
+
+/* PRODUCT MANAGEMENT */
+$('addProductBtn').onclick=()=>openProductForm();$('productSearch').oninput=renderProducts;
+function renderProducts(){
+const q=$('productSearch').value.trim().toLowerCase(),filtered=products.filter(p=>p.name.toLowerCase().includes(q));
+$('productCount').textContent=products.length+' products';const list=$('productList');list.innerHTML='';
+if(!filtered.length){list.innerHTML='<div class="empty">No products found.</div>';return;}
+filtered.forEach(p=>{
+const row=document.createElement('div');row.className='product-row';
+row.innerHTML=`<span class="product-avatar">📖</span><span class="product-main"><strong>${esc(p.name)}</strong><small>${money(p.unit_price)}</small></span><span class="row-actions"><button class="icon-btn">✎</button><button class="icon-btn delete">×</button></span>`;
+const b=row.querySelectorAll('button');b[0].onclick=()=>openProductForm(p.id);b[1].onclick=()=>deactivateProduct(p.id);list.append(row);
+});
+}
+function openProductForm(id){
+$('productForm').reset();$('productId').value='';$('productPrice').value='0';$('productFormTitle').textContent=id?'EDIT PRODUCT':'ADD NEW PRODUCT';
+if(id){const p=products.find(x=>x.id===id);if(!p)return;$('productId').value=p.id;$('productName').value=p.name;$('productPrice').value=p.unit_price;}
+open('productFormOverlay');
+}
+$('productForm').onsubmit=async e=>{
+e.preventDefault();const id=$('productId').value,name=$('productName').value.trim(),price=Number($('productPrice').value);
+if(!name||!Number.isFinite(price)||price<0)return;
+if(products.some(p=>p.name.toLowerCase()===name.toLowerCase()&&p.id!==id)){showToast('Product name already exists.');return;}
+const payload={name,unit_price:price,sort_order:id?(products.find(p=>p.id===id)?.sort_order||0):products.length+1,is_active:true,updated_at:new Date().toISOString()};
+const res=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);
+if(res.error){showToast(res.error.message);return;}
+close('productFormOverlay');await loadBase();showToast('Product saved.');
+};
+async function deactivateProduct(id){
+const p=products.find(x=>x.id===id);if(!p||!confirm(`Deactivate product "${p.name}"?`))return;
+const {error}=await db.from('products').update({is_active:false,updated_at:new Date().toISOString()}).eq('id',id);
+if(error){showToast(error.message);return;}await loadBase();showToast('Product deactivated.');
+}
+
+/* SALES PAGE: COMPLETED BILLS ONLY */
+function populateSalesFilters(){
+const truck=$('salesTruckFilter'),store=$('salesStoreFilter'),oldT=truck.value,oldS=store.value;
+truck.innerHTML='<option value="">All Trucks</option>';store.innerHTML='<option value="">All Stores</option>';
+trucks.forEach(t=>truck.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
+stores.forEach(s=>store.add(new Option(s.name,s.id)));
+if(trucks.some(t=>t.id===oldT))truck.value=oldT;if(stores.some(s=>s.id===oldS))store.value=oldS;
+}
+function openSalesPage(){
+populateSalesFilters();$('salesPreset').value='today';$('salesSearch').value='';
+$('salesTruckFilter').value='';$('salesStoreFilter').value='';$('salesPaymentFilter').value='';
+setSalesDates('today');open('salesOverlay');
+}
+$('openSales').onclick=openSalesPage;
+$('openTruckLoad').onclick=openTruckLoadPage;
+
+function setSalesDates(preset){
+const now=new Date(),today=localDateString(now);let start=today,end=today;
+if(preset==='yesterday'){const d=new Date(now);d.setDate(d.getDate()-1);start=localDateString(d);end=start;}
+if(preset==='month')start=localDateString(new Date(now.getFullYear(),now.getMonth(),1));
+if(preset==='custom')return;
+$('salesStart').value=start;$('salesEnd').value=end;$('salesStart').max=today;$('salesEnd').max=today;$('salesEnd').min=start;
+loadSales();
+}
+$('salesPreset').onchange=()=>setSalesDates($('salesPreset').value);
+$('salesStart').onchange=()=>{
+if($('salesStart').value>$('salesEnd').value)$('salesEnd').value=$('salesStart').value;
+$('salesEnd').min=$('salesStart').value;$('salesPreset').value='custom';loadSales();
+};
+$('salesEnd').onchange=()=>{
+if($('salesEnd').value<$('salesStart').value){$('salesEnd').value=$('salesStart').value;showToast('Ending date cannot be earlier than starting date.');}
+$('salesPreset').value='custom';loadSales();
+};
+$('salesRefresh').onclick=loadSales;
+['salesTruckFilter','salesStoreFilter','salesPaymentFilter'].forEach(id=>$(id).addEventListener('change',renderSales));
+$('salesSearch').addEventListener('input',renderSales);
+
+async function fetchCompletedSales(start,end){
+const all=[],pageSize=1000;let from=0;
+while(true){
+const {data,error}=await db.from('delivery_bills')
+.select('id,bill_number,bill_date,truck_id,driver_id,driver_name_snapshot,store_id,payment_type,status,total_amount')
+.eq('status','COMPLETED').gte('bill_date',start).lt('bill_date',nextDateString(end))
+.order('bill_date',{ascending:false}).range(from,from+pageSize-1);
+if(error)throw error;
+const rows=data||[];all.push(...rows);if(rows.length<pageSize)break;from+=pageSize;
+}
+return all;
+}
+async function loadSales(){
+const start=$('salesStart').value,end=$('salesEnd').value;if(!start||!end)return;
+if(start>end){showToast('Invalid date range.');return;}
+const request=++salesRequest;
+$('salesHistory').innerHTML='<div class="report-empty">Loading completed sales...</div>';
+$('salesRangeCaption').textContent=start===end?`Completed sales for ${formatDate(start)}`:`Completed sales from ${formatDate(start)} to ${formatDate(end)}`;
+try{
+const data=await fetchCompletedSales(start,end);
+if(request!==salesRequest)return;
+salesBills=data;renderSales();
+}catch(e){if(request!==salesRequest)return;console.error(e);$('salesHistory').innerHTML='<div class="report-empty">Could not load sales. Please refresh.</div>';showToast('Sales loading failed: '+e.message);}
+}
+function getFilteredSales(){
+const truck=$('salesTruckFilter').value,store=$('salesStoreFilter').value,payment=$('salesPaymentFilter').value,q=$('salesSearch').value.trim().toLowerCase();
+return salesBills.filter(b=>{
+if(truck&&b.truck_id!==truck)return false;if(store&&b.store_id!==store)return false;if(payment&&b.payment_type!==payment)return false;
+const s=stores.find(x=>x.id===b.store_id),t=trucks.find(x=>x.id===b.truck_id);
+const search=[b.bill_number,s?.name,t?`truck ${t.truck_number}`:'',b.driver_name_snapshot].join(' ').toLowerCase();
+return !q||search.includes(q);
+});
+}
+function renderSales(){
+const rows=getFilteredSales(),sum=key=>rows.filter(b=>!key||b.payment_type===key).reduce((s,b)=>s+Number(b.total_amount||0),0);
+$('salesTotal').textContent=money(sum());$('salesPaid').textContent=money(sum('PAID'));$('salesCredit').textContent=money(sum('CREDIT'));
+$('salesBillCount').textContent=rows.length.toLocaleString('en-IN');$('salesHistoryCount').textContent=rows.length+' bills';
+if(!rows.length){$('salesHistory').innerHTML='<div class="report-empty">No completed bills match your selected filters.</div>';return;}
+$('salesHistory').innerHTML=rows.map(b=>{
+const s=stores.find(x=>x.id===b.store_id),t=trucks.find(x=>x.id===b.truck_id);
+return `<div class="bill-card"><div class="bill-card-head"><div><strong>Bill ${esc(b.bill_number||'—')}</strong><br><small>${formatDate(b.bill_date)}</small></div><div class="bill-card-meta"><span class="payment-tag ${b.payment_type==='PAID'?'paid':'credit'}">${b.payment_type}</span></div></div>
+<div class="bill-card-body"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><strong style="font-size:12px">${esc(s?.name||'Store unavailable')}</strong><div class="notice">Truck ${t?String(t.truck_number).padStart(2,'0'):'unavailable'} · ${esc(b.driver_name_snapshot||'Driver unavailable')}</div></div><div style="text-align:right"><strong style="font-size:15px">${money(b.total_amount)}</strong><div class="notice">Bill amount</div></div></div>
+<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn btn-light btn-small sales-detail-btn" data-bill-id="${esc(b.id)}">View Items ↓</button></div>
+<div class="sales-bill-items" id="salesItems-${esc(b.id)}" style="display:none;margin-top:12px"></div></div></div>`;
+}).join('');
+$('salesHistory').querySelectorAll('.sales-detail-btn').forEach(b=>b.onclick=()=>toggleSalesBillDetails(b.dataset.billId,b));
+}
+async function toggleSalesBillDetails(id,button){
+const box=$('salesItems-'+id);if(!box)return;
+if(box.style.display!=='none'){box.style.display='none';button.textContent='View Items ↓';return;}
+box.style.display='block';box.innerHTML='<div class="report-empty">Loading bill items...</div>';button.textContent='Hide Items ↑';
+try{
+const {data,error}=await db.from('delivery_bill_items').select('product_name_snapshot,quantity,unit_price,line_total,created_at').eq('bill_id',id).order('created_at');
+if(error)throw error;const items=data||[];
+if(!items.length){box.innerHTML='<div class="report-empty">No item details recorded.</div>';return;}
+box.innerHTML=`<div class="report-table-wrap"><table class="report-table"><thead><tr><th>Product</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>${items.map(i=>`<tr><td>${esc(i.product_name_snapshot||'Unnamed product')}</td><td class="num">${Number(i.quantity||0)}</td><td class="num">${money(i.unit_price)}</td><td class="num">${money(i.line_total)}</td></tr>`).join('')}</tbody></table></div>`;
+}catch(e){box.innerHTML='<div class="report-empty">Could not load bill items.</div>';showToast('Could not load bill details: '+e.message);}
+}
+
+/* INDEPENDENT STORE LEDGER — shared by admin and truck pages */
+const ledgerToday=()=>localDateString(new Date());
+function renderLedgerStores(){const truckFilter=$('ledgerTruckFilter');const selectedTruck=truckFilter.value;const currentOptions=[...truckFilter.options].map(o=>o.value).join('|');const expectedOptions=['',...trucks.map(t=>t.id)].join('|');if(currentOptions!==expectedOptions){truckFilter.innerHTML='<option value="">All Trucks</option>';trucks.slice().sort((a,b)=>Number(a.truck_number)-Number(b.truck_number)).forEach(t=>truckFilter.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));if(trucks.some(t=>t.id===selectedTruck))truckFilter.value=selectedTruck;}const q=$('ledgerSearch').value.trim().toLowerCase(),truckId=truckFilter.value,filtered=stores.filter(s=>(!truckId||s.truck_id===truckId)&&String(s.name||'').toLowerCase().includes(q));$('ledgerStoreCount').textContent=filtered.length+' stores';const box=$('ledgerStoreList');box.innerHTML='';if(!filtered.length){box.innerHTML='<div class="empty">No stores found for this truck.</div>';return;}filtered.forEach(s=>{const truckNo=trucks.find(t=>t.id===s.truck_id)?.truck_number||'?';const row=document.createElement('button');row.className='store-row';row.style.width='100%';row.style.textAlign='left';row.innerHTML=`<span class="store-avatar">🏪</span><span class="store-main"><strong>${esc(s.name)}</strong><small>Truck ${String(truckNo).padStart(2,'0')} · Zone ${s.zone_number}</small></span><span>Open ledger →</span>`;row.onclick=()=>openAdminLedger(s.id);box.append(row);});}
+async function openAdminLedger(id){activeLedgerStore=stores.find(s=>s.id===id);if(!activeLedgerStore)return;$('ledgerStoreTitle').textContent=activeLedgerStore.name.toUpperCase();$('adminLedgerDate').value=ledgerToday();$('adminLedgerAmount').value='';$('adminLedgerType').value='GIVEN';open('ledgerDetailOverlay');await loadAdminLedger();}
+async function loadAdminLedger(){
+ if(!activeLedgerStore)return;
+ $('adminLedgerRows').innerHTML='<tr><td colspan="4">Loading ledger...</td></tr>';
+ try{
+   const {data,error}=await db.from('store_ledger_entries')
+     .select('id,store_id,entry_date,entry_type,credit_given,credit_paid,created_at')
+     .eq('store_id',activeLedgerStore.id)
+     .order('entry_date',{ascending:true})
+     .order('created_at',{ascending:true});
+   if(error)throw error;
+   ledgerEntries=data||[];
+   let bal=0,given=0,paid=0;const rows=[];
+   ledgerEntries.forEach(e=>{
+     const g=Number(e.credit_given||0),p=Number(e.credit_paid||0);
+     given+=g;paid+=p;bal+=g-p;
+     rows.push(`<tr><td>${esc(formatDate(e.entry_date))}</td><td class="num">${g?money(g):'—'}</td><td class="num">${p?money(p):'—'}</td><td class="num"><strong>${money(bal)}</strong></td></tr>`);
+   });
+   $('ledgerGiven').textContent=money(given);
+   $('ledgerPaid').textContent=money(paid);
+   $('ledgerBalance').textContent=money(bal);
+   $('adminLedgerRows').innerHTML=rows.length?rows.reverse().join(''):'<tr><td colspan="4" style="text-align:center">No online ledger entries yet.</td></tr>';
+   $('adminLedgerType').querySelector('option[value="OPENING"]').disabled=ledgerEntries.some(e=>e.entry_type==='OPENING');
+ }catch(error){
+   console.error('Online store ledger read failed:',error);
+   $('adminLedgerRows').innerHTML=`<tr><td colspan="4">${esc(error.message||String(error))}</td></tr>`;
+   showToast('Online ledger loading failed: '+(error.message||error));
+ }
+}
+async function syncActiveStoreArchivedLedger(){
+ if(!activeLedgerStore)return;
+ const btn=$('syncArchivedLedgerBtn');btn.disabled=true;const old=btn.textContent;btn.textContent='Syncing…';
+ try{
+   const storeCheck=await supabaseClient.from('stores').select('id').eq('id',activeLedgerStore.id).maybeSingle();
+   if(storeCheck.error)throw storeCheck.error;
+   if(!storeCheck.data)throw new Error('This store does not exist in Supabase yet. Sync/restore the store first; no ledger rows were uploaded.');
+   const archived=await idbGetAll('store_ledger_entries');
+   const localRows=archived.filter(r=>String(r.store_id)===String(activeLedgerStore.id));
+   if(!localRows.length){showToast('No archived local ledger entries found for this store.');return;}
+   const {data:online,error}=await supabaseClient.from('store_ledger_entries').select('id').eq('store_id',activeLedgerStore.id);
+   if(error)throw error;
+   const onlineIds=new Set((online||[]).map(r=>String(r.id)));
+   const missing=localRows.filter(r=>r.id&&!onlineIds.has(String(r.id)));
+   if(!missing.length){showToast('All archived ledger entries for this store are already online.');return;}
+   const {error:insertError}=await supabaseClient.from('store_ledger_entries').insert(missing);
+   if(insertError)throw insertError;
+   await loadAdminLedger();
+   showToast(`${missing.length} archived ledger entr${missing.length===1?'y':'ies'} synchronized to Supabase.`);
+ }catch(error){
+   console.error('Archived ledger sync failed:',error);
+   showToast('Ledger sync failed: '+(error.message||error));
+ }finally{btn.disabled=false;btn.textContent=old;}
+}
+$('openLedger').onclick=()=>{renderLedgerStores();open('ledgerOverlay');};$('ledgerSearch').oninput=renderLedgerStores;$('ledgerTruckFilter').onchange=renderLedgerStores;$('ledgerClose').onclick=()=>close('ledgerOverlay');$('ledgerDetailClose').onclick=()=>{close('ledgerDetailOverlay');activeLedgerStore=null;};
+$('syncArchivedLedgerBtn').onclick=syncActiveStoreArchivedLedger;
+$('adminLedgerForm').onsubmit=async e=>{e.preventDefault();if(!activeLedgerStore)return;const type=$('adminLedgerType').value,amount=Number($('adminLedgerAmount').value),date=$('adminLedgerDate').value;if(!date||!Number.isFinite(amount)||amount<=0){showToast('Enter a valid date and amount.');return;}if(type==='OPENING'&&ledgerEntries.some(x=>x.entry_type==='OPENING')){showToast('Opening balance already entered.');return;}const payload={store_id:activeLedgerStore.id,entry_date:date,entry_type:type,credit_given:type==='PAID'?0:amount,credit_paid:type==='PAID'?amount:0};const {error}=await db.from('store_ledger_entries').insert(payload);if(error){showToast('Could not save ledger entry: '+error.message);return;}$('adminLedgerAmount').value='';await loadAdminLedger();showToast('Ledger entry saved.');};
+
+/* TRUCK LOAD MANAGEMENT */
+function openTruckLoadPage(){
+  const select=$('truckLoadTruck');
+  const previous=select.value;
+  select.innerHTML='<option value="">Select truck</option>';
+  trucks.forEach(t=>select.add(new Option(`Truck ${String(t.truck_number).padStart(2,'0')}`,t.id)));
+  if(trucks.some(t=>t.id===previous))select.value=previous;
+  else if(trucks.length)select.value=trucks[0].id;
+  $('truckLoadDate').value=localDateString(new Date());
+  open('truckLoadOverlay');
+  loadTruckLoad();
+}
+$('truckLoadTruck').addEventListener('change',loadTruckLoad);
+$('truckLoadDate').addEventListener('change',loadTruckLoad);
+$('truckLoadRefresh').addEventListener('click',loadTruckLoad);
+$('truckLoadSave').addEventListener('click',saveTruckLoad);
+
+async function loadTruckLoad(){
+  const truckId=$('truckLoadTruck').value,date=$('truckLoadDate').value;
+  const request=++truckLoadRequest;
+  if(!truckId||!date){
+    $('truckLoadProductRows').innerHTML='<div class="empty">Select a truck and date to load the stock sheet.</div>';
+    $('truckLoadHistory').innerHTML='<div class="report-empty">Select a truck to view stock history.</div>';
+    $('truckLoadProductCount').textContent='0 products';
+    return;
+  }
+  $('truckLoadProductRows').innerHTML='<div class="empty">Loading stock and completed sales...</div>';
+  $('truckLoadHistory').innerHTML='<div class="report-empty">Loading stock history...</div>';
+  try{
+    const [entryResult,billsResult,historyResult]=await Promise.all([
+      db.from('truck_stock_entries').select('id').eq('truck_id',truckId).eq('stock_date',date).maybeSingle(),
+      db.from('delivery_bills').select('id').eq('truck_id',truckId).eq('bill_date',date).eq('status','COMPLETED'),
+      db.from('truck_stock_entries').select('id,stock_date,created_at,truck_stock_items(product_name_snapshot,quantity_loaded,quantity_returned)').eq('truck_id',truckId).order('stock_date',{ascending:false}).limit(30)
+    ]);
+    if(entryResult.error)throw entryResult.error;
+    if(billsResult.error)throw billsResult.error;
+    if(historyResult.error)throw historyResult.error;
+    const entryId=entryResult.data?.id||null;
+    const billIds=(billsResult.data||[]).map(b=>b.id);
+    let soldItems=[];
+    if(billIds.length){
+      const soldResult=await db.from('delivery_bill_items').select('product_id,quantity').in('bill_id',billIds);
+      if(soldResult.error)throw soldResult.error;
+      soldItems=soldResult.data||[];
+    }
+    let savedItems=[];
+    if(entryId){
+      const savedResult=await db.from('truck_stock_items').select('product_id,quantity_loaded,quantity_returned').eq('entry_id',entryId);
+      if(savedResult.error)throw savedResult.error;
+      savedItems=savedResult.data||[];
+    }
+    if(request!==truckLoadRequest)return;
+    const soldById={};
+    soldItems.forEach(item=>{
+      if(!item.product_id)return;
+      soldById[item.product_id]=(soldById[item.product_id]||0)+Number(item.quantity||0);
+    });
+    const savedById=Object.fromEntries(savedItems.map(item=>[item.product_id,item]));
+    truckLoadEntryId=entryId;
+    truckLoadRows=products.map(product=>{
+      const saved=savedById[product.id]||{};
+      return {productId:product.id,name:product.name,loaded:Number(saved.quantity_loaded)||0,sold:Number(soldById[product.id])||0,returned:Number(saved.quantity_returned)||0};
+    });
+    renderTruckLoadRows();
+    renderTruckLoadHistory(historyResult.data||[]);
+  }catch(error){
+    if(request!==truckLoadRequest)return;
+    console.error('Truck load loading error:',error);
+    $('truckLoadProductRows').innerHTML=`<div class="empty">Could not load stock sheet: ${esc(error.message||error)}</div>`;
+    $('truckLoadHistory').innerHTML='<div class="report-empty">Could not load stock history.</div>';
+    showToast('Truck Load error: '+(error.message||error));
+  }
+}
+function renderTruckLoadRows(){
+  $('truckLoadProductCount').textContent=truckLoadRows.length+' products';
+  if(!truckLoadRows.length){$('truckLoadProductRows').innerHTML='<div class="empty">No active products found. Add products in Product Management.</div>';return;}
+  const rows=truckLoadRows.map((r,i)=>{
+    const remaining=r.loaded-r.sold-r.returned;
+    return `<tr><td><strong>${esc(r.name)}</strong></td><td><input type="number" min="0" step="1" inputmode="numeric" data-load-qty="${i}" value="${r.loaded}" aria-label="Loaded quantity for ${esc(r.name)}"></td><td class="sold-cell">${r.sold}</td><td><input type="number" min="0" step="1" inputmode="numeric" data-return-qty="${i}" value="${r.returned}" aria-label="Returned quantity for ${esc(r.name)}"></td><td class="remaining-cell ${remaining<0?'negative':''}" id="truckLoadRemaining${i}">${remaining}${remaining<0?' · Check':''}</td></tr>`;
+  }).join('');
+  $('truckLoadProductRows').innerHTML=`<div class="stock-table-wrap"><table class="stock-table"><thead><tr><th>Product</th><th>Loaded</th><th>Sold (Auto)</th><th>Returned</th><th>Remaining</th></tr></thead><tbody>${rows}</tbody></table></div><div class="stock-total"><span>Total loaded<strong id="truckLoadLoadedTotal">0</strong></span><span>Total sold<strong id="truckLoadSoldTotal">0</strong></span><span>Total returned<strong id="truckLoadReturnedTotal">0</strong></span><span>Total remaining<strong id="truckLoadRemainingTotal">0</strong></span></div>`;
+  $('truckLoadProductRows').querySelectorAll('[data-load-qty]').forEach(input=>input.addEventListener('input',()=>updateTruckLoadQty(Number(input.dataset.loadQty),'loaded',input.value)));
+  $('truckLoadProductRows').querySelectorAll('[data-return-qty]').forEach(input=>input.addEventListener('input',()=>updateTruckLoadQty(Number(input.dataset.returnQty),'returned',input.value)));
+  updateTruckLoadTotals();
+}
+function updateTruckLoadQty(index,key,value){
+  if(!truckLoadRows[index])return;
+  truckLoadRows[index][key]=value===''?0:Number(value);
+  const r=truckLoadRows[index],remaining=r.loaded-r.sold-r.returned,cell=$('truckLoadRemaining'+index);
+  if(cell){cell.textContent=`${remaining}${remaining<0?' · Check':''}`;cell.classList.toggle('negative',remaining<0);}
+  updateTruckLoadTotals();
+}
+function updateTruckLoadTotals(){
+  const total=key=>truckLoadRows.reduce((sum,r)=>sum+(Number(r[key])||0),0);
+  const remaining=total('loaded')-total('sold')-total('returned');
+  if($('truckLoadLoadedTotal'))$('truckLoadLoadedTotal').textContent=total('loaded');
+  if($('truckLoadSoldTotal'))$('truckLoadSoldTotal').textContent=total('sold');
+  if($('truckLoadReturnedTotal'))$('truckLoadReturnedTotal').textContent=total('returned');
+  if($('truckLoadRemainingTotal'))$('truckLoadRemainingTotal').textContent=remaining;
+}
+function renderTruckLoadHistory(entries){
+  const host=$('truckLoadHistory');
+  if(!entries.length){host.innerHTML='<div class="report-empty">No stock history found for this truck.</div>';return;}
+  host.innerHTML=entries.map(entry=>{
+    const items=entry.truck_stock_items||[];
+    const loaded=items.reduce((sum,item)=>sum+(Number(item.quantity_loaded)||0),0);
+    const returned=items.reduce((sum,item)=>sum+(Number(item.quantity_returned)||0),0);
+    return `<div class="stock-history-row"><div><strong>${formatDate(entry.stock_date)}</strong><small>${items.length} product lines · Saved ${entry.created_at?new Date(entry.created_at).toLocaleString('en-IN'):''}</small></div><div>Loaded: <strong>${loaded}</strong> &nbsp; Returned: <strong>${returned}</strong></div></div>`;
+  }).join('');
+}
+async function saveTruckLoad(){
+  const truckId=$('truckLoadTruck').value,date=$('truckLoadDate').value;
+  if(!truckId||!date){showToast('Select a truck and date first.');return;}
+  if(!truckLoadRows.length){showToast('No products available to save.');return;}
+  for(const row of truckLoadRows){
+    if(!Number.isInteger(Number(row.loaded))||Number(row.loaded)<0||!Number.isInteger(Number(row.returned))||Number(row.returned)<0){
+      showToast(`Enter valid whole-number quantities for ${row.name}.`);return;
+    }
+  }
+  const button=$('truckLoadSave');button.disabled=true;button.textContent='Saving...';
+  try{
+    const truck=trucks.find(t=>t.id===truckId);
+    const entryPayload={truck_id:truckId,driver_id:truck?.driver_id||null,stock_date:date,updated_at:new Date().toISOString()};
+    const entryResult=await db.from('truck_stock_entries').upsert(entryPayload,{onConflict:'truck_id,stock_date'}).select('id').single();
+    if(entryResult.error)throw entryResult.error;
+    truckLoadEntryId=entryResult.data.id;
+    const itemPayload=truckLoadRows.map(row=>({entry_id:truckLoadEntryId,product_id:row.productId,product_name_snapshot:row.name,quantity_loaded:Number(row.loaded),quantity_returned:Number(row.returned),updated_at:new Date().toISOString()}));
+    if(itemPayload.length){
+      const itemResult=await db.from('truck_stock_items').upsert(itemPayload,{onConflict:'entry_id,product_id'});
+      if(itemResult.error)throw itemResult.error;
+    }
+    showToast('Truck stock sheet saved successfully.');
+    await loadTruckLoad();
+  }catch(error){
+    console.error('Truck load save error:',error);
+    showToast('Could not save stock: '+(error.message||error));
+  }finally{button.disabled=false;button.textContent='Save Stock Sheet';}
+}
+
+
+/* TRUCK LOADED ITEMS QUICK VIEW */
+let loadedItemsRequest=0;
+$('truckLoadedItemsBtn').addEventListener('click',openTruckLoadedItems);
+$('truckLoadedItemsDate').addEventListener('change',loadTruckLoadedItems);
+$('truckLoadedItemsRefresh').addEventListener('click',loadTruckLoadedItems);
+
+function openTruckLoadedItems(){
+  if(!selectedTruck){showToast('Select a truck first.');return;}
+  const today=localDateString(new Date());
+  $('truckLoadedItemsTitle').textContent=`TRUCK ${String(selectedTruck.truck_number).padStart(2,'0')} · LOADED ITEMS`;
+  $('truckLoadedItemsDate').value=today;
+  $('truckLoadedItemsDate').max=today;
+  open('truckLoadedItemsOverlay');
+  loadTruckLoadedItems();
+}
+
+async function loadTruckLoadedItems(){
+  if(!selectedTruck)return;
+  const request=++loadedItemsRequest;
+  const truckId=selectedTruck.id;
+  const date=$('truckLoadedItemsDate').value;
+  const host=$('truckLoadedItemsContent');
+  if(!date){host.innerHTML='<div class="report-empty">Select a date.</div>';return;}
+  host.innerHTML='<div class="report-empty">Loading loaded items...</div>';
+  try{
+    const [entryResult,billsResult]=await Promise.all([
+      db.from('truck_stock_entries')
+        .select('id,stock_date,created_at,truck_stock_items(product_id,product_name_snapshot,quantity_loaded,quantity_returned)')
+        .eq('truck_id',truckId).eq('stock_date',date).maybeSingle(),
+      db.from('delivery_bills').select('id')
+        .eq('truck_id',truckId).eq('bill_date',date).eq('status','COMPLETED')
+    ]);
+    if(entryResult.error)throw entryResult.error;
+    if(billsResult.error)throw billsResult.error;
+    if(request!==loadedItemsRequest)return;
+    const entry=entryResult.data;
+    if(!entry){
+      host.innerHTML=`<div class="report-empty">No stock sheet has been saved for ${formatDate(date)}.</div>`;
+      return;
+    }
+    const billIds=(billsResult.data||[]).map(b=>b.id);
+    let soldItems=[];
+    if(billIds.length){
+      const soldResult=await db.from('delivery_bill_items').select('product_id,quantity').in('bill_id',billIds);
+      if(soldResult.error)throw soldResult.error;
+      soldItems=soldResult.data||[];
+    }
+    if(request!==loadedItemsRequest)return;
+    const soldById={};
+    soldItems.forEach(item=>{
+      if(item.product_id)soldById[item.product_id]=(soldById[item.product_id]||0)+Number(item.quantity||0);
+    });
+    const items=(entry.truck_stock_items||[]).slice().sort((a,b)=>
+      String(a.product_name_snapshot||'').localeCompare(String(b.product_name_snapshot||''))
+    );
+    if(!items.length){
+      host.innerHTML='<div class="report-empty">A stock sheet exists, but it contains no product entries.</div>';
+      return;
+    }
+    const loadedTotal=items.reduce((sum,item)=>sum+Number(item.quantity_loaded||0),0);
+    const returnedTotal=items.reduce((sum,item)=>sum+Number(item.quantity_returned||0),0);
+    const soldTotal=items.reduce((sum,item)=>sum+Number(soldById[item.product_id]||0),0);
+    const remainingTotal=items.reduce((sum,item)=>sum+Number(item.quantity_loaded||0)-Number(soldById[item.product_id]||0)-Number(item.quantity_returned||0),0);
+    const rows=items.map(item=>{
+      const loaded=Number(item.quantity_loaded)||0;
+      const sold=Number(soldById[item.product_id]||0);
+      const returned=Number(item.quantity_returned)||0;
+      const remaining=loaded-sold-returned;
+      return `<tr><td><strong>${esc(item.product_name_snapshot||'Unnamed product')}</strong></td>
+        <td class="num">${loaded}</td><td class="num">${sold}</td><td class="num">${returned}</td>
+        <td class="num ${remaining<0?'negative':''}">${remaining}${remaining<0?' · Check':''}</td></tr>`;
+    }).join('');
+    host.innerHTML=`
+      <div class="loaded-items-summary">
+        <div class="mini-stat"><label>Total Loaded</label><strong>${loadedTotal}</strong></div>
+        <div class="mini-stat"><label>Total Sold</label><strong>${soldTotal}</strong></div>
+        <div class="mini-stat"><label>Total Remaining</label><strong>${remainingTotal}</strong></div>
+      </div>
+      <div class="loaded-items-table-wrap"><table class="loaded-items-table">
+        <thead><tr><th>Product</th><th class="num">Loaded</th><th class="num">Sold</th><th class="num">Returned</th><th class="num">Remaining</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td>Total</td><td class="num">${loadedTotal}</td><td class="num">${soldTotal}</td><td class="num">${returnedTotal}</td><td class="num ${remainingTotal<0?'negative':''}">${remainingTotal}</td></tr></tfoot>
+      </table></div>
+      <p class="notice">Stock sheet saved: ${entry.created_at?new Date(entry.created_at).toLocaleString('en-IN'):'Date unavailable'}</p>`;
+  }catch(error){
+    if(request!==loadedItemsRequest)return;
+    console.error('Loaded Items quick view error:',error);
+    host.innerHTML=`<div class="report-empty">Could not load items: ${esc(error.message||error)}</div>`;
+    showToast('Loaded Items error: '+(error.message||error));
+  }
+}
+
+
+/* FULL DATABASE BACKUP & INDEXEDDB ARCHIVE */
+const BACKUP_TABLES = [
+  'drivers','trucks','products','stores','delivery_bills','delivery_bill_items',
+  'store_ledger_entries','truck_stock_entries','truck_stock_items'
+];
+const BACKUP_VERSION = 2;
+let selectedBackup = null;
+async function fetchEveryRow(table){
+  try{return await fetchSupabaseTable(table);}
+  catch(e){throw new Error(`Export failed for ${table}: ${e.message||e}`);}
+}
+async function getCompleteTable(table){
+  const [online,archived]=await Promise.all([fetchEveryRow(table),idbGetAll(table)]);
+  const map=new Map();
+  archived.forEach(row=>map.set(row.id,row));
+  online.forEach(row=>map.set(row.id,row));
+  return [...map.values()];
+}
+async function exportFullBackup(){
+  const button=$('exportBackup');button.disabled=true;button.textContent='Preparing complete backup…';
+  try{
+    const tables={};
+    for(const table of BACKUP_TABLES)tables[table]=await getCompleteTable(table);
+    const backup={format:'SR_TRADE_LINK_FULL_BACKUP',version:BACKUP_VERSION,created_at:new Date().toISOString(),archive_storage:'IndexedDB',tables};
+    const json=JSON.stringify(backup,null,2);
+    // Verify the serialized file before saving it or clearing any online data.
+    const verified=validateBackup(JSON.parse(json));
+    const total=Object.values(tables).reduce((n,rows)=>n+rows.length,0);
+    // Keep a local copy first, so the archive survives even if the download is interrupted.
+    for(const table of BACKUP_TABLES)await idbPutMany(table,verified.tables[table]);
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=`SR_TRADE_LINK_COMPLETE_BACKUP_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+    const clearNow=confirm(`BACKUP READY\n\nVerified ${total} records across all ${BACKUP_TABLES.length} tables.\n\nThe complete archive has also been saved in THIS browser's IndexedDB and the JSON download has been started.\n\nIMPORTANT: This backup contains Supabase data plus ONLY this device's local archive. It does NOT include unsynced local-only records on the 11 truck devices.\n\nBefore clearing, confirm that the JSON file downloaded successfully AND every truck device's local-only archive has been separately exported and safely collected.\n\nIf you choose OK, ONLY these five transaction tables will be cleared: truck_stock_items, truck_stock_entries, store_ledger_entries, delivery_bill_items, delivery_bills.\n\nPROTECTED — NEVER DELETED: stores, trucks, drivers, products.\n\nChoose Cancel if you are unsure. Supabase will remain unchanged.`);
+    if(clearNow){
+      // Strict allowlist: transaction/history tables only. Master tables are never eligible for deletion.
+      const deleteOrder=['truck_stock_items','truck_stock_entries','store_ledger_entries','delivery_bill_items','delivery_bills'];
+      const clearResults=[];
+      for(const table of deleteOrder)clearResults.push(await deleteAllRows(table));
+      await loadBase();await refreshFinancials();
+      const clearedTotal=clearResults.reduce((n,r)=>n+r.deleted,0);
+      showToast(`Backup verified. ${total} records archived locally. Supabase transaction tables cleared and verified (${clearedTotal} online rows removed). Master tables remain online.`);
+    }else{
+      showToast(`Backup downloaded and archived locally: ${total} records. Supabase was not cleared.`);
+    }
+  }catch(e){console.error(e);showToast(e.message||'Backup export failed.');}
+  finally{button.disabled=false;button.textContent='⬇ Export Full Backup';}
+}
+function validateBackup(data){
+  if(!data||data.format!=='SR_TRADE_LINK_FULL_BACKUP'||![1,2].includes(data.version)||!data.tables||typeof data.tables!=='object')throw new Error('This is not a supported SR TRADE LINK backup file.');
+  for(const table of BACKUP_TABLES){if(!Array.isArray(data.tables[table]))throw new Error(`Backup is missing the required table: ${table}`);}
+  for(const [table,rows] of Object.entries(data.tables)){
+    if(!BACKUP_TABLES.includes(table))throw new Error(`Backup contains an unknown table: ${table}`);
+    if(!Array.isArray(rows))throw new Error(`Invalid records for table: ${table}`);
+    for(const row of rows){if(!row||typeof row!=='object'||Array.isArray(row)||!row.id)throw new Error(`Invalid record found in ${table}.`);}
+  }
+  return data;
+}
+$('openBackup').onclick=()=>open('backupOverlay');
+$('exportBackup').onclick=exportFullBackup;
+$('backupFile').addEventListener('change',async e=>{
+  selectedBackup=null;$('restoreBackup').disabled=true;$('backupFileInfo').textContent='Reading backup file…';
+  const file=e.target.files&&e.target.files[0];if(!file){$('backupFileInfo').textContent='No backup file selected.';return;}
+  try{
+    const parsed=validateBackup(JSON.parse(await file.text()));selectedBackup=parsed;
+    const counts=BACKUP_TABLES.map(t=>`${t}: ${parsed.tables[t].length}`).join(' · ');
+    $('backupFileInfo').textContent=`Valid backup · Created ${parsed.created_at||'date unavailable'} · ${counts}`;
+    $('restoreBackup').disabled=false;
+  }catch(err){$('backupFileInfo').textContent='Invalid backup: '+err.message;showToast('Backup validation failed.');}
+});
+async function deleteAllRows(table){
+  // Strict allowlist: master-data tables can NEVER be deleted by this backup flow.
+  const allowedTables=new Set(['truck_stock_items','truck_stock_entries','store_ledger_entries','delivery_bill_items','delivery_bills']);
+  if(!allowedTables.has(table))throw new Error(`Safety stop: deletion of ${table} is blocked. Only transaction tables may be cleared.`);
+
+  // Count first; do not trust a successful HTTP response alone.
+  const before=await supabaseClient.from(table).select('id',{count:'exact',head:true});
+  if(before.error)throw new Error(`Could not verify ${table} before clearing: ${before.error.message}`);
+  if(typeof before.count!=='number')throw new Error(`Could not obtain an exact row count for ${table}; nothing was deleted from this table.`);
+
+  // Delete every row with a non-null primary key.
+  const deletion=await supabaseClient.from(table).delete({count:'exact'}).not('id','is',null);
+  if(deletion.error)throw new Error(`Could not clear ${table}: ${deletion.error.message}`);
+
+  // Verify directly against Supabase. This catches RLS/permission cases where
+  // a delete request returns without actually removing the rows.
+  const after=await supabaseClient.from(table).select('id',{count:'exact',head:true});
+  if(after.error)throw new Error(`${table} delete was attempted, but verification failed: ${after.error.message}`);
+  if(typeof after.count!=='number')throw new Error(`${table} delete was attempted, but Supabase did not return a verifiable row count.`);
+  if(after.count!==0)throw new Error(`${table} was NOT fully cleared. ${after.count} rows remain in Supabase. Check DELETE permissions / RLS policies.`);
+  const deleted=typeof deletion.count==='number'?deletion.count:before.count-after.count;
+  return {table,before:before.count,deleted,remaining:after.count};
+}
+async function restoreFullBackup(){
+  if(!selectedBackup)return;
+  const total=BACKUP_TABLES.reduce((n,t)=>n+selectedBackup.tables[t].length,0);
+  const ok=confirm(`IMPORT ARCHIVE TO THIS BROWSER\n\nThis will merge ${total} records from the selected JSON file into IndexedDB.\n\nIt will NOT insert, update, or delete anything in Supabase. Existing browser archive records with matching IDs will be updated.\n\nContinue?`);
+  if(!ok)return;
+  const button=$('restoreBackup');button.disabled=true;button.textContent='Importing to IndexedDB…';
+  try{
+    for(const table of BACKUP_TABLES)await idbPutMany(table,selectedBackup.tables[table]);
+    await loadBase();await refreshFinancials();
+    close('backupOverlay');showToast(`Local archive imported: ${total} records. Supabase was not changed.`);
+    $('backupFileInfo').textContent=`Imported into browser IndexedDB · ${total} records. Supabase unchanged.`;
+  }catch(e){
+    console.error('Archive import error:',e);
+    showToast((e.message||'Archive import failed')+' · Supabase was not changed.');
+    $('backupFileInfo').textContent='Import incomplete: '+(e.message||e);
+  }finally{button.disabled=!selectedBackup;button.textContent='↻ Import to Browser Archive';}
+}
+$('restoreBackup').onclick=restoreFullBackup;
+
+/* START */
+async function init(){
+try{
+if(!window.supabase)throw new Error('Supabase library could not be loaded. Check internet connection.');
+await loadBase();await refreshFinancials();showToast('Connected to SR TRADE LINK database.');
+}catch(e){console.error(e);showToast('Supabase connection failed: '+e.message);}
+}
+init();
+
+})();
+</script>
+</body>
+</html>
+
