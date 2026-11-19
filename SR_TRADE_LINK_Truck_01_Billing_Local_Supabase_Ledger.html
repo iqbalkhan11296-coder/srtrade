@@ -1,0 +1,1157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SR TRADE LINK | Truck 01 Billing</title>
+<style>
+:root{--navy:#111c2e;--navy2:#1d304b;--gold:#d6ad61;--bg:#f3f5f8;--card:#fff;--text:#172235;--muted:#718096;--line:#e3e8ef;--green:#237447;--greenbg:#e9f5ed;--orange:#a76519;--orangebg:#fff3e3;--blue:#285d91;--shadow:0 10px 30px #17223512}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.top{background:linear-gradient(110deg,var(--navy),#203550);color:#fff;padding:17px max(16px,calc((100% - 1180px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:43px;height:43px;border-radius:12px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:24px}
+.brand h1{font-size:19px;letter-spacing:1.4px;margin:0}
+.brand small{display:block;color:#c5cfdb;font-size:10px;letter-spacing:2px;margin-top:4px}
+.truck-tag{border:1px solid #ffffff35;border-radius:9px;padding:9px 13px;font-size:12px;font-weight:800;white-space:nowrap}
+.wrap{max-width:1180px;margin:24px auto;padding:0 18px 40px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:18px}
+.heading h2{margin:0;font-size:22px}
+.heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.driver{color:var(--muted);font-size:12px;text-align:right}
+.driver b{display:block;color:var(--text);font-size:14px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.stat{padding:15px 17px}
+.stat label{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-bottom:7px}
+.stat strong{font-size:23px}
+.stat.paid strong{color:var(--green)}
+.stat.credit strong{color:var(--orange)}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.85fr);gap:17px;align-items:start}
+.panel{padding:19px;margin-bottom:16px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.panel-head h3{font-size:15px;margin:0}
+.muted{color:var(--muted);font-size:11px}
+.field-label{display:block;font-size:11px;font-weight:800;color:#5d6b7d;margin:0 0 7px}
+.input,select{width:100%;border:1px solid #dce3ec;border-radius:9px;background:#fff;padding:11px 12px;color:var(--text);outline:none}
+.input:focus,select:focus{border-color:#88a6c8;box-shadow:0 0 0 3px #285d9115}
+.store-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.item{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.item-name{font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.item-price{font-size:10px;color:var(--muted);margin-top:4px}
+.qty{display:flex;align-items:center;gap:5px}
+.qty button{border:1px solid var(--line);background:#f7f9fb;border-radius:7px;width:29px;height:29px;font-weight:800;color:#33445b}
+.qty input{width:42px;text-align:center;border:1px solid var(--line);border-radius:7px;padding:6px 2px;font-size:12px}
+.qty input::-webkit-inner-spin-button{opacity:1}
+.bill-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:15px;padding-top:14px;border-top:1px dashed #d9e0e9}
+.total-label{font-size:12px;color:var(--muted);font-weight:700}
+.total{font-size:27px;font-weight:900;letter-spacing:-.5px}
+.pay-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-option{position:relative}
+.pay-option input{position:absolute;opacity:0}
+.pay-option label{display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;padding:13px 8px;font-size:12px;font-weight:900;cursor:pointer}
+.pay-option.paid input:checked+label{border-color:var(--green);background:var(--greenbg);color:var(--green)}
+.pay-option.credit input:checked+label{border-color:#d69a32;background:var(--orangebg);color:var(--orange)}
+.btn{border:0;border-radius:9px;padding:11px 14px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--navy2);color:#fff}
+.primary:hover{background:#2b4668}
+.secondary{background:#edf1f6;color:#34445a}
+.success{background:var(--green);color:#fff}
+.warning{background:#fff0d9;color:#8d5715}
+.danger{background:#fff0f0;color:#b33c3c}
+.full{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.bill-list{display:grid;gap:9px}
+.bill{border:1px solid var(--line);border-radius:10px;padding:12px}
+.bill-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.bill-id{font-size:12px;font-weight:900}
+.bill-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.bill-amount{font-size:15px;font-weight:900;white-space:nowrap}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.pill{border-radius:20px;padding:4px 8px;font-size:9px;font-weight:900;letter-spacing:.3px}
+.pending{background:#fff1dc;color:#98601c}
+.completed{background:#e7f4eb;color:#237447}
+.paid-pill{background:#e7f4eb;color:#237447}
+.credit-pill{background:#fff1dc;color:#98601c}
+.bill-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.bill-actions .btn{padding:7px 9px;font-size:10px}
+.empty{padding:25px 10px;text-align:center;border:1px dashed #d7dfe8;border-radius:10px;color:var(--muted);font-size:12px}
+.note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:12px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#14243a;color:#fff;padding:11px 16px;border-radius:9px;font-size:12px;transition:.2s;z-index:30;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.status{font-size:11px;font-weight:700;padding:7px 10px;border-radius:8px;background:#edf1f6;color:#52647a}
+.status.online{background:#e7f4eb;color:#237447}
+.status.offline{background:#fff1dc;color:#98601c}
+.ledger-overlay{position:fixed;inset:0;background:#08111e99;display:none;align-items:center;justify-content:center;padding:14px;z-index:60}.ledger-overlay.show{display:flex}.ledger-modal{background:#fff;width:min(850px,100%);max-height:92vh;overflow:auto;border-radius:15px;box-shadow:0 20px 60px #0003}.ledger-head{background:linear-gradient(110deg,var(--navy),#203550);color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}.ledger-body{padding:16px}.ledger-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end}.ledger-table-wrap{overflow:auto;margin-top:16px;border:1px solid var(--line);border-radius:10px}.ledger-table{width:100%;border-collapse:collapse;min-width:520px;font-size:12px}.ledger-table th,.ledger-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.ledger-table th:first-child,.ledger-table td:first-child{text-align:left}.ledger-table th{background:#f3f6fa;color:#526176;font-size:10px;text-transform:uppercase}.ledger-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.ledger-summary>div{background:#f3f6fa;border-radius:9px;padding:11px}.ledger-summary small{display:block;color:var(--muted);font-size:10px}.ledger-summary strong{display:block;margin-top:5px;font-size:16px}@media(max-width:600px){.ledger-form{grid-template-columns:1fr 1fr}.ledger-summary strong{font-size:13px}}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.wrap{margin-top:18px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:20px}}
+@media(max-width:520px){.top{padding:13px 14px}.brand h1{font-size:16px}.logo{width:38px;height:38px}.truck-tag{font-size:10px;padding:8px}.wrap{padding:0 12px 30px}.heading{align-items:flex-start;flex-direction:column}.driver{text-align:left}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.stat{padding:10px 8px}.stat label{font-size:9px;min-height:23px}.stat strong{font-size:16px}.panel{padding:14px}.items{grid-template-columns:1fr}.store-row{grid-template-columns:1fr}.total{font-size:24px}}
+@media print{body{background:#fff}.top,.stats,.layout>.right,.heading,.panel:not(.invoice-panel){display:none!important}.wrap{margin:0;padding:0}.invoice-panel{display:block!important;border:0;box-shadow:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo">🚚</div>
+    <div><h1>SR TRADE LINK</h1><small>DELIVERY BILLING SYSTEM</small></div>
+  </div>
+  <div class="truck-tag">🚚 TRUCK 01</div>
+</header>
+
+<main class="wrap">
+  <div class="heading">
+    <div>
+      <h2>Truck 01 · Billing</h2>
+      <p>Create store bills, track delivery status and record payment type.</p>
+    </div>
+    <div class="driver">
+      <span>DELIVERY PERSON</span>
+      <b id="driverName">Loading driver...</b>
+      <span id="connectionStatus" class="status">Connecting...</span>
+    </div>
+  </div>
+
+  <section class="stats">
+    <div class="stat"><label>COMPLETED SALES</label><strong id="salesStat">₹0.00</strong></div>
+    <div class="stat paid"><label>PAID</label><strong id="paidStat">₹0.00</strong></div>
+    <div class="stat credit"><label>CREDIT</label><strong id="creditStat">₹0.00</strong></div>
+  </section>
+
+  <div class="layout">
+    <div class="left">
+      <section class="panel">
+        <div class="panel-head"><h3>① Select Store</h3><span class="muted">Required</span></div>
+        <div class="store-row">
+          <div>
+            <label class="field-label" for="storeSelect">STORE</label>
+            <select id="storeSelect"><option value="">Loading stores...</option></select>
+          </div>
+          <div>
+            <label class="field-label" for="billDate">BILL DATE</label>
+            <input class="input" id="billDate" type="date">
+          </div>
+        </div><div style="margin-top:12px"><button class="btn secondary full" id="ledgerStoreQuick" disabled type="button">📒 Open Selected Store Ledger</button></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h3>② Add Items</h3>
+          <span class="muted">Products from Admin</span>
+        </div>
+        <div class="items" id="itemsGrid"><div class="empty">Loading products...</div></div>
+        <div class="bill-bottom">
+          <div>
+            <div class="total-label">BILL TOTAL</div>
+            <div class="muted" id="itemCount">0 items selected</div>
+          </div>
+          <div class="total" id="billTotal">₹0.00</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h3>③ Payment Type</h3><span class="muted">Choose one</span></div>
+        <div class="pay-options">
+          <div class="pay-option paid"><input type="radio" name="payment" id="payPaid" value="PAID" checked><label for="payPaid">✓ &nbsp; PAID</label></div>
+          <div class="pay-option credit"><input type="radio" name="payment" id="payCredit" value="CREDIT"><label for="payCredit">◷ &nbsp; CREDIT</label></div>
+        </div>
+        <div class="note">PAID = payment received. CREDIT = amount outstanding. Payment type is stored separately from delivery status.</div>
+        <div class="actions">
+          <button class="btn primary full" id="saveBill">Save as Pending</button>
+          <button class="btn secondary full" id="clearBill">Clear Bill</button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="right">
+      <section class="panel">
+        <div class="panel-head"><h3>Pending Bills</h3><span class="muted" id="pendingCount">0</span></div>
+        <div class="bill-list" id="pendingList"><div class="empty">Loading bills...</div></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h3>Completed Bills</h3><span class="muted" id="completedCount">0</span></div>
+        <div class="bill-list" id="completedList"><div class="empty">Loading bills...</div></div>
+      </section>
+      <div class="note">Bills are saved to the shared SR TRADE LINK Supabase database. The Admin Dashboard reads these bills automatically.</div>
+    </aside>
+  </div>
+</main>
+
+<div class="ledger-overlay" id="ledgerOverlay"><section class="ledger-modal"><div class="ledger-head"><div><strong id="ledgerStoreTitle">STORE LEDGER</strong><div style="font-size:11px;color:#c5cfdb;margin-top:4px">Manual store credit record</div></div><button class="btn secondary" id="closeLedger">Close</button></div><div class="ledger-body"><div class="ledger-summary"><div><small>Total Credit Given</small><strong id="ledgerGiven">₹0.00</strong></div><div><small>Total Credit Paid</small><strong id="ledgerPaid">₹0.00</strong></div><div><small>Outstanding Balance</small><strong id="ledgerBalance">₹0.00</strong></div></div><form id="ledgerForm" class="ledger-form"><div><label class="field-label">DATE</label><input class="input" type="date" id="ledgerDate" required></div><div><label class="field-label">ENTRY TYPE</label><select id="ledgerType" required><option value="GIVEN">Credit Given</option><option value="PAID">Credit Paid</option><option value="OPENING">Opening Balance</option></select></div><div><label class="field-label">AMOUNT (₹)</label><input class="input" id="ledgerAmount" type="number" min="0.01" step="0.01" required placeholder="0.00"></div><button class="btn primary" type="submit">Add Entry</button></form><div class="note">Opening Balance is used to enter an amount already outstanding before this ledger started. The date can be changed for any entry.</div><div class="ledger-table-wrap"><table class="ledger-table"><thead><tr><th>Date</th><th>Credit Given</th><th>Credit Paid</th><th>Balance</th></tr></thead><tbody id="ledgerRows"><tr><td colspan="4" style="text-align:center">Select a store to view its ledger.</td></tr></tbody></table></div></div></section></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(()=>{
+'use strict';
+
+/* ==========================================
+   SUPABASE CONNECTION
+========================================== */
+const SUPABASE_URL='https://vypqxnwvgeskugsmtzvu.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_DBtO5XkgjX-8wiFz-tPR-A_pWiOSYBa';
+const TRUCK_NUMBER=1;
+const supabaseClient=window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
+
+/* HYBRID DATA LAYER: archived history in IndexedDB + new records in Supabase */
+const ARCHIVE_DB_NAME='SR_TRADE_LINK_ARCHIVE';
+const ARCHIVE_DB_VERSION=1;
+const ARCHIVE_TABLES=['drivers','trucks','products','stores','delivery_bills','delivery_bill_items','store_ledger_entries','truck_stock_entries','truck_stock_items'];
+let archiveDbPromise;
+function openArchiveDB(){
+  if(archiveDbPromise)return archiveDbPromise;
+  archiveDbPromise=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(ARCHIVE_DB_NAME,ARCHIVE_DB_VERSION);
+    req.onupgradeneeded=()=>{const idb=req.result;ARCHIVE_TABLES.forEach(t=>{if(!idb.objectStoreNames.contains(t))idb.createObjectStore(t,{keyPath:'id'});});};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('Could not open IndexedDB archive.'));
+  });
+  return archiveDbPromise;
+}
+async function idbGetAll(table){
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readonly'),req=tx.objectStore(table).getAll();
+    req.onsuccess=()=>resolve(req.result||[]);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function idbPutMany(table,rows){
+  if(!rows.length)return;
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readwrite'),store=tx.objectStore(table);
+    rows.forEach(row=>{if(row&&row.id)store.put(row);});
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||new Error('IndexedDB write failed.'));
+    tx.onabort=()=>reject(tx.error||new Error('IndexedDB write was aborted.'));
+  });
+}
+async function idbUpdateRows(table,ids,payload){
+  if(!ids.length)return;
+  const idb=await openArchiveDB();
+  return new Promise((resolve,reject)=>{
+    const tx=idb.transaction(table,'readwrite'),store=tx.objectStore(table);
+    ids.forEach(id=>{const req=store.get(id);req.onsuccess=()=>{if(req.result)store.put({...req.result,...payload});};});
+    tx.oncomplete=()=>resolve();
+    tx.onerror=()=>reject(tx.error||new Error('IndexedDB update failed.'));
+  });
+}
+async function syncPendingLedgerEntries(){
+  if(!supabaseClient)return {synced:0,pending:0};
+  const archived=await idbGetAll('store_ledger_entries');
+  const pending=archived.filter(row=>row.__local_sync_state==='pending');
+  let synced=0;
+  for(const local of pending){
+    const {__local_sync_state,...remoteRow}=local;
+    try{
+      const check=await supabaseClient.from('store_ledger_entries').select('id').eq('id',remoteRow.id).maybeSingle();
+      if(check.error)throw check.error;
+      if(!check.data){
+        const result=await supabaseClient.from('store_ledger_entries').insert(remoteRow);
+        if(result.error)throw result.error;
+      }
+      await idbPutMany('store_ledger_entries',[{...remoteRow,__local_sync_state:'synced'}]);
+      synced++;
+    }catch(error){
+      console.warn('Ledger entry remains local and queued for sync:',remoteRow.id,error);
+    }
+  }
+  return {synced,pending:pending.length-synced};
+}
+function splitSelectFields(str){
+  const out=[];let depth=0,start=0;
+  for(let i=0;i<str.length;i++){if(str[i]==='(')depth++;else if(str[i]===')')depth--;else if(str[i]===','&&depth===0){out.push(str.slice(start,i).trim());start=i+1;}}
+  if(str.slice(start).trim())out.push(str.slice(start).trim());
+  return out;
+}
+const RELATIONS={
+  'trucks:drivers':{localKey:'driver_id',foreignKey:'id',many:false},
+  'truck_stock_entries:truck_stock_items':{localKey:'id',foreignKey:'entry_id',many:true}
+};
+class HybridReadQuery{
+  constructor(table){this.table=table;this.columns='*';this.filters=[];this.orders=[];this.start=0;this.end=Infinity;this.singleMode=null;this.mutation=null;this.payload=null;this.conflict=null;this.returnColumns=null;}
+  select(columns='*'){if(this.mutation){this.returnColumns=columns;return this;}this.columns=columns;return this;}
+  eq(k,v){this.filters.push([k,'eq',v]);return this;} neq(k,v){this.filters.push([k,'neq',v]);return this;}
+  gt(k,v){this.filters.push([k,'gt',v]);return this;} gte(k,v){this.filters.push([k,'gte',v]);return this;}
+  lt(k,v){this.filters.push([k,'lt',v]);return this;} lte(k,v){this.filters.push([k,'lte',v]);return this;}
+  in(k,v){this.filters.push([k,'in',v]);return this;} is(k,v){this.filters.push([k,'is',v]);return this;}
+  order(k,opt={}){this.orders.push([k,opt.ascending!==false]);return this;}
+  limit(n){this.end=this.start+Number(n);return this;} range(a,b){this.start=Number(a);this.end=Number(b)+1;return this;}
+  maybeSingle(){this.singleMode='maybe';return this;} single(){this.singleMode='single';return this;}
+  insert(payload){
+    if(this.table==='store_ledger_entries')return this.insertLedgerRows(payload);
+    return supabaseClient.from(this.table).insert(payload);
+  }
+  async insertLedgerRows(payload){
+    const input=Array.isArray(payload)?payload:[payload];
+    try{
+      // Only newly-created entries are queued for online insertion. Older
+      // archived rows never receive this marker and are never re-uploaded.
+      const rows=input.map(row=>({
+        ...row,
+        id:row.id||crypto.randomUUID(),
+        created_at:row.created_at||new Date().toISOString()
+      }));
+      const localRows=rows.map(row=>({...row,__local_sync_state:'pending'}));
+      await idbPutMany(this.table,localRows);
+
+      try{
+        for(const row of rows){
+          const storeCheck=await supabaseClient.from('stores').select('id').eq('id',row.store_id).maybeSingle();
+          if(storeCheck.error)throw storeCheck.error;
+          if(!storeCheck.data)throw new Error('This store is not present in the online stores table. The ledger entry has been saved on this device and is waiting for the store to be available online.');
+        }
+        const {error}=await supabaseClient.from(this.table).insert(rows);
+        if(error)throw error;
+        await idbPutMany(this.table,rows.map(row=>({...row,__local_sync_state:'synced'})));
+        return {data:rows,error:null};
+      }catch(remoteError){
+        return {data:rows,error:null,localOnly:true,syncMessage:remoteError.message||String(remoteError)};
+      }
+    }catch(error){
+      return {data:null,error:{message:error.message||String(error)}};
+    }
+  }
+  delete(){return supabaseClient.from(this.table).delete();}
+  update(payload){this.mutation='update';this.payload=payload;return this;}
+  upsert(payload,options={}){this.mutation='upsert';this.payload=payload;this.conflict=(options.onConflict||'id').split(',').map(x=>x.trim());return this;}
+  async execute(){
+    if(this.mutation)return this.executeMutation();
+    try{
+      const [remote,archived]=await Promise.all([fetchSupabaseTable(this.table),idbGetAll(this.table)]);
+      const byId=new Map();archived.forEach(r=>byId.set(r.id,r));remote.forEach(r=>byId.set(r.id,r));
+      let rows=[...byId.values()];
+      rows=rows.filter(row=>this.filters.every(([key,op,val])=>{
+        const x=row[key];
+        if(op==='eq')return x===val;
+        if(op==='neq')return x!==val;
+        if(op==='gt')return x>val;
+        if(op==='gte')return x>=val;
+        if(op==='lt')return x<val;
+        if(op==='lte')return x<=val;
+        if(op==='in')return Array.isArray(val)&&val.includes(x);
+        if(op==='is')return val===null?x==null:x===val;
+        return true;
+      }));
+      for(const [key,ascending] of this.orders.slice().reverse())rows.sort((a,b)=>{
+        const x=a[key],y=b[key];if(x==null&&y==null)return 0;if(x==null)return ascending?-1:1;if(y==null)return ascending?1:-1;
+        const cmp=typeof x==='number'&&typeof y==='number'?x-y:String(x).localeCompare(String(y));return ascending?cmp:-cmp;
+      });
+      const total=rows.length;rows=rows.slice(this.start,this.end);
+      const projected=await Promise.all(rows.map(row=>projectHybridRow(this.table,row,this.columns)));
+      if(this.singleMode==='single'){
+        if(projected.length!==1)return {data:null,error:{message:`Expected 1 row, received ${projected.length}`,code:'PGRST116'},count:total};
+        return {data:projected[0],error:null,count:total};
+      }
+      if(this.singleMode==='maybe')return {data:projected[0]||null,error:null,count:total};
+      return {data:projected,error:null,count:total};
+    }catch(error){return {data:null,error:{message:error.message||String(error)},count:null};}
+  }
+  async executeMutation(){
+    try{
+      const rows=Array.isArray(this.payload)?this.payload:[this.payload];
+      if(this.mutation==='update'){
+        const archived=await idbGetAll(this.table);
+        const matches=archived.filter(r=>this.filters.every(([k,op,v])=>matchesFilter(r[k],op,v)));
+        const ids=matches.map(r=>r.id);
+        if(ids.length)await idbUpdateRows(this.table,ids,this.payload);
+        let remoteQuery=supabaseClient.from(this.table).update(this.payload);
+        this.filters.forEach(([k,op,v])=>{if(op==='eq')remoteQuery=remoteQuery.eq(k,v);else if(op==='neq')remoteQuery=remoteQuery.neq(k,v);else if(op==='in')remoteQuery=remoteQuery.in(k,v);});
+        if(ids.length&&this.filters.some(f=>f[0]==='id'&&f[1]==='eq'))return {data:null,error:null};
+        const result=await remoteQuery;
+        if(result.error)throw result.error;
+        return result;
+      }
+      if(this.mutation==='upsert'){
+        const archived=await idbGetAll(this.table),remaining=[],localResults=[];
+        for(const row of rows){
+          const existing=archived.find(a=>this.conflict.every(k=>a[k]===row[k]));
+          if(existing){await idbUpdateRows(this.table,[existing.id],row);localResults.push({...existing,...row});continue;}
+          let mustStayLocal=false;
+          if(this.table==='truck_stock_entries'){
+            mustStayLocal=await isArchivedOnly('trucks',row.truck_id);
+          }else if(this.table==='truck_stock_items'){
+            mustStayLocal=await isArchivedOnly('truck_stock_entries',row.entry_id)||await isArchivedOnly('products',row.product_id);
+          }
+          if(mustStayLocal){const local={...row,id:row.id||crypto.randomUUID(),created_at:row.created_at||new Date().toISOString()};await idbPutMany(this.table,[local]);localResults.push(local);}
+          else remaining.push(row);
+        }
+        if(!remaining.length){
+          let data=localResults;
+          if(this.returnColumns&&this.returnColumns!=='*')data=await Promise.all(data.map(r=>projectHybridRow(this.table,r,this.returnColumns)));
+          if(this.singleMode==='single')return {data:data[0]||null,error:data.length===1?null:{message:`Expected 1 row, received ${data.length}`}};
+          if(this.singleMode==='maybe')return {data:data[0]||null,error:null};
+          return {data,error:null};
+        }
+        let q=supabaseClient.from(this.table).upsert(Array.isArray(this.payload)?remaining:remaining[0],{onConflict:this.conflict.join(',')});
+        if(this.returnColumns)q=q.select(this.returnColumns);
+        let result=q;
+        if(this.singleMode==='single')result=q.single();else if(this.singleMode==='maybe')result=q.maybeSingle();
+        return await result;
+      }
+      return {data:null,error:null};
+    }catch(error){return {data:null,error:{message:error.message||String(error)}};}
+  }
+  then(resolve,reject){return this.execute().then(resolve,reject);}
+}
+async function isArchivedOnly(table,id){
+  if(!id)return false;
+  const archived=await idbGetAll(table);
+  if(!archived.some(row=>row.id===id))return false;
+  const remote=await supabaseClient.from(table).select('id').eq('id',id).maybeSingle();
+  if(remote.error)throw remote.error;
+  return !remote.data;
+}
+function matchesFilter(x,op,v){if(op==='eq')return x===v;if(op==='neq')return x!==v;if(op==='in')return Array.isArray(v)&&v.includes(x);if(op==='gte')return x>=v;if(op==='gt')return x>v;if(op==='lte')return x<=v;if(op==='lt')return x<v;if(op==='is')return v===null?x==null:x===v;return true;}
+async function fetchSupabaseTable(table){
+  const all=[],size=1000;
+  for(let from=0;;from+=size){
+    const {data,error}=await supabaseClient.from(table).select('*').range(from,from+size-1);
+    if(error)throw error;all.push(...(data||[]));if(!data||data.length<size)break;
+  }
+  return all;
+}
+async function projectHybridRow(table,row,columns){
+  if(columns==='*'||!columns)return {...row};
+  const out={};
+  for(const field of splitSelectFields(columns)){
+    const rel=field.match(/^([a-zA-Z0-9_]+)\((.*)\)$/);
+    if(rel){
+      const name=rel[1],spec=RELATIONS[`${table}:${name}`];
+      if(!spec){out[name]=spec?.many?[]:null;continue;}
+      const related=await getHybridRows(name);
+      const matches=related.filter(r=>r[spec.foreignKey]===row[spec.localKey]);
+      out[name]=spec.many?await Promise.all(matches.map(r=>projectHybridRow(name,r,rel[2]))):(matches[0]?await projectHybridRow(name,matches[0],rel[2]):null);
+    }else if(field==='*')Object.assign(out,row);
+    else if(field in row)out[field]=row[field];
+  }
+  return out;
+}
+async function getHybridRows(table){
+  const [remote,archived]=await Promise.all([fetchSupabaseTable(table),idbGetAll(table)]);
+  const map=new Map();archived.forEach(r=>map.set(r.id,r));remote.forEach(r=>map.set(r.id,r));return [...map.values()];
+}
+const db={from:table=>new HybridReadQuery(table)};
+
+/* ==========================================
+   APPLICATION STATE
+========================================== */
+const $=id=>document.getElementById(id);
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+const today=()=>{
+  const d=new Date();
+  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+};
+
+let truck=null;
+let driver=null;
+let stores=[];
+let products=[];
+let bills=[];
+let quantities={};
+let saving=false;
+let activeLedgerStore=null;
+let ledgerEntries=[];
+
+/* ==========================================
+   HELPERS
+========================================== */
+function notify(message){
+  const t=$('toast');
+  t.textContent=message;
+  t.classList.add('show');
+  clearTimeout(notify.timer);
+  notify.timer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function setConnection(online,message){
+  const el=$('connectionStatus');
+  el.textContent=message;
+  el.className='status '+(online?'online':'offline');
+}
+
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function makeBillNumber(){
+  const stamp=Date.now().toString(36).toUpperCase();
+  const random=Math.random().toString(36).slice(2,6).toUpperCase();
+  return `T${String(TRUCK_NUMBER).padStart(2,'0')}-${stamp}-${random}`;
+}
+
+/* ==========================================
+   LOAD TRUCK AND DRIVER
+========================================== */
+async function loadTruck(){
+  const {data,error}=await db
+    .from('trucks')
+    .select('id,truck_number,driver_id,drivers(id,name,phone)')
+    .eq('truck_number',TRUCK_NUMBER)
+    .maybeSingle();
+
+  if(error)throw new Error('Truck loading failed: '+error.message);
+  if(!data)throw new Error('Truck '+String(TRUCK_NUMBER).padStart(2,'0')+' was not found in Supabase or the shared IndexedDB archive. Check the Admin Dashboard truck record.');
+
+  truck=data;
+  driver=data.drivers||null;
+
+  $('driverName').textContent=driver?.name||'Driver not assigned';
+}
+
+/* ==========================================
+   LOAD ASSIGNED STORES
+========================================== */
+async function loadStores(){
+  // Active store assignments must come from live Supabase only.
+  // Archived IndexedDB stores are retained for historical bills and ledgers,
+  // but must never reappear as currently assigned stores.
+  if(!supabaseClient)throw new Error('Supabase client is not available. Check the Supabase library connection.');
+
+  const {data,error}=await supabaseClient
+    .from('stores')
+    .select('id,name,owner_name,phone,truck_id,zone_number')
+    .eq('truck_id',truck.id)
+    .eq('is_active',true)
+    .order('name');
+
+  if(error)throw new Error('Store loading failed: '+error.message);
+
+  stores=data||[];
+
+  const select=$('storeSelect');
+  select.innerHTML='<option value="">Choose a store...</option>';
+
+  stores.forEach(store=>{
+    const option=document.createElement('option');
+    option.value=store.id;
+    option.textContent=store.name;
+    select.appendChild(option);
+  });
+
+  if(!stores.length){
+    select.innerHTML='<option value="">No stores assigned to Truck '+String(TRUCK_NUMBER).padStart(2,'0')+'</option>';
+  }
+
+  // Clear stale quick-ledger selection if assignment changed.
+  $('ledgerStoreQuick').disabled=true;
+  $('ledgerStoreQuick').dataset.store='';
+}
+
+/* ==========================================
+   LOAD PRODUCTS AND PRICES
+========================================== */
+async function loadProducts(){
+  const {data,error}=await db
+    .from('products')
+    .select('id,name,unit_price,sort_order')
+    .eq('is_active',true)
+    .order('sort_order')
+    .order('name');
+
+  if(error)throw new Error('Product loading failed: '+error.message);
+
+  products=data||[];
+  quantities={};
+  renderItems();
+}
+
+/* ==========================================
+   BILL ITEM GRID
+========================================== */
+function renderItems(){
+  const grid=$('itemsGrid');
+  grid.innerHTML='';
+
+  if(!products.length){
+    grid.innerHTML='<div class="empty">No active products found. Add products in the Admin Dashboard first.</div>';
+    updateTotal();
+    return;
+  }
+
+  products.forEach(product=>{
+    const row=document.createElement('div');
+    row.className='item';
+
+    const info=document.createElement('div');
+    const name=document.createElement('div');
+    name.className='item-name';
+    name.textContent=product.name;
+
+    const price=document.createElement('div');
+    price.className='item-price';
+    price.textContent=money(product.unit_price)+' / unit';
+
+    info.append(name,price);
+
+    const qty=document.createElement('div');
+    qty.className='qty';
+
+    const minus=document.createElement('button');
+    minus.type='button';
+    minus.textContent='−';
+    minus.setAttribute('aria-label','Decrease '+product.name);
+
+    const input=document.createElement('input');
+    input.type='number';
+    input.min='0';
+    input.step='1';
+    input.inputMode='numeric';
+    input.value=quantities[product.id]||0;
+    input.setAttribute('aria-label',product.name+' quantity');
+
+    const plus=document.createElement('button');
+    plus.type='button';
+    plus.textContent='+';
+    plus.setAttribute('aria-label','Increase '+product.name);
+
+    const setQuantity=value=>{
+      quantities[product.id]=Math.max(0,Math.floor(Number(value)||0));
+      input.value=quantities[product.id];
+      updateTotal();
+    };
+
+    minus.onclick=()=>setQuantity((quantities[product.id]||0)-1);
+    plus.onclick=()=>setQuantity((quantities[product.id]||0)+1);
+    input.onchange=()=>setQuantity(input.value);
+
+    qty.append(minus,input,plus);
+    row.append(info,qty);
+    grid.append(row);
+  });
+
+  updateTotal();
+}
+
+function getBillLines(){
+  return products
+    .filter(p=>(Number(quantities[p.id])||0)>0)
+    .map(p=>{
+      const quantity=Number(quantities[p.id]);
+      const price=Number(p.unit_price||0);
+      return {
+        product_id:p.id,
+        product_name_snapshot:p.name,
+        quantity,
+        unit_price:price,
+        line_total:quantity*price
+      };
+    });
+}
+
+function calculateTotal(){
+  return getBillLines().reduce((sum,item)=>sum+item.line_total,0);
+}
+
+function updateTotal(){
+  const count=getBillLines().reduce((sum,item)=>sum+item.quantity,0);
+  $('billTotal').textContent=money(calculateTotal());
+  $('itemCount').textContent=count+' unit(s) selected';
+}
+
+/* ==========================================
+   RESET BILL FORM
+========================================== */
+function resetForm(){
+  quantities={};
+  $('storeSelect').value='';
+  $('billDate').value=today();
+  $('payPaid').checked=true;
+  renderItems();
+}
+
+/* ==========================================
+   SAVE BILL TO SUPABASE
+========================================== */
+async function createBill(){
+  if(saving)return;
+
+  if(!truck){
+    notify('Truck information is not loaded.');
+    return;
+  }
+
+  const storeId=$('storeSelect').value;
+  const selectedStore=stores.find(s=>s.id===storeId);
+
+  if(!selectedStore){
+    notify('Please select a store.');
+    $('storeSelect').focus();
+    return;
+  }
+
+  const items=getBillLines();
+
+  if(!items.length){
+    notify('Enter a quantity for at least one item.');
+    return;
+  }
+
+  const billDate=$('billDate').value||today();
+
+  if(billDate>today()){
+    notify('Bill date cannot be in the future.');
+    return;
+  }
+
+  const paymentType=document.querySelector('input[name="payment"]:checked').value;
+  const totalAmount=items.reduce((sum,item)=>sum+item.line_total,0);
+  const billNumber=makeBillNumber();
+
+  const payload={
+    bill_number:billNumber,
+    truck_id:truck.id,
+    driver_id:truck.driver_id||null,
+    driver_name_snapshot:driver?.name||'Not assigned',
+    store_id:selectedStore.id,
+    bill_date:billDate,
+    payment_type:paymentType,
+    status:'PENDING',
+    total_amount:totalAmount
+  };
+
+  saving=true;
+  $('saveBill').disabled=true;
+  $('saveBill').textContent='Saving...';
+
+  let insertedBillId=null;
+
+  try{
+    const {data:billData,error:billError}=await db
+      .from('delivery_bills')
+      .insert(payload)
+      .select('id')
+      .single();
+
+    if(billError)throw new Error('Bill save failed: '+billError.message);
+
+    insertedBillId=billData.id;
+
+    const itemPayload=items.map(item=>({
+      bill_id:insertedBillId,
+      product_id:item.product_id,
+      product_name_snapshot:item.product_name_snapshot,
+      quantity:item.quantity,
+      unit_price:item.unit_price,
+      line_total:item.line_total
+    }));
+
+    const {error:itemError}=await db
+      .from('delivery_bill_items')
+      .insert(itemPayload);
+
+    if(itemError){
+      /* Roll back the bill header if item saving fails */
+      await db.from('delivery_bills').delete().eq('id',insertedBillId);
+      insertedBillId=null;
+      throw new Error('Bill items could not be saved: '+itemError.message);
+    }
+
+    resetForm();
+    await loadBills();
+    await loadStats();
+    notify('Bill '+billNumber+' saved as PENDING.');
+
+  }catch(error){
+    console.error(error);
+    notify(error.message||'Unable to save bill.');
+  }finally{
+    saving=false;
+    $('saveBill').disabled=false;
+    $('saveBill').textContent='Save as Pending';
+  }
+}
+
+/* ==========================================
+   LOAD BILLS FOR THIS TRUCK
+========================================== */
+async function loadBills(){
+  if(!truck)return;
+
+  const {data,error}=await db
+    .from('delivery_bills')
+    .select(`
+      id,
+      bill_number,
+      truck_id,
+      driver_name_snapshot,
+      bill_date,
+      payment_type,
+      status,
+      total_amount,
+      created_at,
+      stores(name),
+      delivery_bill_items(
+        id,
+        product_name_snapshot,
+        quantity,
+        unit_price,
+        line_total
+      )
+    `)
+    .eq('truck_id',truck.id)
+    .order('created_at',{ascending:false});
+
+  if(error)throw new Error('Bills loading failed: '+error.message);
+
+  bills=(data||[]).map(b=>({
+    ...b,
+    store_name:b.stores?.name||'Unknown store',
+    items:b.delivery_bill_items||[],
+    total:Number(b.total_amount||0)
+  }));
+
+  renderBills();
+}
+
+/* ==========================================
+   RENDER BILL LISTS
+========================================== */
+function billCard(bill){
+  const el=document.createElement('div');
+  el.className='bill';
+
+  const top=document.createElement('div');
+  top.className='bill-top';
+
+  const left=document.createElement('div');
+
+  const id=document.createElement('div');
+  id.className='bill-id';
+  id.textContent=bill.bill_number;
+
+  const meta=document.createElement('div');
+  meta.className='bill-meta';
+  meta.textContent=bill.store_name+' · '+bill.bill_date;
+
+  left.append(id,meta);
+
+  const amount=document.createElement('div');
+  amount.className='bill-amount';
+  amount.textContent=money(bill.total);
+
+  top.append(left,amount);
+
+  const pills=document.createElement('div');
+  pills.className='pills';
+
+  const status=document.createElement('span');
+  status.className='pill '+(bill.status==='COMPLETED'?'completed':'pending');
+  status.textContent=bill.status;
+
+  const payment=document.createElement('span');
+  payment.className='pill '+(bill.payment_type==='PAID'?'paid-pill':'credit-pill');
+  payment.textContent=bill.payment_type;
+
+  pills.append(status,payment);
+
+  const details=document.createElement('div');
+  details.className='bill-meta';
+  details.textContent=bill.items
+    .map(item=>item.product_name_snapshot+' × '+item.quantity)
+    .join(' · ');
+
+  el.append(top,pills,details);
+
+  const actions=document.createElement('div');
+  actions.className='bill-actions';
+
+  const print=document.createElement('button');
+  print.className='btn secondary';
+  print.textContent='Print bill';
+  print.onclick=()=>printBill(bill);
+  actions.append(print);
+
+  if(bill.status==='PENDING'){
+    const complete=document.createElement('button');
+    complete.className='btn success';
+    complete.textContent='Mark completed';
+    complete.onclick=()=>markCompleted(bill.id);
+    actions.append(complete);
+  }
+
+  el.append(actions);
+  return el;
+}
+
+function renderBills(){
+  const pending=bills.filter(b=>b.status==='PENDING');
+  const completed=bills.filter(b=>b.status==='COMPLETED');
+
+  $('pendingCount').textContent=pending.length;
+  $('completedCount').textContent=completed.length;
+
+  const pendingList=$('pendingList');
+  const completedList=$('completedList');
+
+  pendingList.innerHTML='';
+  completedList.innerHTML='';
+
+  if(!pending.length){
+    pendingList.innerHTML='<div class="empty">No pending bills yet.</div>';
+  }else{
+    pending.forEach(b=>pendingList.append(billCard(b)));
+  }
+
+  if(!completed.length){
+    completedList.innerHTML='<div class="empty">No completed bills yet.</div>';
+  }else{
+    completed.forEach(b=>completedList.append(billCard(b)));
+  }
+}
+
+/* ==========================================
+   MARK BILL COMPLETED
+========================================== */
+async function markCompleted(id){
+  const bill=bills.find(b=>b.id===id);
+
+  if(!bill||bill.status!=='PENDING')return;
+
+  if(!confirm('Mark bill '+bill.bill_number+' as COMPLETED?'))return;
+
+  const {error}=await db
+    .from('delivery_bills')
+    .update({
+      status:'COMPLETED'
+    })
+    .eq('id',id)
+    .eq('status','PENDING');
+
+  if(error){
+    notify('Could not update bill: '+error.message);
+    return;
+  }
+
+  await loadBills();
+  await loadStats();
+  notify('Bill marked COMPLETED.');
+}
+
+/* ==========================================
+   COMPLETED SALES SUMMARY
+========================================== */
+async function loadStats(){
+  if(!truck)return;
+
+  const {data,error}=await db
+    .from('delivery_bills')
+    .select('total_amount,payment_type')
+    .eq('truck_id',truck.id)
+    .eq('status','COMPLETED');
+
+  if(error){
+    console.error(error);
+    notify('Could not load sales summary: '+error.message);
+    return;
+  }
+
+  const completed=data||[];
+
+  const sales=completed.reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+
+  const paid=completed
+    .filter(b=>b.payment_type==='PAID')
+    .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+
+  const credit=completed
+    .filter(b=>b.payment_type==='CREDIT')
+    .reduce((sum,b)=>sum+Number(b.total_amount||0),0);
+
+  $('salesStat').textContent=money(sales);
+  $('paidStat').textContent=money(paid);
+  $('creditStat').textContent=money(credit);
+}
+
+/* ==========================================
+   PRINT BILL
+========================================== */
+function printBill(bill){
+  const rows=bill.items.map(item=>`
+    <tr>
+      <td>${escapeHtml(item.product_name_snapshot)}</td>
+      <td>${item.quantity}</td>
+      <td>${money(item.unit_price)}</td>
+      <td>${money(item.line_total)}</td>
+    </tr>
+  `).join('');
+
+  const w=window.open('','_blank','width=650,height=750');
+
+  if(!w){
+    notify('Allow pop-ups to print the bill.');
+    return;
+  }
+
+  w.document.write(`
+    <!doctype html>
+    <html>
+    <head>
+      <title>${escapeHtml(bill.bill_number)}</title>
+      <style>
+        body{font:13px Arial,sans-serif;color:#111;padding:25px;max-width:650px;margin:auto}
+        h2{text-align:center;letter-spacing:2px;margin-bottom:2px}
+        .sub{text-align:center;font-size:11px;margin-bottom:22px}
+        .meta{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #888;border-bottom:1px dashed #888;padding:10px 0;font-size:12px}
+        table{width:100%;border-collapse:collapse;margin-top:15px}
+        th,td{text-align:left;padding:9px 4px;border-bottom:1px solid #ddd;font-size:12px}
+        th:last-child,td:last-child{text-align:right}
+        .total{text-align:right;font-size:18px;font-weight:bold;margin-top:18px}
+        .pay{text-align:right;margin-top:8px;font-weight:bold}
+        .foot{text-align:center;margin-top:35px;font-size:11px}
+      </style>
+    </head>
+    <body>
+      <h2>SR TRADE LINK</h2>
+      <div class="sub">DELIVERY BILL</div>
+      <div class="meta">
+        <span>
+          Bill: ${escapeHtml(bill.bill_number)}<br>
+          Store: ${escapeHtml(bill.store_name)}<br>
+          Truck: ${String(TRUCK_NUMBER).padStart(2,'0')}
+        </span>
+        <span>
+          Date: ${escapeHtml(bill.bill_date)}<br>
+          Driver: ${escapeHtml(bill.driver_name_snapshot)}<br>
+          Status: ${escapeHtml(bill.status)}
+        </span>
+      </div>
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="total">Grand Total: ${money(bill.total)}</div>
+      <div class="pay">Payment: ${escapeHtml(bill.payment_type)}</div>
+      <div class="foot">Thank you</div>
+      <script>window.onload=()=>window.print()<\/script>
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+}
+
+/* ==========================================
+   BUTTON EVENTS
+========================================== */
+$('saveBill').addEventListener('click',createBill);
+
+$('clearBill').addEventListener('click',()=>{
+  resetForm();
+  notify('Bill cleared.');
+});
+
+/* ==========================================
+   INDEPENDENT STORE LEDGER
+========================================== */
+function openStoreLedger(storeId){
+  const store=stores.find(x=>x.id===storeId);if(!store)return;
+  activeLedgerStore=store;$('ledgerStoreTitle').textContent=store.name.toUpperCase();
+  $('ledgerDate').value=today();$('ledgerAmount').value='';$('ledgerType').value='GIVEN';
+  $('ledgerOverlay').classList.add('show');document.body.style.overflow='hidden';
+  loadStoreLedger();
+}
+async function loadStoreLedger(){
+  if(!activeLedgerStore)return;
+  $('ledgerRows').innerHTML='<tr><td colspan="4" style="text-align:center">Loading ledger...</td></tr>';
+  const {data,error}=await db.from('store_ledger_entries').select('id,entry_date,entry_type,credit_given,credit_paid,created_at').eq('store_id',activeLedgerStore.id).order('entry_date',{ascending:true}).order('created_at',{ascending:true});
+  if(error){$('ledgerRows').innerHTML=`<tr><td colspan="4" style="text-align:center">${escapeHtml(error.message)}</td></tr>`;notify('Ledger loading failed: '+error.message);return;}
+  ledgerEntries=data||[];let balance=0,totalGiven=0,totalPaid=0;const rows=[];
+  ledgerEntries.forEach(e=>{const given=Number(e.credit_given||0),paid=Number(e.credit_paid||0);totalGiven+=given;totalPaid+=paid;balance+=given-paid;rows.push(`<tr><td>${escapeHtml(e.entry_date)}</td><td>${given?money(given):'—'}</td><td>${paid?money(paid):'—'}</td><td><strong>${money(balance)}</strong></td></tr>`);});
+  $('ledgerGiven').textContent=money(totalGiven);$('ledgerPaid').textContent=money(totalPaid);$('ledgerBalance').textContent=money(balance);
+  $('ledgerRows').innerHTML=rows.length?rows.reverse().join(''):'<tr><td colspan="4" style="text-align:center;color:#718096">No ledger entries yet.</td></tr>';
+  const hasOpening=ledgerEntries.some(e=>e.entry_type==='OPENING');$('ledgerType').querySelector('option[value="OPENING"]').disabled=hasOpening;
+}
+$('ledgerStoreQuick').addEventListener('click',()=>{const id=$('ledgerStoreQuick').dataset.store;if(id)openStoreLedger(id);});
+$('ledgerForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(!activeLedgerStore)return;
+  const type=$('ledgerType').value,amount=Number($('ledgerAmount').value),date=$('ledgerDate').value;
+  if(!date||!Number.isFinite(amount)||amount<=0){notify('Enter a valid date and amount.');return;}
+  if(type==='OPENING'&&ledgerEntries.some(x=>x.entry_type==='OPENING')){notify('Opening balance has already been entered.');return;}
+  const payload={store_id:activeLedgerStore.id,entry_date:date,entry_type:type,credit_given:type==='PAID'?0:amount,credit_paid:type==='PAID'?amount:0};
+  // The hybrid adapter handles ledger inserts asynchronously. Do not chain
+  // Supabase .select().single() onto its Promise.
+  const result=await db.from('store_ledger_entries').insert(payload);
+  if(result.error){notify('Could not save ledger entry: '+(result.error.message||result.error));return;}
+  $('ledgerAmount').value='';
+  await loadStoreLedger();
+  if(result.localOnly){
+    notify('Ledger saved on this device. Online sync is pending; it will retry automatically.');
+  }else{
+    notify('Ledger entry saved to Supabase and this device.');
+  }
+});
+$('closeLedger').onclick=()=>{$('ledgerOverlay').classList.remove('show');document.body.style.overflow='';activeLedgerStore=null;};
+$('storeSelect').addEventListener('change',e=>{if(e.target.value){$('ledgerStoreQuick').disabled=false;$('ledgerStoreQuick').dataset.store=e.target.value;}else{$('ledgerStoreQuick').disabled=true;}});
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+async function init(){
+  $('billDate').value=today();
+  $('billDate').max=today();
+
+  try{
+    setConnection(false,'Connecting...');
+
+    if(!supabaseClient){
+      throw new Error('Supabase JavaScript library did not load. Check your internet connection.');
+    }
+
+    await loadTruck();
+      await loadStores();
+    // Keep this driver's store list synchronized with Admin store assignments.
+    if (!window.__storeAssignmentChannel) {
+      window.__storeAssignmentChannel = supabaseClient
+        .channel('store-assignment-truck-' + TRUCK_NUMBER)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'stores' }, () => {
+          loadStores().catch(error => console.error('Store list refresh failed:', error));
+        })
+        .subscribe();
+    }
+    await loadProducts();
+    await loadBills();
+    await loadStats();
+    const ledgerSync=await syncPendingLedgerEntries();
+    if(ledgerSync.pending>0)console.warn(ledgerSync.pending+' ledger entries are still waiting for Supabase sync.');
+
+    setConnection(true,'DATABASE CONNECTED');
+    notify('Truck '+String(TRUCK_NUMBER).padStart(2,'0')+' connected successfully.');
+
+  }catch(error){
+    console.error(error);
+    setConnection(false,'CONNECTION FAILED');
+    notify(error.message||'Supabase connection failed.');
+    $('itemsGrid').innerHTML='<div class="empty">Unable to load products. Check the Supabase connection and try refreshing.</div>';
+    $('storeSelect').innerHTML='<option value="">Unable to load stores</option>';
+  }
+}
+
+init();
+
+/* Refresh shared data when the page becomes active again */
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&truck){
+    syncPendingLedgerEntries().then(()=>loadStoreLedger()).catch(console.error);
+    loadStores().then(loadBills).then(loadStats).catch(console.error);
+  }
+});
+window.addEventListener('online',()=>{
+  syncPendingLedgerEntries().then(async result=>{
+    if(result.synced)notify(result.synced+' pending ledger entr'+(result.synced===1?'y':'ies')+' synced to Supabase.');
+    if(activeLedgerStore)await loadStoreLedger();
+  }).catch(console.error);
+});
+
+})();
+</script>
+</body>
+</html>
